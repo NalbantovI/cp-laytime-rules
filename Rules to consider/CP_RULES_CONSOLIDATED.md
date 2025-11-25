@@ -2,7 +2,7 @@
 
 **Generated:** /Users/ivelinnalbantov/Work/cp-laytime/cp-laytime-rules
 **Total Charter Parties Processed:** 75
-**Total Rules Extracted:** 3
+**Total Rules Extracted:** 1
 
 ---
 
@@ -11,68 +11,23 @@
 > **📌 NOTE:** This file contains **only rules NOT yet covered** by GRULE implementation.
 > 
 > - ✅ **86.9% of rules already implemented** in GRULE (1,282 rules)
-> - 📋 **This file shows the remaining rules** (5 rules requiring implementation)
+> - 📋 **This file shows the remaining rules** (1 rule requiring implementation)
 > - 📁 **Complete original set** preserved in `CP_RULES_CONSOLIDATED_ORIGINAL.md`
 > - 🗑️ **TEMPORAL rules removed** (7 rules - general contract settings, not laytime calculation)
 > - 🗑️ **LEGAL/PROCEDURAL rules removed** (22 rules with legal obligations, not laytime calculation)
 > - 🗑️ **SAFETY/COMPLIANCE rules removed** (1 rule - vessel safety prerequisites, no SOF events)
 > - 🗑️ **VESSEL SPECIFICATION rules removed** (1 rule - vessel suitability warranties, formalities)
+> - 🗑️ **DUPLICATE rules removed** (2 rules - FPG Rule 4, FMG Rule 7 already covered by existing GRULE implementation)
 
 **Rules by Category:**
 
-- [Exception](#rule-type-exception) (1 rule)
-- [Operational](#rule-type-operational) (2 rules)
+- [Operational](#rule-type-operational) (1 rule)
 
-**Total:** 3 unique rules
-
----
-
-
-
-
-## RULE TYPE: EXCEPTION
-
-**Total Rules:** 82
-
-#### FPG - Rule 4: Extract 2
-
-**Rule Types:** Operational, Exception
-
-**Rule Text:**
-```
-WINCHES AND POWER, HATCHES AND OVERTIME
-Owner shall ensure that the vessel nominated for the carriage of the coal shall provide free use of winches and power
-only for moving vessel a little forward or back when one of the two shore unloaders is out of order. The vessel shall
-also provide free use of lighting facilities on board that may be needed for working on the vessel.
-All opening and the last closing of hatches at both ends shall be for Owner's account and its time lost thus incurred
-sh...
-```
+**Total:** 1 unique rule
 
 ---
-
-
-================================================================================
-
 
 ## RULE TYPE: OPERATIONAL
-
-**Total Rules:** 416
-
-#### FMG - Rule 7: Extract 5
-
-**Rule Types:** Operational
-
-**Rule Text:**
-```
-to proceed to a port or any other place for the purpose of lightening the Vessel. In such cases, any time lost or additional cost incurred
-(including without limitation the cost of on­carriage of the cargo to the nominated port, stockpiling charges or deterioration of the cargo) as a
-result of the diversion or lighterage will be for the Owner's account.
-22. Hold Accessibility
-(a) Vessel's holds and tank tops must be suitable for the utilisation of grabs and any other mechanical equipment use...
-```
-
----
-
 
 #### SYNACOMEX - Rule 16: Extract 12
 
