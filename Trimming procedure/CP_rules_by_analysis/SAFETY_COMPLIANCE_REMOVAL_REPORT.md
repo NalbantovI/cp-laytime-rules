@@ -9,15 +9,15 @@
 ## SUMMARY
 
 - **Rules Before:** 5
-- **Rules Removed:** 1
-- **Rules Remaining:** 4
-- **Reason:** Safety compliance prerequisites, not computational laytime rules
+- **Rules Removed:** 2
+- **Rules Remaining:** 3
+- **Reason:** Safety compliance prerequisites and vessel specification formalities, not computational laytime rules
 
 ---
 
-## RULES REMOVED (1 SAFETY/COMPLIANCE RULE)
+## RULES REMOVED (2 SAFETY/COMPLIANCE & VESSEL SPECIFICATION RULES)
 
-### ALCOA - Rule 6: Extract 4
+### 1. ALCOA - Rule 6: Extract 4
 
 **Rule Types:** Operational, Exception
 
@@ -37,6 +37,28 @@ account.
 **Summary:** Vessel safety certificate requirements preventing stevedore/workmen from working
 
 **Clause Reference:** Clause 20.4-20.5 - Vessel certificates and regulatory compliance
+
+---
+
+### 2. TA1 - Rule 5: Extract 3
+
+**Rule Types:** Operational
+
+**Category:** OPERATIONAL
+
+**Rule Text:**
+```
+429
+GRAB 18. Vessel is guaranteed to have steel floors, tank tops and ceilings and to be suitable in all respects for 430
+DISCHARGE grab discharge. No cargo shall be loaded in deep tanks, in bridge space, nor in any other place not 431
+accessible for discharge by means of mechanical grabs. Nevertheless, should any cargo be loaded by the 432
+Vessel in places not accessible to grabs, any time lost removing cargo from such places shall not count as 433
+laytime or time on demurrage, and all expenses...
+```
+
+**Summary:** Vessel specification warranty for grab discharge suitability
+
+**Clause Reference:** Clause 18 - Grab Discharge vessel requirements
 
 ---
 
@@ -71,6 +93,29 @@ account.
    - GRULE rules respond to **SOF events** (e.g., "Safety inspection commenced")
    - This rule describes a **failure state** that would need manual determination
    - Cannot be automated without subjective judgment about "compliance failure"
+
+### Why TA1 Rule 5 Was Removed:
+
+**TA1 Rule 5** is a **vessel specification warranty/formality**, similar to ALCOA Rule 6:
+
+1. **Warranty Language:** "Vessel is guaranteed to have steel floors... and to be suitable in all respects for grab discharge"
+   - This is a **vessel suitability requirement**, not an operational event
+   - Similar to saying "Vessel shall be seaworthy" - it's a prerequisite, not a calculation
+
+2. **Formality, Not Operational Rule:**
+   - Defines **what the vessel must be** (suitable for grabs)
+   - Not **what happens during operations** (a stoppage, event, or time calculation)
+   - This is a **contractual formality** about vessel specifications
+
+3. **Already Covered:**
+   - If cargo is loaded in inaccessible places, it would be recorded as operational delays
+   - The time impact would be captured through existing stoppages
+   - Similar to FMG Rule 7 but FMG is about **physical constraints**, while TA1 is about **warranties**
+
+4. **No Discrete SOF Event:**
+   - No event like "Cargo loaded in inaccessible location detected"
+   - The consequence (time doesn't count) would be determined post-facto during laytime calculation disputes
+   - Not something that appears in a Statement of Facts as an event
 
 ---
 
@@ -127,7 +172,7 @@ The following existing stoppages already handle scenarios related to ALCOA Rule 
 
 ---
 
-## RULES RETAINED (4 RULES)
+## RULES RETAINED (3 RULES)
 
 ### Exception Rules (1)
 
@@ -136,7 +181,7 @@ The following existing stoppages already handle scenarios related to ALCOA Rule 
 - **Summary:** Winches, power, hatches and overtime provisions
 - **Reason Kept:** Operational equipment requirements with laytime impact
 
-### Operational Rules (3)
+### Operational Rules (2)
 
 #### FMG - Rule 7: Extract 5
 - **Rule Types:** Operational
@@ -147,11 +192,6 @@ The following existing stoppages already handle scenarios related to ALCOA Rule 
 - **Rule Types:** Operational, Temporal
 - **Summary:** Hold cleaning and disinfection procedures
 - **Reason Kept:** Required cargo preparation steps
-
-#### TA1 - Rule 5: Extract 3
-- **Rule Types:** Operational
-- **Summary:** Grab discharge requirements and vessel suitability
-- **Reason Kept:** Cargo handling operational constraints
 
 ---
 
@@ -183,11 +223,12 @@ The following existing stoppages already handle scenarios related to ALCOA Rule 
 - Categories: Exception (2), Operational (3)
 
 **After:**
-- Total Rules: 4
-- Categories: Exception (1), Operational (3)
+- Total Rules: 3
+- Categories: Exception (1), Operational (2)
 
 **Impact:**
-- Removed safety/compliance prerequisite rule
+- Removed 1 safety/compliance prerequisite rule (ALCOA)
+- Removed 1 vessel specification formality rule (TA1)
 - All remaining rules have operational laytime impact
 - All remaining rules can be triggered by SOF events
 
@@ -200,15 +241,15 @@ This is the **third cleanup phase** for CP_RULES_CONSOLIDATED.md:
 1. **Phase 1:** Removed rules already covered by GRULE (1,282 rules → 34 rules)
 2. **Phase 2:** Removed Legal/Procedural rules (34 rules → 12 rules)
 3. **Phase 3:** Removed Temporal rules except SYNACOMEX Rule 16 (12 rules → 5 rules)
-4. **Phase 4 (This):** Removed Safety/Compliance prerequisites (5 rules → 4 rules)
+4. **Phase 4 (This):** Removed Safety/Compliance prerequisites and Vessel Specifications (5 rules → 3 rules)
 
-**Remaining:** 4 operational rules requiring GRULE implementation
+**Remaining:** 3 operational rules requiring GRULE implementation
 
 ---
 
 ## NEXT STEPS
 
-The remaining 4 rules should be analyzed for:
+The remaining 3 rules should be analyzed for:
 
 1. **SOF Event Mapping** - Identify which SOF events trigger each rule
 2. **Stoppage Configuration** - Determine modifier values (time counts or not)
@@ -217,6 +258,6 @@ The remaining 4 rules should be analyzed for:
 
 **Remaining Rules Focus:**
 - **Exception handling** (1 rule): Equipment failures and alternative procedures
-- **Operational requirements** (3 rules): Hold accessibility, cleaning procedures, grab discharge requirements
+- **Operational requirements** (2 rules): Hold accessibility, cleaning procedures
 
 All remaining rules describe **operational constraints** that can be detected from **SOF events** and have **direct laytime calculation impact**.

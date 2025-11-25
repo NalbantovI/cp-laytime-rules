@@ -2,7 +2,7 @@
 
 **Generated:** /Users/ivelinnalbantov/Work/cp-laytime/cp-laytime-rules
 **Total Charter Parties Processed:** 75
-**Total Rules Extracted:** 4
+**Total Rules Extracted:** 3
 
 ---
 
@@ -16,13 +16,14 @@
 > - 🗑️ **TEMPORAL rules removed** (7 rules - general contract settings, not laytime calculation)
 > - 🗑️ **LEGAL/PROCEDURAL rules removed** (22 rules with legal obligations, not laytime calculation)
 > - 🗑️ **SAFETY/COMPLIANCE rules removed** (1 rule - vessel safety prerequisites, no SOF events)
+> - 🗑️ **VESSEL SPECIFICATION rules removed** (1 rule - vessel suitability warranties, formalities)
 
 **Rules by Category:**
 
 - [Exception](#rule-type-exception) (1 rule)
-- [Operational](#rule-type-operational) (3 rules)
+- [Operational](#rule-type-operational) (2 rules)
 
-**Total:** 4 unique rules
+**Total:** 3 unique rules
 
 ---
 
@@ -89,23 +90,6 @@ approved) by Owners
 Upon arrival loadport, Charterers to disinfect holds
 Page 5
 -...
-```
-
----
-
-
-#### TA1 - Rule 5: Extract 3
-
-**Rule Types:** Operational
-
-**Rule Text:**
-```
-429
-GRAB 18. Vessel is guaranteed to have steel floors, tank tops and ceilings and to be suitable in all respects for 430
-DISCHARGE grab discharge. No cargo shall be loaded in deep tanks, in bridge space, nor in any other place not 431
-accessible for discharge by means of mechanical grabs. Nevertheless, should any cargo be loaded by the 432
-Vessel in places not accessible to grabs, any time lost removing cargo from such places shall not count as 433
-laytime or time on demurrage, and all expe...
 ```
 
 ---
