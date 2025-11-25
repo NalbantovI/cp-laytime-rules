@@ -2,7 +2,7 @@
 
 **Generated:** /Users/ivelinnalbantov/Work/cp-laytime/cp-laytime-rules
 **Total Charter Parties Processed:** 75
-**Total Rules Extracted:** 37
+**Total Rules Extracted:** 36
 
 ---
 
@@ -11,21 +11,19 @@
 > **📌 NOTE:** This file contains **only rules NOT yet covered** by GRULE implementation.
 > 
 > - ✅ **86.9% of rules already implemented** in GRULE (1,282 rules)
-> - 📋 **This file shows the remaining 13.1%** (37 rules requiring implementation)
+> - 📋 **This file shows the remaining 13.1%** (36 rules requiring implementation)
 > - 📁 **Complete original set** preserved in `CP_RULES_CONSOLIDATED_ORIGINAL.md`
+> - 🗑️ **TEMPORAL rules removed** (general contract settings, not laytime calculation rules)
 
+**Rules by Category:**
 
-- [Cargo Terms](#rule-type-cargo-terms) (2 rules)
-- [Conditional](#rule-type-conditional) (320 rules)
-- [Exception](#rule-type-exception) (82 rules)
-- [Legal/Procedural](#rule-type-legal-procedural) (196 rules)
-- [Modifier](#rule-type-modifier) (14 rules)
-- [NOR Failed Inspection](#rule-type-nor-failed-inspection) (10 rules)
-- [NOR Tendering](#rule-type-nor-tendering) (16 rules)
-- [Operational](#rule-type-operational) (416 rules)
-- [Port Cargo Hours](#rule-type-port-cargo-hours) (16 rules)
-- [Waiting Berth Time](#rule-type-waiting-berth-time) (6 rules)
-- [Weather Interruption](#rule-type-weather-interruption) (42 rules)
+- [Conditional](#rule-type-conditional) (22 rules)
+- [Exception](#rule-type-exception) (4 rules)
+- [Legal/Procedural](#rule-type-legal-procedural) (4 rules)
+- [Modifier](#rule-type-modifier) (2 rules)
+- [Operational](#rule-type-operational) (4 rules)
+
+**Total:** 36 unique rules
 
 ---
 
@@ -644,23 +642,6 @@ approved) by Owners
 Upon arrival loadport, Charterers to disinfect holds
 Page 5
 -...
-```
-
----
-
-
-#### TA1 - Rule 5: Extract 3
-
-**Rule Types:** Operational
-
-**Rule Text:**
-```
-429
-GRAB 18. Vessel is guaranteed to have steel floors, tank tops and ceilings and to be suitable in all respects for 430
-DISCHARGE grab discharge. No cargo shall be loaded in deep tanks, in bridge space, nor in any other place not 431
-accessible for discharge by means of mechanical grabs. Nevertheless, should any cargo be loaded by the 432
-Vessel in places not accessible to grabs, any time lost removing cargo from such places shall not count as 433
-laytime or time on demurrage, and all expe...
 ```
 
 ---
