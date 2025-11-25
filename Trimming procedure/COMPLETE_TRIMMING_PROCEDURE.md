@@ -341,6 +341,8 @@ Transform the file into a clean, readable format suitable for implementation rev
 
 ## SCRIPTS AND TOOLS CREATED
 
+**Location:** All scripts, backups, and analysis files are in `CP_rules_by_analysis/` subfolder
+
 ### Phase 1: Extraction
 1. **classify_and_consolidate_rules.py**
    - Purpose: Extract and classify rules from 75 charter parties
@@ -469,6 +471,8 @@ Some "unique" rules have generic patterns that could be abstracted:
 
 ## BACKUP FILES CREATED
 
+**Location:** All backup files are in `CP_rules_by_analysis/` subfolder
+
 Throughout the process, backup files were preserved:
 
 1. `CP_RULES_CONSOLIDATED_ORIGINAL.md` - Starting point (26,294 lines)
@@ -518,7 +522,12 @@ All backups preserved to allow rollback if needed.
 
 ### To Regenerate from Scratch
 
+**Note:** All scripts are located in the `CP_rules_by_analysis/` subfolder.
+
 ```bash
+# Navigate to the scripts folder
+cd "Trimming procedure/CP_rules_by_analysis"
+
 # Phase 1: Extract rules
 python3 classify_and_consolidate_rules.py
 
@@ -547,6 +556,9 @@ python3 remove_empty_cps.py
 ### To Update GRULE Coverage Analysis
 
 ```bash
+# Navigate to the scripts folder
+cd "Trimming procedure/CP_rules_by_analysis"
+
 # If new .grl files added to CP library/rule/
 python3 analyze_covered_rules.py --update
 python3 filter_covered_rules.py --recheck
