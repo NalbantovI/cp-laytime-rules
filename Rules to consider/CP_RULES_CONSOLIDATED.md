@@ -2,7 +2,7 @@
 
 **Generated:** /Users/ivelinnalbantov/Work/cp-laytime/cp-laytime-rules
 **Total Charter Parties Processed:** 75
-**Total Rules Extracted:** 32
+**Total Rules Extracted:** 12
 
 ---
 
@@ -11,80 +11,28 @@
 > **📌 NOTE:** This file contains **only rules NOT yet covered** by GRULE implementation.
 > 
 > - ✅ **86.9% of rules already implemented** in GRULE (1,282 rules)
-> - 📋 **This file shows the remaining rules** (32 rules requiring implementation)
+> - 📋 **This file shows the remaining rules** (12 rules requiring implementation)
 > - 📁 **Complete original set** preserved in `CP_RULES_CONSOLIDATED_ORIGINAL.md`
 > - 🗑️ **TEMPORAL rules removed** (general contract settings, not laytime calculation)
-> - 🗑️ **LEGAL/PROCEDURAL rules removed** (legal obligations, not laytime calculation)
+> - 🗑️ **LEGAL/PROCEDURAL rules removed** (22 rules with legal obligations, not laytime calculation)
 
 **Rules by Category:**
 
-- [Conditional](#rule-type-conditional) (22 rules)
-- [Exception](#rule-type-exception) (4 rules)
-- [Modifier](#rule-type-modifier) (2 rules)
+- [Conditional](#rule-type-conditional) (6 rules)
+- [Exception](#rule-type-exception) (2 rules)
 - [Operational](#rule-type-operational) (4 rules)
 
-**Total:** 32 unique rules
+**Total:** 12 unique rules
 
 ---
 
 ================================================================================
 
+
+
 ## RULE TYPE: CONDITIONAL
 
 **Total Rules:** 320
-
-#### ALCOA - Rule 9: Extract 7
-
-**Rule Types:** Conditional, Legal/Procedural, Temporal
-
-**Rule Text:**
-```
-NAME, TIME AND EXPENSE: i) HAVE IN PLACE A SCAC (STANDARD CARRIER ALPHA CODE);ii) HAVE IN PLACE
-AN ICB (INTERNATIONAL CARRIER BOND); AND iii) SUBMIT A CARGO DECLARATION BY AMS (AUTOMATED
-MANIFEST SYSTEM) TO THE
-U.S. CUSTOMS.
-(b) THE CHARTERERS SHALL PROVIDE ALL NECESSARY INFORMATION TO THE OWNERS AND/OR THEIR
-AGENTS TO ENABLE THE OWNERS TO SUBMIT A TIMELY AND ACCURATE CARGO DECLARATION. THE
-CHARTERERS SHALL ASSUME LIABILITY FOR AND SHALL INDEMNIFY, DEFEND AND HOLD HARMLESS THE
-OWNERS AGAIN A...
-```
-
----
-
-
-#### AMWELSH - Rule 17: Extract 15
-
-**Rule Types:** Legal/Procedural, Conditional, Exception
-
-**Rule Text:**
-```
-requirements shall not count as laytime or time on demurrage if the vessel is already on demurrage and
-all damages and/or costs and/or expenses arising out or anyhow connected with Owners' breach of this
-clause to be for Owners' account.
-Owners/vessel/Master to comply with all rules, regulations and requirements, and to satisfy themselves
-as to all draft and other restrictions at the load and discharge port terminal/facilities/appliances. Such
-rules, regulations and requirements are fully in...
-```
-
----
-
-
-#### CSN - Rule 5: Extract 3
-
-**Rule Types:** Conditional, Legal/Procedural, Temporal
-
-**Rule Text:**
-```
-c. Once agreement is reached Owners/Charterers will provide the respective party with a debit
-note, together with all the supporting documentation substantiating each and every
-constituent of the claim. All sums must be paid within twenty (20) running days from
-receipt of the debit note and supporting documentation.
-d. If no agreement can be reached Owners/Charterers will issue their debit notes accordingly
-and any undisputed sums must be paid within twenty (20) running days from receipt of ...
-```
-
----
-
 
 #### CSN - Rule 8: Extract 6
 
@@ -102,125 +50,6 @@ CLAUSE 30 ­ LAYTIME
 
 ---
 
-
-#### CSN - Rule 11: Extract 9
-
-**Rule Types:** Legal/Procedural, Operational, Conditional
-
-**Rule Text:**
-```
-39.1 Owners agree to indemnify Charterers, their agents or any other Party against any liabilities which may be imposed on
-them or which they may incur under any statute, rule, or regulation regarding liability for pollution of waters by oil or other
-substances, by reason of any contravention of such statute, rule, or regulation by the Vessel, the Master, or any servant or
-agent of Owners provided that such contravention shall not have been caused or contributed to by Charterers. Owners
-warr...
-```
-
----
-
-
-#### CSP - Rule 12: Extract 10
-
-**Rule Types:** Legal/Procedural, Conditional
-
-**Rule Text:**
-```
-CLAUSE 46 – POLLUTION CLAUSE
-During the term of this Charter Party, the Owners warrant that they will comply with all provisions of
-all Environmental and Pollution Acts, which are in effect. Should any delay to the Vessel nominated
-under this Charter Party or extension of the voyages occur from failure to comply with any of the
-provisions of the said Acts, rules and/or regulations or amendments thereto, such delays or
-extensions will not count as used laytime.
-The Owners warrant that through...
-```
-
----
-
-
-#### CSP - Rule 13: Extract 11
-
-**Rule Types:** Legal/Procedural, Conditional
-
-**Rule Text:**
-```
-Clause 53 – THIRD PARTY ARREST
-Should the Vessel be arrested during the currency of this Charter Party at the suit of any party
-having or purporting to have a claim against any interest in the Vessel other than the Charterers and
-not arising from this Charter Party, the Owners shall indemnify the Charterers for any expenses,
-losses, liabilities, costs and consequences incurred by the Charterers as a direct or indirect result of
-the arrest. Any time lost not to count as laytime, even if the V...
-```
-
----
-
-
-#### ENEL - Rule 7: Extract 5
-
-**Rule Types:** Legal/Procedural, Conditional, Exception
-
-**Rule Text:**
-```
-2.8 Time lost as a result of Owner's/vessel/Master's failure to so comply or so satisfy with the above
-requirements shall not count as laytime or time on demurrage if the vessel is already on demurrage and
-all damages and/or costs and/or expenses arising out or anyhow connected with Owners' breach of this
-clause R2 to be for Owners' account.
-2.9 Owner warrants that it is fully aware of the operational restrictions, regulations and requirements atof the
-Load Port(s) and at the Discharge Port(...
-```
-
----
-
-
-#### LOUIS_DREYFUS - Rule 4: Extract 2
-
-**Rule Types:** Legal/Procedural, Conditional, Exception
-
-**Rule Text:**
-```
-addition, Owners agree to comply with any and all official regulations pertaining to water pollution as applicable.
-Page 4 of 5 -
-
-PREVIEW
-Any time lost on account of vessel's non­compliance with Government and/or State and/or provincial regulations
-pertaining to water pollution shall not count as laytime or time on demurrage.
-Clauses 12 through ...... as attached, are to be considered as fully incorporated in this Charter Party.
-This Charter Party is a computer generated copy of the LOUIS D...
-```
-
----
-
-
-#### NORGRAIN - Rule 5: Extract 3
-
-**Rule Types:** Conditional, Legal/Procedural, Operational
-
-**Rule Text:**
-```
-Should the vessel be ordered to discharge at a place in which there is not sufficient water for her to get the first tide after arrival without lightening, and lie always afloat, laytime is to count as per Clause 175
-18 at a safe anchorage for similar vessels bound for such a place and any lighterage expenses incurred to enable her to reach the place of discharge is to be at the expense and risk of the cargo, any 176
-custom of the port or place to the contrary notwithstanding, but time occup...
-```
-
----
-
-
-#### NORGRAIN - Rule 12: Extract 10
-
-**Rule Types:** Conditional, Waiting Berth Time, Legal/Procedural
-
-**Rule Text:**
-```
-result of a detention of vessel by Port State Control, such as but not limited to carrying charges, extension
-penalties, stevedore standby times, etc.
-CLAUSE 66 ­ TUG ASSISTANCE
-If required for the safety of the vessel and/or piers/berths/anchorages, vessel to hire and pay for sufficient
-tug assistance, however, this does not relieve the Charterers of their responsibility to load the vessel at
-safe piers/berths/anchorages.
-CLAUSE 67 ­ ST. LAWRENCE
-St. Lawrence Seaway tolls on cargo and vesse...
-```
-
----
 
 
 #### NYPE - Rule 3: Extract 1
@@ -240,41 +69,6 @@ A3. Laytime shall commence twelve (12) hours after N...
 ---
 
 
-#### NYPE - Rule 7: Extract 5
-
-**Rule Types:** Legal/Procedural, Conditional
-
-**Rule Text:**
-```
-Water Pollution 38. The vessel shall be off hire during any time lost on account of vessel's 454
-non­compliance with government and/or state and/or provincial regulations 455
-pertaining to water pollution. In cases where vessel calls at a U.S. port, Owners 456
-warrant to have secured and carry on board the vessel a Certificate of Financial 457
-Responsibility as required under U.S. law. 458
-"This Charter Party is a computer generated copy of the ASBATIME form printed by authority of the Assoc...
-```
-
----
-
-
-#### NYPE - Rule 16: Extract 13
-
-**Rule Types:** Legal/Procedural, Temporal, Conditional
-
-**Rule Text:**
-```
-additional premiums because of piracy risks, then the actual additional premiums and/or calls paid shall
-be reimbursed by the Charterers
-Clause 82 ­ continued
-to the Owners at the same time as the next payment of hire is due, or upon redelivery, whichever occurs
-first.
-e) If the Vessel is attacked or seized by pirates any time lost shall be for the account of the Charterers
-and the Vessel shall remain on hire. If the Vessel is seized the Owners shall keep the Charterers closely
-informed of t...
-```
-
----
-
 
 #### SAFANCHART - Rule 3: Extract 1
 
@@ -290,23 +84,6 @@ days, then the Charter Party shall, at the expiration of such period, provided t
 
 ---
 
-
-#### SAMARCO - Rule 12: Extract 10
-
-**Rule Types:** Legal/Procedural, Operational, Conditional
-
-**Rule Text:**
-```
-46.1 During the term of this Charter Party, the Owners warrant that they will comply with
-all provisions of all environmental and pollution acts and regulations in force and
-applicable to this charter. Should any delay to the Vessel nominated under this
-Charter Party or extension of the voyages occur from failure to comply with any of
-the provisions of the said acts and regulations, such delays or extensions will not
-count as used laytime.
-46.2 The Vessel nominated under this Charter Party s...
-```
-
----
 
 
 #### SYNACOMEX - Rule 10: Extract 6
@@ -326,21 +103,6 @@ This Charter Party is a computer generated SYNACOMEX 2000 form prin...
 ---
 
 
-#### SYNACOMEX - Rule 11: Extract 7
-
-**Rule Types:** Temporal, Conditional, Legal/Procedural
-
-**Rule Text:**
-```
-Strike or Lock-out of the Shippers' and/or Receivers' men 330 certain cargoes or crews or otherwise howsoever), by any 405
-shall not prevent demurrage accruing if by the use of 331 person, body, terrorist or political group, or the Government 406
-reasonable diligence they could have obtained other suitable 332 of any state whatsoever, which, in the reasonable judgement 407
-labour at rates current before the Strike or Lock-out. 333 of the Master and/or the Owners, may be dangerous or are 408
-...
-```
-
----
-
 
 #### SYNACOMEX - Rule 15: Extract 11
 
@@ -356,24 +118,6 @@ deletion to the form must be clearly visible. In the event of any modification m
 
 ---
 
-
-#### VALE - Rule 12: Extract 10
-
-**Rule Types:** Temporal, Legal/Procedural, Conditional
-
-**Rule Text:**
-```
-performance of this Charter Party.
-CLAUSE 52 ‐ NOTIFICATION OF CLAIMS
-The Owners must present to the Charterers any claim for demurrage in writing within thirty (30) days
-after completion of discharge together with supporting documentation substantiating each and every
-constituent part of the claim, failing which any such claim shall be deemed extinguished and the
-Charterers will be discharged from all liability in respect of any claim for demurrage.
-Clause 53 ‐ THIRD PARTY ARREST
-Should the...
-```
-
----
 
 
 #### YARA CP - Rule 7: Extract 5
@@ -394,24 +138,10 @@ Statements of Facts / Owners’ calculation has been received and approved by ..
 ---
 
 
-#### YARA CP - Rule 9: Extract 7
-
-**Rule Types:** Temporal, Legal/Procedural, Conditional
-
-**Rule Text:**
-```
-In no other case will the Charterers be responsible for such delay, damage or loss, howsoever caused.
-57. Boycott
-In the event of a boycott (whether legal or not) being imposed or threatened to be imposed due to
-the vessel's flag, ownership, nationality of the crew, terms under which the crew is employed or labor
-conditions onboard, previous port calls, time lost as a consequence thereof not to count as lay time or
-time on demurrage and Owners to be responsible for all costs and consequences...
-```
-
----
-
 
 ================================================================================
+
+
 
 ## RULE TYPE: EXCEPTION
 
@@ -433,38 +163,6 @@ possession of such valid and up to date certificates of efficiency and safety, t
 ---
 
 
-#### ANTAMINA - Rule 5: Extract 3
-
-**Rule Types:** Legal/Procedural, Exception, Operational
-
-**Rule Text:**
-```
-and all excepted periods. Any overtime incurred by vessel's crew to be for the OWNER'S account.
-Overtime at the discharge port to be for account of the party ordering same, but if ordered by Port
-Authorities, then overtime shall be paid by the CHARTERER.
-21. VESSEL GEAR CLAUSE
-The vessel's cargo gear and all other equipment shall be in good working order and comply with the
-regulations and/or requirements in effect at load and discharge port(s). The OWNER also guarantees
-that the vessel shal...
-```
-
----
-
-
-#### BARECON - Rule 8: Extract 6
-
-**Rule Types:** Modifier, Exception, Legal/Procedural
-
-**Rule Text:**
-```
-Notwithstanding any other provisions contained in this Charter it is agreed 62 in the machinery, boilers, appurtenances or spare parts thereof without in 164
-that nuclear fuels or radioactive products or waste are specifically excluded 63 each instance first securing the Owners' approval thereof. If the Owners so 165
-from the cargo permitted to be loaded or carried under this Charter. This 64 agree, the Charterers shall, if the Owners so require, restore the Vessel to its 166
-exclusion does ...
-```
-
----
-
 
 #### FPG - Rule 4: Extract 2
 
@@ -485,85 +183,7 @@ sh...
 
 ================================================================================
 
-## RULE TYPE: MODIFIER
 
-**Total Rules:** 196
-
-#### ALCOA - Rule 7: Extract 5
-
-**Rule Types:** Legal/Procedural, Operational, Temporal
-
-**Rule Text:**
-```
-Page 3 of 17 -
-
-PREVIEW
-c. In the event Charterer accepts a vessel not meeting specifications b(i) through b(x) above, Owner shall be responsible
-for all direct and consequential additional expenses arising therefrom, such as, but not limited to stevedoring, machine
-time, port delays (including conflict with other vessels). Any additional time used shall not count as laytime or demurrage,
-even if the vessel is already on demurrage.
-d. Vessels shall furnish a certified calibration scale for a...
-```
-
----
-
-
-#### ANGLO AMERICAN VOYAGE - Rule 8: Extract 6
-
-**Rule Types:** Port Cargo Hours, Legal/Procedural, Operational
-
-**Rule Text:**
-```
-or any replacement lists which are maintained, amended and imposed by any Sanction Authority;
-"SDN Sanctioned Entity" means any person, being an individual, corporation, company, vessel, association,
-government or other entity who:
-(f) is the subject or target of a SDN Sanction or in respect of which a SDN Sanction has been imposed or
-targeted; or
-(g) is owned, chartered, operated or controlled by any person who is the subject or target of a SDN Sanction
-or in respect of which a SDN Sanction...
-```
-
----
-
-
-#### SAMARCO - Rule 13: Extract 11
-
-**Rule Types:** Legal/Procedural, Temporal
-
-**Rule Text:**
-```
-(vi) The Owners and the Charterers hereby covenant and agree that until the full
-obligations under this Charter Party have been properly performed and
-discharged, whether now existing or arising hereafter, Owners and
-Charterers shall:
-(a) do or cause to be done all things necessary to preserve, renew and
-keep in full force and affect its corporate existence; (b) comply with
-all applicable laws, rules, regulations and orders, whether now in
-effect or hereafter enacted or promulgated by any ap...
-```
-
----
-
-
-#### VALE - Rule 11: Extract 9
-
-**Rule Types:** Legal/Procedural, Temporal
-
-**Rule Text:**
-```
-from the relevant governmental authority for the performance of this Charter Party.
-(vi) The Owners and The Charterers hereby covenant and agree that until the full obligations under this
-Charter Party have been properly performed and discharged, whether now existing or arising hereafter,
-Owners and Charterers shall:
-(a) Do or cause to be done all things necessary to preserve, renew and keep in full force and affect
-its corporate existence;
-(b) Comply with all applicable laws, rules, regulat...
-```
-
----
-
-
-================================================================================
 
 ## RULE TYPE: OPERATIONAL
 
@@ -583,6 +203,7 @@ result of the diversion or lighterage will be for the Owner's account.
 ```
 
 ---
+
 
 
 #### SYNACOMEX - Rule 16: Extract 12
@@ -606,6 +227,7 @@ Page 5
 ---
 
 
+
 #### TA1 - Rule 5: Extract 3
 
 **Rule Types:** Operational
@@ -621,6 +243,7 @@ laytime or time on demurrage, and all expe...
 ```
 
 ---
+
 
 #### YANCOAL - Rule 5: Extract 3
 
