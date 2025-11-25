@@ -2,7 +2,7 @@
 
 **Generated:** /Users/ivelinnalbantov/Work/cp-laytime/cp-laytime-rules
 **Total Charter Parties Processed:** 75
-**Total Rules Extracted:** 5
+**Total Rules Extracted:** 4
 
 ---
 
@@ -13,15 +13,16 @@
 > - ✅ **86.9% of rules already implemented** in GRULE (1,282 rules)
 > - 📋 **This file shows the remaining rules** (5 rules requiring implementation)
 > - 📁 **Complete original set** preserved in `CP_RULES_CONSOLIDATED_ORIGINAL.md`
-> - 🗑️ **TEMPORAL rules removed** (general contract settings, not laytime calculation)
+> - 🗑️ **TEMPORAL rules removed** (7 rules - general contract settings, not laytime calculation)
 > - 🗑️ **LEGAL/PROCEDURAL rules removed** (22 rules with legal obligations, not laytime calculation)
+> - 🗑️ **SAFETY/COMPLIANCE rules removed** (1 rule - vessel safety prerequisites, no SOF events)
 
 **Rules by Category:**
 
-- [Exception](#rule-type-exception) (2 rules)
+- [Exception](#rule-type-exception) (1 rule)
 - [Operational](#rule-type-operational) (3 rules)
 
-**Total:** 5 unique rules
+**Total:** 4 unique rules
 
 ---
 
@@ -31,22 +32,6 @@
 ## RULE TYPE: EXCEPTION
 
 **Total Rules:** 82
-
-#### ALCOA - Rule 6: Extract 4
-
-**Rule Types:** Operational, Exception
-
-**Rule Text:**
-```
-which the Vessel(s) will be employed, and Owners are to ensure that Vessel(s) are at all times in
-possession of valid and up to date certificates of efficiency and safety to comply with such regulations.
-20.5 If Stevedores, Longshoremen or other workmen are not permitted to work due to the failure of Master
-and/or Owners Agents to comply with the aforementioned regulations, or because Vessel is not in
-possession of such valid and up to date certificates of efficiency and safety, then time so...
-```
-
----
-
 
 #### FPG - Rule 4: Extract 2
 
