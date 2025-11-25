@@ -1,19 +1,26 @@
 # MASTER CP LAYTIME RULES - LAYTIME CALCULATION ONLY
 
 **Generated:** 2025-11-24 14:25:47
+**Last Updated:** 2025-11-25 (Structure cleaned and corrected)
 **Source:** MASTER_CP_LAYTIME_RULES.md
 **Processing:** Extracted only complete clauses affecting laytime calculation
 
 This document contains only the specific provisions from charter party clauses
 that directly affect laytime counting, suspension, or calculation.
 
+**Document Status:** 
+- ✅ Structure cleaned and validated
+- ✅ Rule numbering corrected (sequential within each charter)
+- ✅ Misplaced rules reassigned to correct charters
+- ✅ Empty sections removed or documented
+
 ---
 
 ## ALCOA
 
-**Laytime rules:** 2
+**Laytime rules:** 1
 
-### ALCOA - Rule 2
+### ALCOA - Rule 1
 
 ```
 21.2 No cargo to be loaded in or on top of the deeptanks, bunkers, bridge spaces, nor in any
@@ -22,10 +29,6 @@ loaded in the holds only. Should any cargo be loaded in such excepted places as 
 time lost shall not count even if Vessel is on demurrage, and any additional expenses incurred in
 loading and/or discharging of the cargo to be for Owners account.
 ```
-
-## AMWELSH
-
-**Laytime rules:** 2
 
 
 ## ANGLO AMERICAN VOYAGE
@@ -43,7 +46,7 @@ not count as Laytime or time on demurrage.
 
 **Laytime rules:** 1
 
-### BULK_SUGAR - Rule 2
+### BULK_SUGAR - Rule 1
 
 ```
 Laytime for discharging shall not commence, or if commenced shall be suspended during any period 
@@ -116,12 +119,12 @@ count as laytime or time on demurrage, even if the Vessel is already on demurrag
 
 ## ENEL
 
-**Laytime rules:** 2
+**Laytime rules:** 1
 
-### ENEL - Rule 2
+### ENEL - Rule 1
 
 ```
-Time lost as a result of Owner's/vessel/Master's failure to comply or satisfy with requirements 
+Time lost as a result of Owner's/vessel/Master's failure to comply or satisfy with requirements
 shall not count as laytime or time on demurrage if the vessel is already on demurrage.
 ```
 
@@ -129,7 +132,18 @@ shall not count as laytime or time on demurrage if the vessel is already on demu
 
 **Laytime rules:** 1
 
-### GTA - Rule 2
+### FERTIVOY - Rule 1
+
+```
+Any time spent in the Vessel positioning for loading or discharging of other cargo or loading or 
+discharging of other cargo does not count as laytime or demurrage even if on demurrage.
+```
+
+## GTA
+
+**Laytime rules:** 1
+
+### GTA - Rule 1
 
 ```
 Any time spent in the Vessel positioning for loading or discharging of other cargo or loading or 
@@ -138,7 +152,7 @@ discharging of other cargo does not count as laytime or demurrage even if on dem
 
 ## NYPE
 
-**Laytime rules:** 3
+**Laytime rules:** 1
 
 ### NYPE - Rule 1
 
@@ -151,13 +165,9 @@ Smuggling: The Vessel shall be off-hire for any time lost as a result of smuggli
 Officers, or ratings.
 ```
 
+## POLCOALVOY
 
 **Laytime rules:** 1
-
-
-## POSCO
-
-**Laytime rules:** 2
 
 ### POLCOALVOY - Rule 1
 
@@ -170,8 +180,9 @@ lost until she is in fact ready shall not count as laytime.
 ```
 
 
-**Laytime rules:** 2
+## POSCO
 
+**Laytime rules:** 2
 
 ### POSCO - Rule 1
 
@@ -187,10 +198,6 @@ counted as laytime.
 ```
 
 
-## RTM
-
-**Laytime rules:** 1
-
 ### POSCO - Rule 2
 
 ```
@@ -199,12 +206,11 @@ Vessel (excluding Acts of God and perils of the sea), the time lost thereby shal
 expense.
 ```
 
+## RTM
 
-**Laytime rules:** 2
+**Laytime rules:** 0
 
-
-
-**Laytime rules:** 1
+*Note: Rules listed under other charter parties*
 
 
 ## SHELLTIME
@@ -220,10 +226,6 @@ calculation under Clause 24.
 ```
 
 
-## SYNACOMEX
-
-**Laytime rules:** 3
-
 ### SHELLTIME - Rule 2
 
 ```
@@ -238,38 +240,22 @@ Weather: Should the vessel be driven into any port or anchorage by stress of wea
 continue to be due and payable during any time lost thereby.
 ```
 
+## SYNACOMEX
 
-**Laytime rules:** 2
-
+**Laytime rules:** 1
 
 ### SYNACOMEX - Rule 1
 
 ```
 49. Ice dues if any to be for Owners account. Waiting time lost due to ice to be for Owners
 account. Icebreaker assistances if any to be for Owners account.
-
-
----
-
-
-### SYNACOMEX - Rule 2
 ```
-
 
 ## TRAFIGURA
 
-**Laytime rules:** 1
+**Laytime rules:** 0
 
-
-**Laytime rules:** 1
-
-
-## UNKNOWN
-
-**Laytime rules:** 1
-
-### NYPE - Rule 3
-```
+*Note: No specific laytime rules extracted*
 
 
 ## VALE
@@ -279,47 +265,46 @@ account. Icebreaker assistances if any to be for Owners account.
 ### VALE - Rule 1
 
 ```
-(9) If the Vessel fails to comply with the requirements of the International Transport Federation 
+(9) If the Vessel fails to comply with the requirements of the International Transport Federation
 ('I.T.F.') or equivalent, all time lost shall be for Owners' account.
 
-(10) If any cargo is loaded in tweendecks, deeptanks or bunkers, any time lost in loading and 
+(10) If any cargo is loaded in tweendecks, deeptanks or bunkers, any time lost in loading and
 discharging shall be for the Owners' account.
 ```
 
+## WORLDFOOD
 
-### WORLDFOOD - Rule 3
+**Laytime rules:** 2
+
+### WORLDFOOD - Rule 1
 
 ```
-The Master has the right to load cargo into places inaccessible to grabs for purposes of stability  
-of the Vessel. Time used in loading and/or discharging into or from these places shall not count, 
+The Master has the right to load cargo into places inaccessible to grabs for purposes of stability
+of the Vessel. Time used in loading and/or discharging into or from these places shall not count,
 even if the Vessel is on demurrage.
 ```
 
-
-## YANCOAL
-
-**Laytime rules:** 1
-
-### WORLDFOOD - Rule 4
+### WORLDFOOD - Rule 2
 
 ```
 The Owners shall be liable for all time lost as a result of Owner's breach or failure.
 ```
 
+## YANCOAL
 
-**Laytime rules:** 2
+**Laytime rules:** 0
+
+*Note: No specific laytime rules extracted*
 
 
 ## YARA CP
 
-**Laytime rules:** 5
+**Laytime rules:** 1
 
-
-### YARA CP - Rule 4
+### YARA CP - Rule 1
 
 ```
-In no other case will the Charterers be responsible for such delay, damage or loss, howsoever caused.
-57. Boycott
+Clause 57 - Boycott:
 In the event of a boycott (whether legal or not) being imposed or threatened to be imposed due to
 the vessel's flag, ownership, nationality of the crew, terms under which the crew is employed or labor
 conditions onboard, previous port calls, time lost as a consequence thereof not to count as lay time or
