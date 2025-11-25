@@ -2,7 +2,7 @@
 
 **Generated:** /Users/ivelinnalbantov/Work/cp-laytime/cp-laytime-rules
 **Total Charter Parties Processed:** 75
-**Total Rules Extracted:** 36
+**Total Rules Extracted:** 32
 
 ---
 
@@ -11,19 +11,19 @@
 > **📌 NOTE:** This file contains **only rules NOT yet covered** by GRULE implementation.
 > 
 > - ✅ **86.9% of rules already implemented** in GRULE (1,282 rules)
-> - 📋 **This file shows the remaining 13.1%** (36 rules requiring implementation)
+> - 📋 **This file shows the remaining rules** (32 rules requiring implementation)
 > - 📁 **Complete original set** preserved in `CP_RULES_CONSOLIDATED_ORIGINAL.md`
-> - 🗑️ **TEMPORAL rules removed** (general contract settings, not laytime calculation rules)
+> - 🗑️ **TEMPORAL rules removed** (general contract settings, not laytime calculation)
+> - 🗑️ **LEGAL/PROCEDURAL rules removed** (legal obligations, not laytime calculation)
 
 **Rules by Category:**
 
 - [Conditional](#rule-type-conditional) (22 rules)
 - [Exception](#rule-type-exception) (4 rules)
-- [Legal/Procedural](#rule-type-legal-procedural) (4 rules)
 - [Modifier](#rule-type-modifier) (2 rules)
 - [Operational](#rule-type-operational) (4 rules)
 
-**Total:** 36 unique rules
+**Total:** 32 unique rules
 
 ---
 
@@ -485,7 +485,7 @@ sh...
 
 ================================================================================
 
-## RULE TYPE: LEGAL/PROCEDURAL
+## RULE TYPE: MODIFIER
 
 **Total Rules:** 196
 
@@ -558,47 +558,6 @@ Owners and Charterers shall:
 (a) Do or cause to be done all things necessary to preserve, renew and keep in full force and affect
 its corporate existence;
 (b) Comply with all applicable laws, rules, regulat...
-```
-
----
-
-
-================================================================================
-
-## RULE TYPE: MODIFIER
-
-**Total Rules:** 14
-
-#### CSN - Rule 4: Extract 2
-
-**Rule Types:** Temporal, Modifier, Operational
-
-**Rule Text:**
-```
-calculation of the freight differential. All sums must be paid within twenty (20) running
-days from receipt of the debit note and supporting documentation.
-15.Demurrage/Despatch: 15.1Money (state rates(s) or scale)
-a. Demurrage to be paid at the rate of USD XX,XX (xxxx United States Dollars), for all time
-lost in excess of allowed laytime.
-b. Despatch for any laytime saved shall be payable at half the demurrage rate.
-15.2Complementing Terms
-a. Demurrage and/or despatch is to be calculated pe...
-```
-
----
-
-
-#### SYNACOMEX - Rule 13: Extract 9
-
-**Rule Types:** Operational, Temporal, Modifier
-
-**Rule Text:**
-```
-The freight shall be paid as specified in Box 13. 53 discharge from a waiting place and Vessel is subsequently 132
-All charges and dues levied on the cargo shall be for 54 found unready in application of the above provisions, laytime 133
-Charterers' account and those levied on the Vessel 55 or time on demurrage shall not count from the time the Vessel 134
-howsoever assessed shall be for Owners' account. 56 is rejected until the time she is accepted. Additionally, any 135
-actual time lost on ...
 ```
 
 ---
