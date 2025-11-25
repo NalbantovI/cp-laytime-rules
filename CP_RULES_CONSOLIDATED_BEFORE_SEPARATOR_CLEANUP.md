@@ -506,6 +506,9 @@ time on demurrage and Owners to be responsible for all costs and consequences...
 ---
 
 
+---
+
+
 ================================================================================
 
 ## RULE TYPE: EXCEPTION
@@ -574,6 +577,9 @@ also provide free use of lighting facilities on board that may be needed for wor
 All opening and the last closing of hatches at both ends shall be for Owner's account and its time lost thus incurred
 sh...
 ```
+
+---
+
 
 ---
 
@@ -658,6 +664,9 @@ its corporate existence;
 ---
 
 
+---
+
+
 ================================================================================
 
 ## RULE TYPE: MODIFIER
@@ -695,6 +704,9 @@ Charterers' account and those levied on the Vessel 55 or time on demurrage shall
 howsoever assessed shall be for Owners' account. 56 is rejected until the time she is accepted. Additionally, any 135
 actual time lost on ...
 ```
+
+---
+
 
 ---
 
@@ -801,6 +813,9 @@ twenty four (24) consecutive hours and pro rata for part thereof for all laytime
 ---
 
 
+---
+
+
 ================================================================================
 
 ## RULE TYPE: TEMPORAL
@@ -846,3 +861,10 @@ only in case of Masters/Vessels fault.
 5) Certificate of discharge to be one of the documents required for balance of freight.
 6) Owners need to advise latest 14 days after B/L of any demurrage...
 ```
+
+---
+
+
+---
+
+
