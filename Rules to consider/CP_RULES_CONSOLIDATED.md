@@ -24,7 +24,6 @@
 - [NOR Tendering](#rule-type-nor-tendering) (16 rules)
 - [Operational](#rule-type-operational) (416 rules)
 - [Port Cargo Hours](#rule-type-port-cargo-hours) (16 rules)
-- [Temporal](#rule-type-temporal) (356 rules)
 - [Waiting Berth Time](#rule-type-waiting-berth-time) (6 rules)
 - [Weather Interruption](#rule-type-weather-interruption) (42 rules)
 
@@ -695,44 +694,4 @@ twenty four (24) consecutive hours and pro rata for part thereof for all laytime
 18 COVERING AND UNCOVERING OF HATCHES
 18.1All time and expenditure relating to the covering and uncovering of hatches shall be for Owner's account.
 18.2The Master shall cover the hatch(es) of each hold as s...
-```
-
----
-
-
-================================================================================
-
-## RULE TYPE: TEMPORAL
-
-**Total Rules:** 356
-
-#### ANGLO AMERICAN VOYAGE - Rule 9: Extract 7
-
-**Rule Types:** Temporal
-
-**Rule Text:**
-```
-Official Arrival Line referred to above, for reasons other than those attributable to the Vessel, the Master
-and/or her crew, NOR may be tendered 1.5 (one and a half) hours after the Vessel passes The 12 Mile
-Limit before arriving at the outer anchorage ­ (Vessels not passing The 12 Mile Limit and anchoring at St.
-Helena Bay may tender 6 (six) hours from anchor down, or should the Vessel anchor at Cape Town, 7.5
-(seven and a half) hours from anchor down) at any time irrespective of official ...
-```
-
----
-
-
-#### YARA CP - Rule 10: Extract 8
-
-**Rule Types:** Temporal
-
-**Rule Text:**
-```
-Owners to arrange to courier this countersigned certificate back to charterers as soon as possible.
-The other copy to remain on board after countersignature for vessels next call at Marsa el Brega/
-Libya.
-Time lost because of non-compliance with this clause shall be for owners' cost and responsibility
-only in case of Masters/Vessels fault.
-5) Certificate of discharge to be one of the documents required for balance of freight.
-6) Owners need to advise latest 14 days after B/L of any demurrage...
 ```
