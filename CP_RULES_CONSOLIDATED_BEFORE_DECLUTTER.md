@@ -115,9 +115,24 @@
 
 ================================================================================
 
+## RULE TYPE: CARGO TERMS
+
+**Total Rules:** 2
+
+### ANGLO AMERICAN VOYAGE (2 rules)
+
+
+---
+
+
+================================================================================
+
 ## RULE TYPE: CONDITIONAL
 
 **Total Rules:** 320
+
+### ALCOA (6 rules)
+
 
 #### ALCOA - Rule 9: Extract 7
 
@@ -138,6 +153,11 @@ OWNERS AGAIN A...
 ---
 
 
+
+
+### AMWELSH (14 rules)
+
+
 #### AMWELSH - Rule 17: Extract 15
 
 **Rule Types:** Legal/Procedural, Conditional, Exception
@@ -155,6 +175,40 @@ rules, regulations and requirements are fully in...
 ---
 
 
+
+
+### ANGLO AMERICAN VOYAGE (10 rules)
+
+
+### ATLAS (8 rules)
+
+
+### AUSBAR (4 rules)
+
+
+### AUSTRALIAN BARLEY (6 rules)
+
+
+### AUSWHEAT (6 rules)
+
+
+### BALTIME (2 rules)
+
+
+### BARECON (12 rules)
+
+
+### CEMENTVOY (6 rules)
+
+
+### COAL_OREVOY (4 rules)
+
+
+### CORUS (2 rules)
+
+
+### CSN (12 rules)
+
 #### CSN - Rule 5: Extract 3
 
 **Rule Types:** Conditional, Legal/Procedural, Temporal
@@ -170,6 +224,7 @@ and any undisputed sums must be paid within twenty (20) running days from receip
 ```
 
 ---
+
 
 
 #### CSN - Rule 8: Extract 6
@@ -189,6 +244,7 @@ CLAUSE 30 ­ LAYTIME
 ---
 
 
+
 #### CSN - Rule 11: Extract 9
 
 **Rule Types:** Legal/Procedural, Operational, Conditional
@@ -203,6 +259,14 @@ warr...
 ```
 
 ---
+
+
+
+
+
+
+
+### CSP (12 rules)
 
 
 #### CSP - Rule 12: Extract 10
@@ -240,6 +304,12 @@ the arrest. Any time lost not to count as laytime, even if the V...
 ---
 
 
+
+
+
+### ENEL (12 rules)
+
+
 #### ENEL - Rule 7: Extract 5
 
 **Rule Types:** Legal/Procedural, Conditional, Exception
@@ -257,10 +327,37 @@ Load Port(s) and at the Discharge Port(...
 ---
 
 
+
+
+
+### EUROCHEM (4 rules)
+
+
+### FERTIVOY (2 rules)
+
+
+### FMG (4 rules)
+
+
+### FPG (2 rules)
+
+
 ### GENCON1994 (2 rules)
 
 
+### GENCON_ARCELORMITTAL (4 rules)
+
+
+### GENTIME (6 rules)
+
+
+### GTA (2 rules)
+
+
 ### IRON_ORE_1967 (6 rules)
+
+
+### LOUIS_DREYFUS (4 rules)
 
 
 #### LOUIS_DREYFUS - Rule 4: Extract 2
@@ -282,6 +379,14 @@ This Charter Party is a computer generated copy of the LOUIS D...
 ---
 
 
+
+
+### M_RESOURCES (12 rules)
+
+
+### NORGRAIN (20 rules)
+
+
 #### NORGRAIN - Rule 5: Extract 3
 
 **Rule Types:** Conditional, Legal/Procedural, Operational
@@ -294,6 +399,7 @@ custom of the port or place to the contrary notwithstanding, but time occup...
 ```
 
 ---
+
 
 
 #### NORGRAIN - Rule 12: Extract 10
@@ -315,6 +421,13 @@ St. Lawrence Seaway tolls on cargo and vesse...
 ---
 
 
+
+
+
+
+
+### NYPE (24 rules)
+
 #### NYPE - Rule 3: Extract 1
 
 **Rule Types:** Temporal, Operational, Conditional
@@ -332,6 +445,7 @@ A3. Laytime shall commence twelve (12) hours after N...
 ---
 
 
+
 #### NYPE - Rule 7: Extract 5
 
 **Rule Types:** Legal/Procedural, Conditional
@@ -347,6 +461,7 @@ Responsibility as required under U.S. law. 458
 ```
 
 ---
+
 
 
 #### NYPE - Rule 16: Extract 13
@@ -368,6 +483,30 @@ informed of t...
 ---
 
 
+
+
+
+
+
+
+
+### PACAL (6 rules)
+
+
+### POLCOALVOY (4 rules)
+
+
+### POSCO (4 rules)
+
+
+### RTM (6 rules)
+
+
+### RTS (20 rules)
+
+
+### SAFANCHART (2 rules)
+
 #### SAFANCHART - Rule 3: Extract 1
 
 **Rule Types:** Temporal, Operational, Conditional
@@ -381,6 +520,10 @@ days, then the Charter Party shall, at the expiration of such period, provided t
 ```
 
 ---
+
+
+
+### SAMARCO (10 rules)
 
 
 #### SAMARCO - Rule 12: Extract 10
@@ -399,6 +542,17 @@ count as used laytime.
 ```
 
 ---
+
+
+
+
+### SHELLTIME (6 rules)
+
+
+### SUGAR (2 rules)
+
+
+### SYNACOMEX (8 rules)
 
 
 #### SYNACOMEX - Rule 10: Extract 6
@@ -449,7 +603,20 @@ deletion to the form must be clearly visible. In the event of any modification m
 ---
 
 
+
+
+
+
 ### TA1 (2 rules)
+
+
+### TATA_STEEL (4 rules)
+
+
+### TRAFIGURA (2 rules)
+
+
+### VALE (16 rules)
 
 
 #### VALE - Rule 12: Extract 10
@@ -471,6 +638,18 @@ Should the...
 ---
 
 
+
+
+
+### WORLDFOOD (6 rules)
+
+
+### YANCOAL (6 rules)
+
+
+### YARA CP (8 rules)
+
+
 #### YARA CP - Rule 7: Extract 5
 
 **Rule Types:** Temporal, Modifier, Conditional
@@ -487,6 +666,7 @@ Statements of Facts / Owners’ calculation has been received and approved by ..
 ```
 
 ---
+
 
 
 #### YARA CP - Rule 9: Extract 7
@@ -506,6 +686,11 @@ time on demurrage and Owners to be responsible for all costs and consequences...
 ---
 
 
+
+
+
+
+
 ---
 
 
@@ -514,6 +699,8 @@ time on demurrage and Owners to be responsible for all costs and consequences...
 ## RULE TYPE: EXCEPTION
 
 **Total Rules:** 82
+
+### ALCOA (2 rules)
 
 #### ALCOA - Rule 6: Extract 4
 
@@ -529,6 +716,19 @@ possession of such valid and up to date certificates of efficiency and safety, t
 ```
 
 ---
+
+
+
+### AMWELSH (12 rules)
+
+
+
+
+
+### ANGLO AMERICAN VOYAGE (2 rules)
+
+
+### ANTAMINA (4 rules)
 
 
 #### ANTAMINA - Rule 5: Extract 3
@@ -549,6 +749,23 @@ that the vessel shal...
 ---
 
 
+
+
+### ANVOY (2 rules)
+
+
+### ATLAS (2 rules)
+
+
+### AUSTRALIAN BARLEY (6 rules)
+
+
+### AUSWHEAT (10 rules)
+
+
+### BARECON (4 rules)
+
+
 #### BARECON - Rule 8: Extract 6
 
 **Rule Types:** Modifier, Exception, Legal/Procedural
@@ -563,6 +780,26 @@ exclusion does ...
 
 ---
 
+
+
+
+### CSN (2 rules)
+
+
+
+### CSP (2 rules)
+
+
+### ENEL (6 rules)
+
+
+
+
+
+### EUROCHEM (2 rules)
+
+
+### FPG (2 rules)
 
 #### FPG - Rule 4: Extract 2
 
@@ -581,6 +818,32 @@ sh...
 ---
 
 
+
+### LOUIS_DREYFUS (2 rules)
+
+
+
+### M_RESOURCES (2 rules)
+
+
+### NORGRAIN (8 rules)
+
+
+### NYPE (2 rules)
+
+
+### NYRSTAR (2 rules)
+
+
+### POLCOALVOY (2 rules)
+
+
+### SYNACOMEX (4 rules)
+
+
+### YARA CP (2 rules)
+
+
 ---
 
 
@@ -589,6 +852,8 @@ sh...
 ## RULE TYPE: LEGAL/PROCEDURAL
 
 **Total Rules:** 196
+
+### ALCOA (4 rules)
 
 #### ALCOA - Rule 7: Extract 5
 
@@ -609,6 +874,18 @@ d. Vessels shall furnish a certified calibration scale for a...
 ---
 
 
+
+
+
+### AMWELSH (8 rules)
+
+
+
+
+
+### ANGLO AMERICAN VOYAGE (4 rules)
+
+
 #### ANGLO AMERICAN VOYAGE - Rule 8: Extract 6
 
 **Rule Types:** Port Cargo Hours, Legal/Procedural, Operational
@@ -625,6 +902,118 @@ or in respect of which a SDN Sanction...
 ```
 
 ---
+
+
+
+
+### ANTAMINA (2 rules)
+
+
+
+### ATLAS (4 rules)
+
+
+### AUSTRALIAN BARLEY (4 rules)
+
+
+### BARECON (10 rules)
+
+
+
+
+
+### BULK_SUGAR (2 rules)
+
+
+### CEMENTVOY (2 rules)
+
+
+### COAL_OREVOY (2 rules)
+
+
+### CSN (8 rules)
+
+
+
+
+
+
+
+### CSP (12 rules)
+
+
+
+
+
+
+
+### ENEL (12 rules)
+
+
+
+
+
+
+### EUROCHEM (2 rules)
+
+
+### FMG (2 rules)
+
+
+### FPG (2 rules)
+
+
+### GENTIME (4 rules)
+
+
+### GTA (2 rules)
+
+
+### LOUIS_DREYFUS (2 rules)
+
+
+
+### M_RESOURCES (6 rules)
+
+
+### NORGRAIN (10 rules)
+
+
+
+
+
+
+
+### NYPE (14 rules)
+
+
+
+
+
+
+
+
+
+### OREVOY (2 rules)
+
+
+### PACAL (6 rules)
+
+
+### POSCO (2 rules)
+
+
+### RICHARDS_BAY_COAL (2 rules)
+
+
+### RTM (6 rules)
+
+
+### RTS (12 rules)
+
+
+### SAMARCO (12 rules)
+
 
 
 #### SAMARCO - Rule 13: Extract 11
@@ -646,6 +1035,21 @@ effect or hereafter enacted or promulgated by any ap...
 ---
 
 
+
+
+
+### SHELLTIME (6 rules)
+
+
+### SYNACOMEX (4 rules)
+
+
+
+
+
+### VALE (12 rules)
+
+
 #### VALE - Rule 11: Extract 9
 
 **Rule Types:** Legal/Procedural, Temporal
@@ -664,6 +1068,22 @@ its corporate existence;
 ---
 
 
+
+
+
+
+
+### WORLDFOOD (8 rules)
+
+
+### YANCOAL (4 rules)
+
+
+### YARA CP (2 rules)
+
+
+
+
 ---
 
 
@@ -672,6 +1092,12 @@ its corporate existence;
 ## RULE TYPE: MODIFIER
 
 **Total Rules:** 14
+
+### BARECON (2 rules)
+
+
+
+### CSN (2 rules)
 
 #### CSN - Rule 4: Extract 2
 
@@ -692,6 +1118,13 @@ a. Demurrage and/or despatch is to be calculated pe...
 ---
 
 
+
+### ENEL (2 rules)
+
+
+### SYNACOMEX (4 rules)
+
+
 #### SYNACOMEX - Rule 13: Extract 9
 
 **Rule Types:** Operational, Temporal, Modifier
@@ -708,6 +1141,64 @@ actual time lost on ...
 ---
 
 
+
+
+### WORLDFOOD (2 rules)
+
+
+### YARA CP (2 rules)
+
+
+
+
+---
+
+
+================================================================================
+
+## RULE TYPE: NOR FAILED INSPECTION
+
+**Total Rules:** 10
+
+### CSN (2 rules)
+
+
+### GTA (2 rules)
+
+
+### RTS (4 rules)
+
+
+### YARA CP (2 rules)
+
+
+---
+
+
+================================================================================
+
+## RULE TYPE: NOR TENDERING
+
+**Total Rules:** 16
+
+### ANVOY (2 rules)
+
+
+### ATLAS (2 rules)
+
+
+### EUROCHEM (2 rules)
+
+
+### FMG (2 rules)
+
+
+### RTS (2 rules)
+
+
+### SYNACOMEX (6 rules)
+
+
 ---
 
 
@@ -716,6 +1207,81 @@ actual time lost on ...
 ## RULE TYPE: OPERATIONAL
 
 **Total Rules:** 416
+
+### ALCOA (12 rules)
+
+
+
+
+
+
+
+
+### AMWELSH (22 rules)
+
+
+### ANGLO AMERICAN VOYAGE (10 rules)
+
+
+
+
+
+
+### ANTAMINA (6 rules)
+
+
+
+
+
+### ANVOY (4 rules)
+
+
+### ATLAS (16 rules)
+
+
+### AUSBAR (2 rules)
+
+
+### AUSTRALIAN BARLEY (6 rules)
+
+
+### AUSWHEAT (2 rules)
+
+
+### BULK_SUGAR (8 rules)
+
+
+### CEMENTVOY (8 rules)
+
+
+### COAL_OREVOY (8 rules)
+
+
+### CORUS (2 rules)
+
+
+### CSN (10 rules)
+
+
+
+
+
+
+
+### CSP (16 rules)
+
+
+### ENEL (14 rules)
+
+
+### EUROCHEM (4 rules)
+
+
+### FERTIVOY (2 rules)
+
+
+### FMG (10 rules)
+
 
 #### FMG - Rule 7: Extract 5
 
@@ -733,10 +1299,90 @@ result of the diversion or lighterage will be for the Owner's account.
 ---
 
 
+
+
+### FPG (2 rules)
+
+
+
 ### GENCON1994 (2 rules)
 
 
+### GENCON_ARCELORMITTAL (4 rules)
+
+
+### GENTIME (2 rules)
+
+
+### GTA (4 rules)
+
+
 ### IRON_ORE_1967 (6 rules)
+
+
+### M_RESOURCES (14 rules)
+
+
+### NOBLE (2 rules)
+
+
+### NORGRAIN (24 rules)
+
+
+
+
+
+
+### NYPE (22 rules)
+
+
+
+
+
+### NYRSTAR (2 rules)
+
+
+### OREVOY (2 rules)
+
+
+### PACAL (8 rules)
+
+
+### POLCOALVOY (2 rules)
+
+
+### POSCO (10 rules)
+
+
+### RICHARDS_BAY_COAL (2 rules)
+
+
+### RTM (14 rules)
+
+
+### RTS (28 rules)
+
+
+### SAFANCHART (4 rules)
+
+
+
+
+
+### SAMARCO (20 rules)
+
+
+
+
+
+### SU (2 rules)
+
+
+### SUGAR (4 rules)
+
+
+### SYNACOMEX (16 rules)
+
 
 
 #### SYNACOMEX - Rule 16: Extract 12
@@ -760,6 +1406,10 @@ Page 5
 ---
 
 
+
+
+
+
 ### TA1 (4 rules)
 
 
@@ -795,6 +1445,21 @@ laytime or time on demurrage, and all expe...
 ```
 
 ---
+
+### TATA_STEEL (2 rules)
+
+
+### TRAFIGURA (2 rules)
+
+
+### VALE (22 rules)
+
+
+### WORLDFOOD (12 rules)
+
+
+### YANCOAL (8 rules)
+
 
 #### YANCOAL - Rule 5: Extract 3
 
@@ -813,6 +1478,40 @@ twenty four (24) consecutive hours and pro rata for part thereof for all laytime
 ---
 
 
+
+
+
+### YARA CP (8 rules)
+
+
+---
+
+
+================================================================================
+
+## RULE TYPE: PORT CARGO HOURS
+
+**Total Rules:** 16
+
+### AMWELSH (2 rules)
+
+
+### ANGLO AMERICAN VOYAGE (2 rules)
+
+
+
+### AUSBAR (4 rules)
+
+
+### BULK_SUGAR (2 rules)
+
+
+### EUROCHEM (2 rules)
+
+
+### GENCON_ARCELORMITTAL (4 rules)
+
+
 ---
 
 
@@ -821,6 +1520,22 @@ twenty four (24) consecutive hours and pro rata for part thereof for all laytime
 ## RULE TYPE: TEMPORAL
 
 **Total Rules:** 356
+
+### ALCOA (8 rules)
+
+
+
+
+
+
+
+
+
+### AMWELSH (18 rules)
+
+
+### ANGLO AMERICAN VOYAGE (14 rules)
+
 
 #### ANGLO AMERICAN VOYAGE - Rule 9: Extract 7
 
@@ -838,13 +1553,199 @@ Helena Bay may tender 6 (six) hours from anchor down, or should the Vessel ancho
 ---
 
 
+
+
+
+### ANTAMINA (4 rules)
+
+
+### ANVOY (4 rules)
+
+
+### ATLAS (8 rules)
+
+
+### AUSBAR (2 rules)
+
+
+### AUSTRALIAN BARLEY (10 rules)
+
+
+### AUSWHEAT (10 rules)
+
+
+### BARECON (8 rules)
+
+
+### BULK_SUGAR (8 rules)
+
+
+### CEMENTVOY (4 rules)
+
+
+### COAL_OREVOY (4 rules)
+
+
+### CORUS (2 rules)
+
+
+### CSN (12 rules)
+
+
+
+
+
+
+
+
+
+
+
+### CSP (12 rules)
+
+
+### ENEL (8 rules)
+
+
+### EUROCHEM (8 rules)
+
+
+### FERTIVOY (2 rules)
+
+
+### FMG (2 rules)
+
+
+### FPG (2 rules)
+
+
 ### GENCON1994 (2 rules)
+
+
+### GENCON_ARCELORMITTAL (8 rules)
+
+
+### GENTIME (4 rules)
+
+
+### GTA (8 rules)
 
 
 ### IRON_ORE_1967 (4 rules)
 
 
+### LOUIS_DREYFUS (2 rules)
+
+
+### M_RESOURCES (6 rules)
+
+
+### NORGRAIN (18 rules)
+
+
+### NYPE (14 rules)
+
+
+
+
+
+
+
+
+
+### NYRSTAR (2 rules)
+
+
+### OREVOY (2 rules)
+
+
+### PACAL (2 rules)
+
+
+### POLCOALVOY (6 rules)
+
+
+### POSCO (4 rules)
+
+
+### RICHARDS_BAY_COAL (2 rules)
+
+
+### RTM (8 rules)
+
+
+### RTS (16 rules)
+
+
+### SAFANCHART (4 rules)
+
+
+
+
+
+### SAMARCO (6 rules)
+
+
+
+
+
+### SHELLTIME (6 rules)
+
+
+### SU (2 rules)
+
+
+### SUGAR (2 rules)
+
+
+### SYNACOMEX (24 rules)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### TA1 (4 rules)
+
+
+### TATA_STEEL (4 rules)
+
+
+### TRAFIGURA (2 rules)
+
+
+### VALE (20 rules)
+
+
+
+
+
+
+
+
+### WORLDFOOD (6 rules)
+
+
+### YANCOAL (2 rules)
+
+
+
+### YARA CP (16 rules)
+
+
+
 
 
 #### YARA CP - Rule 10: Extract 8
@@ -865,6 +1766,94 @@ only in case of Masters/Vessels fault.
 ---
 
 
+
+
+
+
+
+
 ---
 
+
+================================================================================
+
+## RULE TYPE: WAITING BERTH TIME
+
+**Total Rules:** 6
+
+### NORGRAIN (4 rules)
+
+
+
+
+
+### YANCOAL (2 rules)
+
+
+---
+
+
+================================================================================
+
+## RULE TYPE: WEATHER INTERRUPTION
+
+**Total Rules:** 42
+
+### ALCOA (2 rules)
+
+
+### AMWELSH (2 rules)
+
+
+### ATLAS (2 rules)
+
+
+### BALTIME (2 rules)
+
+
+### CSP (4 rules)
+
+
+### EUROCHEM (2 rules)
+
+
+### GENCON_ARCELORMITTAL (2 rules)
+
+
+### M_RESOURCES (2 rules)
+
+
+### NORGRAIN (4 rules)
+
+
+### PACAL (2 rules)
+
+
+### POSCO (4 rules)
+
+
+### RTM (2 rules)
+
+
+### RTS (2 rules)
+
+
+### SU (2 rules)
+
+
+### TATA_STEEL (2 rules)
+
+
+### VALE (2 rules)
+
+
+### WORLDFOOD (2 rules)
+
+
+### YANCOAL (2 rules)
+
+
+
+
+---
 
