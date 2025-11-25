@@ -1,0 +1,5 @@
+# Temporary workspace - all files here are considered disposable
+# This folder is for temporary work files that will be deleted after use
+
+*
+!.gitignore
