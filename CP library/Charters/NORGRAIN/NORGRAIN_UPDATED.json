@@ -1,0 +1,250 @@
+{
+  "charterPartyForm": "NORGRAIN",
+  "version": "1973/1989",
+  "cargoType": "Grain",
+  "cargoQuantity": 12000,
+  "cargoUnit": "MT",
+  "laytimeAllowed": 40,
+  "laytimeUnit": "hours",
+  "demurrageRate": 8.5,
+  "demurrageUnit": "USD/minute",
+  "despatchRate": 4.25,
+  "despatchUnit": "USD/minute",
+  "laytimeBasis": "Weather Working Days (WWD)",
+  "comments": "NORGRAIN grain charter party with WWD basis - weather delays automatically excluded. Based on GRL rules analysis.",
+  
+  "stoppages": {
+    "RAIN": {
+      "description": "Rain - WWD basis automatic exclusion",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "NORGRAIN WWD: Rain automatically excluded. Grain cargo protection."
+    },
+    "SWELL": {
+      "description": "Heavy swell / sea conditions - WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Swell preventing safe operations."
+    },
+    "HIGH_WINDS": {
+      "description": "High winds / gale conditions - WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Wind conditions preventing operations."
+    },
+    "FOG": {
+      "description": "Fog / poor visibility - WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Poor visibility affecting operations."
+    },
+    "BAD_WEATHER": {
+      "description": "General bad weather - WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Generic weather event covering multiple conditions."
+    },
+    "EXTREME_TEMPERATURE": {
+      "description": "Extreme temperature - grain protection WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Temperature affecting grain cargo."
+    },
+    "HIGH_HUMIDITY": {
+      "description": "High humidity - grain moisture protection WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Critical for grain cargo protection from moisture damage."
+    },
+    "STORM": {
+      "description": "Storm / hurricane - WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Severe weather - all operations ceased."
+    },
+    "ICE_CONDITIONS": {
+      "description": "Ice conditions - WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Ice preventing port access or operations."
+    },
+    "SNOW": {
+      "description": "Snow - WWD (specific routes)",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Snow preventing operations (St. Lawrence, Great Lakes routes)."
+    },
+    "LIGHTNING": {
+      "description": "Lightning alert - safety WWD",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WWD automatic exclusion. Lightning safety suspension."
+    },
+    "HOLDS_PREPARATION": {
+      "description": "Holds preparation / cleaning",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Hold preparation time excluded from laytime."
+    },
+    "HOLDS_INSPECTION": {
+      "description": "Holds inspection by surveyor",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Reasonable time for inspection excluded. Grain-fit standard required."
+    },
+    "HOLDS_REJECTED": {
+      "description": "Holds rejected / not grain-fit",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Holds not acceptable - NOR invalid. Re-preparation required."
+    },
+    "DEBALLASTING": {
+      "description": "Deballasting operations",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Deballasting time excluded from laytime."
+    },
+    "SHIFTING": {
+      "description": "Shifting between berths",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Standard: Time counts. After laytime expiry: counts at demurrage rate. Charter party configurable."
+    },
+    "CARGO_HANDLERS_STRIKE": {
+      "description": "Cargo handlers / longshoremen strike",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Shore labor strike - time excluded. Not owner's control."
+    },
+    "SHIPS_CREW_STRIKE": {
+      "description": "Ship's crew strike",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Crew strike - owner responsibility. Time COUNTS toward laytime."
+    },
+    "PORT_STRIKE": {
+      "description": "General port strike",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Port-wide strike - typically excluded. Not owner's control."
+    },
+    "SHIP_EQUIPMENT_BREAKDOWN": {
+      "description": "Ship's equipment failure",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Ship's equipment - owner responsibility. Time COUNTS."
+    },
+    "SHORE_EQUIPMENT_BREAKDOWN": {
+      "description": "Shore / terminal equipment failure",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Shore equipment - time excluded. Not owner's fault."
+    },
+    "CONGESTION": {
+      "description": "Port congestion / waiting time",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Standard: counts (no protection). Charter party may exclude. Configurable."
+    },
+    "GRAIN_TRIMMING": {
+      "description": "Grain cargo trimming operations",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Trimming time counts toward laytime. Part of cargo operations."
+    },
+    "CARGO_SAMPLING": {
+      "description": "Cargo sampling / quality inspection",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Reasonable time for sampling excluded. Quality control requirement."
+    },
+    "HOLIDAY": {
+      "description": "Public holidays at port",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "SHEX: Excluded unless used. SHINC: Counts even if not used."
+    },
+    "FAILED_INSPECTION": {
+      "description": "Cargo inspection failure",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Failed inspection - vessel responsibility. Time counts."
+    },
+    "CUSTOMS_INSPECTION": {
+      "description": "Customs / authorities inspection",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Reasonable time for customs excluded."
+    },
+    "FORCE_MAJEURE": {
+      "description": "Force majeure events",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Force majeure - beyond parties' control. Time excluded."
+    },
+    "WAITING_FOR_BERTH": {
+      "description": "Waiting for berth availability",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WIBON: Counts if NOR accepted. Without WIBON: Excluded until berth available."
+    }
+  }
+}

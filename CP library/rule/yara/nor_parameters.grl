@@ -1,0 +1,31 @@
+rule SetWIBON "Whether in berth or not rule activated" salience 10 {
+    when
+        true
+    then
+        NOR.WIBON = true;
+        Retract("SetWIBON");
+}
+
+rule SetWICCON "Whether in customs clearance or not rule activated" salience 10 {
+    when
+        true
+    then
+        NOR.WICCON = true;
+        Retract("SetWICCON");
+}
+
+rule SetPortCharter "Whether this CP is a Port Charter" salience 10 {
+    when
+        true
+    then
+        NOR.PortCharter = true;
+        Retract("SetPortCharter");
+}
+
+rule SetBerthCharter "Whether this CP is a Berth Charter" salience 10 {
+    when
+        true
+    then
+        NOR.PortCharter = false;
+        Retract("SetBerthCharter");
+}

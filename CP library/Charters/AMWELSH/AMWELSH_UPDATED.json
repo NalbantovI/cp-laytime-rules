@@ -1,0 +1,202 @@
+{
+  "charterPartyForm": "AMWELSH",
+  "version": "1993",
+  "cargoType": "Coal",
+  "cargoQuantity": 9000,
+  "cargoUnit": "MT",
+  "laytimeAllowed": 38,
+  "laytimeUnit": "hours",
+  "demurrageRate": 9.0,
+  "demurrageUnit": "USD/minute",
+  "despatchRate": 4.5,
+  "despatchUnit": "USD/minute",
+  "laytimeBasis": "Weather Working Days",
+  "comments": "AMWELSH coal charter party with comprehensive stoppage configurations based on GRL rules analysis",
+  
+  "stoppages": {
+    "RAIN": {
+      "description": "Rain - stops operations for bulk cargo protection",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Rain typically stops operations for coal cargo. Time excluded from laytime."
+    },
+    "SWELL": {
+      "description": "Heavy swell / sea too rough for operations",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Swell conditions preventing safe cargo operations. Time excluded."
+    },
+    "HIGH_WINDS": {
+      "description": "High winds / gale force conditions",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Wind conditions preventing cargo operations. Time excluded."
+    },
+    "FOG": {
+      "description": "Fog / poor visibility",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Poor visibility affecting operations. Time excluded."
+    },
+    "BAD_WEATHER": {
+      "description": "General bad weather conditions (multiple factors)",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Generic bad weather event covering multiple conditions. Time excluded."
+    },
+    "EXTREME_TEMPERATURE": {
+      "description": "Extreme temperature (excessive heat or cold)",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Temperature conditions preventing safe operations. Time excluded."
+    },
+    "HIGH_HUMIDITY": {
+      "description": "High humidity affecting cargo operations",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Humidity affecting certain bulk cargoes. Time excluded."
+    },
+    "STORM": {
+      "description": "Storm / hurricane / typhoon conditions",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Severe weather - vessel safety priority. Time excluded."
+    },
+    "ICE_CONDITIONS": {
+      "description": "Ice conditions affecting port access",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "AMWELSH Ice Clause: Port inaccessible by reason of ice. Time excluded."
+    },
+    "HOLDS_PREPARATION": {
+      "description": "Holds preparation / cleaning before loading",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Hold preparation time typically excluded from laytime."
+    },
+    "HOLDS_INSPECTION": {
+      "description": "Holds inspection by surveyor",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "AMWELSH 93 Cargill: 3 hours allowed for hold inspection. Some forms: 2-4 hours allowance."
+    },
+    "HOLDS_REJECTED": {
+      "description": "Holds rejected by surveyor / not ready",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Holds not acceptable - further cleaning required. NOR becomes invalid."
+    },
+    "DEBALLASTING": {
+      "description": "Deballasting operations",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Deballasting time typically excluded from laytime."
+    },
+    "SHIFTING": {
+      "description": "Shifting between berths",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "AMWELSH standard: Time used counts. Some variations: Shifting on demurrage. Charter party specific."
+    },
+    "STRIKE": {
+      "description": "Strike / lockout / labor dispute",
+      "modifierUnlessUsed": 0.5,
+      "modifierNotUsed": 0.5,
+      "modifierUnlessUsedOnDemurrage": 0.5,
+      "modifierNotUsedOnDemurrage": 0.5,
+      "notes": "AMWELSH 93: 'Strikes, time lost to count as one-half laytime'. AMWELSH 93 CET: Fully excluded (0.0). Variable by terms."
+    },
+    "SHIP_EQUIPMENT_BREAKDOWN": {
+      "description": "Ship's equipment failure / breakdown",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Ship's equipment breakdown counts toward laytime (owner's responsibility)."
+    },
+    "SHORE_EQUIPMENT_BREAKDOWN": {
+      "description": "Shore / terminal equipment failure",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Shore equipment breakdown excluded (not owner's fault)."
+    },
+    "CONGESTION": {
+      "description": "Port congestion / waiting for berth",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Congestion handling varies. Standard: counts unless WIBON. Depends on specific terms."
+    },
+    "HOLIDAY": {
+      "description": "Public holidays at loading/discharge port",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "SHEX: Holidays excluded unless used. SHINC: Holidays count even if not used. ArcelorMittal: Always excluded."
+    },
+    "FAILED_INSPECTION": {
+      "description": "Cargo inspection failure",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Failed inspection - vessel/owner responsibility. Time counts."
+    },
+    "CUSTOMS_INSPECTION": {
+      "description": "Customs / authorities inspection",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Reasonable time for customs inspection excluded."
+    },
+    "FORCE_MAJEURE": {
+      "description": "Force majeure events (unforeseeable circumstances)",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Force majeure events beyond parties' control. Time excluded."
+    },
+    "WAITING_FOR_BERTH": {
+      "description": "Waiting for berth to become available",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WIBON: Time counts if NOR accepted. Without WIBON: Excluded until berth available."
+    }
+  }
+}

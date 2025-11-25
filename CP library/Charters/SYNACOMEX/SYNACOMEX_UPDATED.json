@@ -1,0 +1,235 @@
+{
+  "charterPartyForm": "SYNACOMEX",
+  "version": "2000",
+  "cargoType": "Fertilizer",
+  "cargoGrade": "Moisture-sensitive bulk fertilizer",
+  "cargoQuantity": 10000,
+  "cargoUnit": "MT",
+  "laytimeAllowed": 36,
+  "laytimeUnit": "hours",
+  "demurrageRate": 8.0,
+  "demurrageUnit": "USD/minute",
+  "despatchRate": 4.0,
+  "despatchUnit": "USD/minute",
+  "laytimeBasis": "Working Days",
+  "comments": "SYNACOMEX fertilizer charter party with moisture-sensitive cargo protection. High humidity is CRITICAL stoppage. Based on GRL rules analysis.",
+  
+  "stoppages": {
+    "RAIN": {
+      "description": "Rain - CRITICAL fertilizer protection",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "SYNACOMEX: Rain stops operations IMMEDIATELY. Fertilizer cargo highly moisture-sensitive. Time excluded."
+    },
+    "HIGH_HUMIDITY": {
+      "description": "High humidity - CRITICAL fertilizer cargo risk",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "**CRITICAL STOPPAGE** - High humidity prevents moisture damage to fertilizer. Operations suspended immediately to prevent cargo degradation."
+    },
+    "SWELL": {
+      "description": "Heavy swell / sea conditions",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Swell preventing safe operations. Time excluded."
+    },
+    "HIGH_WINDS": {
+      "description": "High winds / gale conditions",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Wind conditions preventing operations. Time excluded."
+    },
+    "FOG": {
+      "description": "Fog / poor visibility",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Poor visibility affecting operations. Time excluded."
+    },
+    "BAD_WEATHER": {
+      "description": "General bad weather conditions",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Generic weather event. Fertilizer cargo protection. Time excluded."
+    },
+    "EXTREME_TEMPERATURE": {
+      "description": "Extreme temperature conditions",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Temperature affecting cargo operations. Time excluded."
+    },
+    "STORM": {
+      "description": "Storm / hurricane conditions",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Severe weather - all operations ceased. Time excluded."
+    },
+    "ICE_CONDITIONS": {
+      "description": "Ice conditions (rare for fertilizer routes)",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Ice preventing operations. Time excluded."
+    },
+    "HOLDS_PREPARATION": {
+      "description": "Holds preparation to bone dry standard",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Fertilizer requires bone dry holds. Preparation time excluded. Critical for moisture-sensitive cargo."
+    },
+    "HOLDS_INSPECTION": {
+      "description": "Holds inspection - fertilizer grade standard",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Inspection to confirm bone dry standard for fertilizer. Time excluded."
+    },
+    "HOLDS_REJECTED": {
+      "description": "Holds rejected - contamination or moisture",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Holds not meeting fertilizer-grade standard. NOR invalid. Re-preparation required."
+    },
+    "PREVIOUS_CARGO_CHECK": {
+      "description": "Previous cargo compatibility check",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Checking previous cargo for contamination risk. Time excluded."
+    },
+    "CONTAMINATION_CHECK": {
+      "description": "Cargo contamination inspection",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Fertilizer contamination check. Time excluded."
+    },
+    "DEBALLASTING": {
+      "description": "Deballasting operations",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Deballasting time excluded from laytime."
+    },
+    "SHIFTING": {
+      "description": "Shifting between berths",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Standard: Time counts. Charter party configurable."
+    },
+    "STRIKE": {
+      "description": "Strike / lockout / labor dispute",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "SYNACOMEX: Strikes excluded from laytime. Time excluded."
+    },
+    "SHIP_EQUIPMENT_BREAKDOWN": {
+      "description": "Ship's equipment failure",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Ship's equipment - owner responsibility. Time COUNTS."
+    },
+    "SHORE_EQUIPMENT_BREAKDOWN": {
+      "description": "Shore / terminal equipment failure",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Shore equipment - time excluded. Not owner's fault."
+    },
+    "CONGESTION": {
+      "description": "Port congestion / waiting time",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Standard: counts. Charter party configurable."
+    },
+    "CARGO_SAMPLING": {
+      "description": "Fertilizer cargo sampling / quality test",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Reasonable time for sampling excluded. Quality assurance requirement."
+    },
+    "CARGO_REJECTED": {
+      "description": "Cargo rejected - quality failure",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Cargo not meeting specifications. Time excluded pending resolution."
+    },
+    "HOLIDAY": {
+      "description": "Public holidays at port",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "SHEX: Excluded unless used. SHINC: Counts even if not used."
+    },
+    "FAILED_INSPECTION": {
+      "description": "Vessel inspection failure",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 1.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 1.0,
+      "notes": "Failed inspection - vessel responsibility. Time counts."
+    },
+    "CUSTOMS_INSPECTION": {
+      "description": "Customs / authorities inspection",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Reasonable time for customs excluded."
+    },
+    "FORCE_MAJEURE": {
+      "description": "Force majeure events",
+      "modifierUnlessUsed": 0.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 0.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "Force majeure - beyond parties' control. Time excluded."
+    },
+    "WAITING_FOR_BERTH": {
+      "description": "Waiting for berth availability",
+      "modifierUnlessUsed": 1.0,
+      "modifierNotUsed": 0.0,
+      "modifierUnlessUsedOnDemurrage": 1.0,
+      "modifierNotUsedOnDemurrage": 0.0,
+      "notes": "WIBON: Counts if NOR accepted. Without WIBON: Excluded until berth available."
+    }
+  }
+}

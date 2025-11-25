@@ -1,0 +1,31 @@
+// Common Notice of Readiness (NOR) Rules
+// These rules handle NOR tendering and acceptance logic
+
+rule OnNORTendered "OnNORTendered" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "NOR_TENDERED"
+    then
+        NOR.TenderedAt = Event.PointInTime();
+        Changed("NOR");
+        Retract("OnNORTendered");
+}
+
+rule OnNORAcceptedPerCP "Generalized NOR tendered per CP'}" salience 10 {
+    when 
+        !IsZero(NOR.TenderedAt) &&
+        IsZero(NOR.AcceptedPerCPAt) &&
+        // Condition for Port Charter: It's either not a Port Charter, or the Port Charter conditions are satisfied.
+        (!NOR.PortCharter || (Vessel.EnteredPortLimits || NOR.WIPON)) &&
+        // Condition for Berth Charter: It's either not a Berth Charter, or the Berth Charter conditions are satisfied.
+        (!NOR.BerthCharter || (Vessel.VesselIsBerthed || (NOR.WIBON && Vessel.EnteredPortLimits))) &&
+        // Condition for Free Pratique: Either WIFPON makes it irrelevant, or pratique has been granted.
+        (NOR.WIFPON || Vessel.FreePratiqueGranted) &&
+        // Condition for Customs: Either WICCON makes it irrelevant, or customs has been cleared.
+        (NOR.WICCON || Vessel.CustomsCleared) &&
+        BusinessCalendars["NOR"].IsWorkTime(Event.PointInTime()) &&
+        (IsNil(Laycan) || (!IsNil(Laycan) && Laycan.IsIn(Event.PointInTime())))
+    then
+        NOR.AcceptedPerCPAt = Event.PointInTime();
+        Changed("NOR");
+        Retract("OnNORAcceptedPerCP");
+}

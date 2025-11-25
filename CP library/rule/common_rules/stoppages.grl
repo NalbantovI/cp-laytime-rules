@@ -1,0 +1,3987 @@
+/******************************************************************************
+ * STOPPAGES.GRL - Common Stoppage Rules
+ * 
+ * This file contains all standard laytime stoppage rules that apply across
+ * multiple charter parties. Stoppages are events that pause or interrupt
+ * laytime counting during cargo operations.
+ * 
+ * CATEGORIES:
+ * 1. VESSEL MOVEMENTS - Shifting, maneuvering, anchoring
+ * 2. CONSOLIDATED STOPPAGES - Master stoppages with multiple trigger events
+ * 3. WEATHER CONDITIONS - Weather-related delays and force majeure
+ * 4. EQUIPMENT & BREAKDOWNS - Ship and shore equipment failures
+ * 5. CARGO OPERATIONS - Loading, discharging, and related activities
+ * 6. CONNECTION OPERATIONS - Hoses, arms, and equipment connections
+ * 7. HOLDS OPERATIONS - Opening, closing, inspection, preparation
+ * 8. TANKS OPERATIONS - Tank inspection, measurement, treatment
+ * 9. CLEANING & WASHING - Holds, tanks, lines, and equipment cleaning
+ * 10. SURVEYS & INSPECTIONS - Draft surveys, inspections, measurements
+ * 11. FORMALITIES & DOCUMENTATION - Customs, immigration, documentation
+ * 12. LABOR & PERSONNEL - Shore labor, stevedores, surveyors
+ * 13. WAITING STATES - Waiting for various resources or conditions
+ * 14. MOORING & FENDERING - Mooring, unmooring, fender operations
+ * 15. VESSEL STATES - Anchored, aground, detained
+ * 16. STRIKES & FORCE MAJEURE - Industrial action and exceptional events
+ * 17. PORT OPERATIONS - Port closures, pilot operations, tide restrictions
+ * 18. CHARTER-SPECIFIC - Special stoppages for specific charter parties
+ ******************************************************************************/
+
+/******************************************************************************
+ * CATEGORY 1: VESSEL MOVEMENTS
+ * Stoppages related to vessel shifting, maneuvering, and repositioning
+ ******************************************************************************/
+
+// --- MANOEUVRING ---
+// Vessel maneuvering operations (turning, positioning at berth, etc.)
+
+rule OnManoeuvringCommenced "OnManoeuvringCommenced: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("MANOEUVRING_COMMENCED")
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "MANOEUVRING");
+        Changed("LaytimeClock");
+        Retract("OnManoeuvringCommenced");
+}
+
+rule OnShiftingStart "OnShiftingStart: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_COMMENCED","PILOT_ON_BOARD","SHIFTING_TO_BERTH_COMMENCED","RIVER_PILOT_ON_BOARD", "CAST_OFF", "TUG_MADE_FAST", "VESSEL_SAILED_FROM_BERTH")
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIFTING");
+        Changed("LaytimeClock");
+        Retract("OnShiftingStart");
+}
+
+rule OnShiftingFromWaitingPlaceStart "OnShiftingFromWaitingPlaceStart: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_FROM_ANCHORAGE_COMMENCED")
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIFTING_FROM_WAITING_PLACE");
+        Changed("LaytimeClock");
+        Retract("OnShiftingFromWaitingPlaceStart");
+}
+
+rule OnShiftingToWaitingPlaceStart "OnShiftingToWaitingPlaceStart: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_TO_ANCHORAGE_COMMENCED")
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIFTING_TO_WAITING_PLACE");
+        Changed("LaytimeClock");
+        Retract("OnShiftingToWaitingPlaceStart");
+}
+
+rule OnShiftingEnd "OnShiftingEnd: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf(
+            "MANOEUVRING_COMPLETED", "SHIFTING_COMPLETED", "SHIFTING_FROM_ANCHORAGE_COMPLETED",
+            "SHIFTING_TO_ANCHORAGE_COMPLETED", "SHIFTING_TO_BERTH_COMPLETED", "ALL_FAST",
+            "ARRIVED_AT_ANCHORAGE", "ARRIVED_AT_LIGHTERING_AREA", "ARRIVED_AT_INNER_ANCHORAGE",
+            "ARRIVED_AT_INNER_ROADS", "ARRIVED_AT_LAYBY_BERTH", "ARRIVED_AT_OUTER_ANCHORAGE",
+            "ARRIVED_AT_OUTER_ROADS", "ARRIVED_AT_PILOT_STATION", "ARRIVED_AT_ROADS", "ARRIVED_AT_WAITING_BERTH"
+        )
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "MANOEUVRING");
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIFTING");
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIFTING_FROM_WAITING_PLACE");
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIFTING_TO_WAITING_PLACE");
+        Changed("LaytimeClock");
+        Retract("OnShiftingEnd");
+}
+
+// --- SHIFTING (GENERAL) ---
+// Generic vessel shifting operations not covered by specific types above
+
+// --- SHIFTING FROM WAITING PLACE ---
+// Vessel shifting from anchorage or waiting area to berth
+
+// --- SHIFTING TO WAITING PLACE ---
+// Vessel shifting from berth to anchorage or waiting area
+
+// --- SHIFTING BETWEEN HOLDS ---
+// Repositioning within vessel between different cargo holds (added later in file)
+
+// --- SHIFTING CARGO ---
+// Moving cargo within vessel or between vessels (added later in file)
+
+// --- SHIFTING CARGO EQUIPMENT ---
+// Repositioning cargo handling equipment (added later in file)
+
+// --- PONTOON SHIFTING ---
+// Moving pontoon equipment used in cargo operations (added later in file)
+
+/******************************************************************************
+ * CATEGORY 2: CONSOLIDATED STOPPAGES
+ * Master stoppages that consolidate multiple related events
+ ******************************************************************************/
+
+// --- CONSOLIDATED: ICE ---							
+// Consolidates Ice Conditions and Vessel Stuck in Ice
+// Covers any delays due to ice in port or navigation channels
+rule OnIceDelayStart "OnIceDelayStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ICE_CONDITIONS_STARTED", "VESSEL_STUCK_IN_ICE_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ICE");							
+Changed("LaytimeClock");							
+Retract("OnIceDelayStart");							
+}							
+							
+rule OnIceDelayEnd "OnIceDelayEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ICE_CONDITIONS_ENDED", "VESSEL_STUCK_IN_ICE_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ICE");							
+Changed("LaytimeClock");							
+Retract("OnIceDelayEnd");							
+}							
+							
+// --- CONSOLIDATED: SHIP_BREAKDOWN ---							
+// Consolidates Engine and general Ship breakdowns
+// Master stoppage for all ship-side mechanical/equipment failures
+rule OnShipBreakdownStart "OnShipBreakdownStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ENGINE_BREAKDOWN_COMMENCED", "SHIP_BREAKDOWN_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIP_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShipBreakdownStart");							
+}							
+							
+rule OnShipBreakdownEnd "OnShipBreakdownEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ENGINE_BREAKDOWN_COMPLETED", "SHIP_BREAKDOWN_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShipBreakdownEnd");							
+}							
+							
+// --- CONSOLIDATED: CONGESTION ---							
+// Consolidates Congestion and Waiting for port traffic
+// Covers delays due to port congestion and traffic management
+rule OnCongestionStart "OnCongestionStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CONGESTION_STARTED", "WAITING_FOR_PORT_TRAFFIC_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CONGESTION");							
+Changed("LaytimeClock");							
+Retract("OnCongestionStart");							
+}							
+							
+rule OnCongestionEnd "OnCongestionEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CONGESTION_ENDED", "WAITING_FOR_PORT_TRAFFIC_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CONGESTION");							
+Changed("LaytimeClock");							
+Retract("OnCongestionEnd");							
+}							
+							
+// --- CONSOLIDATED: BUNKERING ---							
+// Consolidates Bunkering period with barge events.							
+rule OnBunkeringCommenced "OnBunkeringCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BUNKERING_COMMENCED", "BUNKER_BARGE_ALONGSIDE")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BUNKERING");							
+Changed("LaytimeClock");							
+Retract("OnBunkeringCommenced");							
+}							
+							
+rule OnBunkeringCompleted "OnBunkeringCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BUNKERING_COMPLETED", "BUNKER_BARGE_AWAY")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BUNKERING");							
+Changed("LaytimeClock");							
+Retract("OnBunkeringCompleted");							
+}							
+							
+							
+// --- STOPPAGES WITH SPECIAL MASTER END LOGIC ---							
+							
+// --- MASTER CASE: BAD_WEATHER ---							
+// Bad weather end acts as a master clear for all weather events.							
+rule OnBadWeatherStart "OnBadWeatherStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BAD_WEATHER_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BAD_WEATHER");							
+Changed("LaytimeClock");							
+Retract("OnBadWeatherStart");							
+}							
+							
+rule OnBadWeatherEnd "OnBadWeatherEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BAD_WEATHER_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BAD_WEATHER");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "EXTREME_TEMPERATURE");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FOG");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HAIL");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HIGH_HUMIDITY");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HIGH_WINDS");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HURRICANE");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "RAIN");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ROUGH_SEA");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SNOW");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SWELL");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TORNADO_WARNING");							
+Changed("LaytimeClock");							
+Retract("OnBadWeatherEnd");							
+}							
+							
+// --- MASTER CASE: REPAIRS ---							
+// Repairs end acts as a master clear for ship breakdowns.							
+rule OnRepairsStart "OnRepairsStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("REPAIRS_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "REPAIRS");							
+Changed("LaytimeClock");							
+Retract("OnRepairsStart");							
+}							
+							
+rule OnRepairsEnd "OnRepairsEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("REPAIRS_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "REPAIRS");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_BREAKDOWN");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_CRANE_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnRepairsEnd");							
+}							
+							
+// --- MASTER CASE: SHORE_BREAKDOWN ---							
+// Shore breakdown end acts as a master clear for other equipment breakdowns.							
+rule OnShoreBreakdownCommenced "OnShoreBreakdownCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHORE_BREAKDOWN_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHORE_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShoreBreakdownCommenced");							
+}							
+							
+rule OnShoreBreakdownCompleted "OnShoreBreakdownCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHORE_BREAKDOWN_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_BREAKDOWN");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CONVEYOR_BELT_BREAKDOWN");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_CRANE_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShoreBreakdownCompleted");							
+}							
+							
+// --- GRAND MASTER CASE: TERMINAL_DOWN_TIME ---							
+// Terminal down time end acts as a master clear for ALL shore stoppages.							
+rule OnTerminalDownTimeCommenced "OnTerminalDownTimeCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TERMINAL_DOWN_TIME_COMMENCED", "WAITING_FOR_TERMINAL_READINESS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TERMINAL_DOWN_TIME");							
+Changed("LaytimeClock");							
+Retract("OnTerminalDownTimeCommenced");							
+}							
+							
+rule OnTerminalDownTimeCompleted "OnTerminalDownTimeCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TERMINAL_DOWN_TIME_COMPLETED", "WAITING_FOR_TERMINAL_READINESS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_BREAKDOWN");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CONVEYOR_BELT_BREAKDOWN");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_CRANE_BREAKDOWN");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "REFUELLING_SHORE_CRANE");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_PREPARATION");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_SHORE_LABOR");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_STEVEDORES");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_SHORE_FACILITIES");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_TRUCKS");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_BARGE");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TERMINAL_DOWN_TIME");							
+Changed("LaytimeClock");							
+Retract("OnTerminalDownTimeCompleted");							
+}							
+							
+// --- MASTER CASE: DRAFT_SURVEY ---							
+// Draft Survey completed acts as a master clear for all draft survey types.							
+rule OnDraftSurveyCommenced "OnDraftSurveyCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DRAFT_SURVEY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DRAFT_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnDraftSurveyCommenced");							
+}							
+							
+rule OnDraftSurveyCompleted "OnDraftSurveyCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DRAFT_SURVEY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DRAFT_SURVEY");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "INITIAL_DRAFT_SURVEY");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FINAL_DRAFT_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnDraftSurveyCompleted");							
+}							
+							
+// --- MASTER CASE: SURVEY_IN_PROGRESS ---							
+// Survey end acts as a master clear for other survey types.							
+rule OnSurveyCommenced "OnSurveyCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SURVEY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SURVEY_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnSurveyCommenced");							
+}							
+							
+rule OnSurveyCompleted "OnSurveyCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SURVEY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SURVEY_IN_PROGRESS");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BUNKER_SURVEY");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ON_OFF_HIRE_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnSurveyCompleted");							
+}							
+							
+// --- MASTER CASE: INSPECTION_IN_PROGRESS ---							
+// Inspection end acts as a master clear for all other inspection types.							
+rule OnInspectionCommenced "OnInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "INSPECTION_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnInspectionCommenced");							
+}							
+							
+rule OnInspectionCompleted "OnInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "INSPECTION_IN_PROGRESS");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "GAS_FREE_INSPECTION");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOLDS_INSPECTION");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "JOINT_INSPECTION");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SAFETY_INSPECTION");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TANKS_INSPECTION");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "USCG_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnInspectionCompleted");							
+}							
+							
+// --- MASTER CASE: WAITING_FOR_FAVORABLE_CONDITIONS ---							
+// Favorable conditions end acts as a master clear for Tide and Daylight waiting.							
+rule OnWaitingForFavorableConditionsStart "OnWaitingForFavorableConditionsStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_FAVORABLE_CONDITIONS_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_FAVORABLE_CONDITIONS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForFavorableConditionsStart");							
+}							
+							
+rule OnWaitingForFavorableConditionsEnd "OnWaitingForFavorableConditionsEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_FAVORABLE_CONDITIONS_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_FAVORABLE_CONDITIONS");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_TIDE");							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_DAYLIGHT");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForFavorableConditionsEnd");							
+}							
+							
+							
+// --- INDIVIDUAL STANDARD STOPPAGES ---							
+							
+rule OnAdditivationCommenced "OnAdditivationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ADDITIVATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ADDITIVATION");							
+Changed("LaytimeClock");							
+Retract("OnAdditivationCommenced");							
+}							
+							
+rule OnAdditivationCompleted "OnAdditivationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ADDITIVATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ADDITIVATION");							
+Changed("LaytimeClock");							
+Retract("OnAdditivationCompleted");							
+}							
+							
+rule OnArmsConnectionCommenced "OnArmsConnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ARMS_CONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ARMS_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnArmsConnectionCommenced");							
+}							
+							
+rule OnArmsConnectionCompleted "OnArmsConnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ARMS_CONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ARMS_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnArmsConnectionCompleted");							
+}							
+							
+rule OnArmsDisconnectionCommenced "OnArmsDisconnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ARMS_DISCONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ARMS_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnArmsDisconnectionCommenced");							
+}							
+							
+rule OnArmsDisconnectionCompleted "OnArmsDisconnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ARMS_DISCONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ARMS_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnArmsDisconnectionCompleted");							
+}							
+							
+rule OnBackloadingCommenced "OnBackloadingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BACKLOADING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BACKLOADING");							
+Changed("LaytimeClock");							
+Retract("OnBackloadingCommenced");							
+}							
+							
+rule OnBackloadingCompleted "OnBackloadingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BACKLOADING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BACKLOADING");							
+Changed("LaytimeClock");							
+Retract("OnBackloadingCompleted");							
+}							
+							
+rule OnExtremeTemperatureStarted "OnExtremeTemperatureStarted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("EXTREME_TEMPERATURE_STARTED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "EXTREME_TEMPERATURE");							
+Changed("LaytimeClock");							
+Retract("OnExtremeTemperatureStarted");							
+}							
+							
+rule OnExtremeTemperatureEnded "OnExtremeTemperatureEnded" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("EXTREME_TEMPERATURE_ENDED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "EXTREME_TEMPERATURE");							
+Changed("LaytimeClock");							
+Retract("OnExtremeTemperatureEnded");							
+}							
+							
+rule OnFogStart "OnFogStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FOG_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FOG");							
+Changed("LaytimeClock");							
+Retract("OnFogStart");							
+}							
+							
+rule OnFogEnd "OnFogEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FOG_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FOG");							
+Changed("LaytimeClock");							
+Retract("OnFogEnd");							
+}							
+							
+rule OnHailStart "OnHailStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HAIL_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HAIL");							
+Changed("LaytimeClock");							
+Retract("OnHailStart");							
+}							
+							
+rule OnHailEnd "OnHailEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HAIL_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HAIL");							
+Changed("LaytimeClock");							
+Retract("OnHailEnd");							
+}							
+							
+rule OnHighHumidityStart "OnHighHumidityStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HIGH_HUMIDITY_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HIGH_HUMIDITY");							
+Changed("LaytimeClock");							
+Retract("OnHighHumidityStart");							
+}							
+							
+rule OnHighHumidityEnd "OnHighHumidityEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HIGH_HUMIDITY_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HIGH_HUMIDITY");							
+Changed("LaytimeClock");							
+Retract("OnHighHumidityEnd");							
+}							
+							
+rule OnHighWindsStart "OnHighWindsStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HIGH_WINDS_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HIGH_WINDS");							
+Changed("LaytimeClock");							
+Retract("OnHighWindsStart");							
+}							
+							
+rule OnHighWindsEnd "OnHighWindsEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HIGH_WINDS_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HIGH_WINDS");							
+Changed("LaytimeClock");							
+Retract("OnHighWindsEnd");							
+}							
+							
+rule OnHurricaneStart "OnHurricaneStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HURRICANE_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HURRICANE");							
+Changed("LaytimeClock");							
+Retract("OnHurricaneStart");							
+}							
+							
+rule OnHurricaneEnd "OnHurricaneEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HURRICANE_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HURRICANE");							
+Changed("LaytimeClock");							
+Retract("OnHurricaneEnd");							
+}							
+							
+rule OnRainStart "OnRainStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("RAIN_START", "RAIN_STARTED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "RAIN");							
+Changed("LaytimeClock");							
+Retract("OnRainStart");							
+}							
+							
+rule OnRainEnd "OnRainEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("RAIN_END", "RAIN_ENDED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "RAIN");							
+Changed("LaytimeClock");							
+Retract("OnRainEnd");							
+}							
+							
+rule OnRoughSeaPeriodCommenced "OnRoughSeaPeriodCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ROUGH_SEA_PERIOD_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ROUGH_SEA");							
+Changed("LaytimeClock");							
+Retract("OnRoughSeaPeriodCommenced");							
+}							
+							
+rule OnRoughSeaPeriodCompleted "OnRoughSeaPeriodCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ROUGH_SEA_PERIOD_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ROUGH_SEA");							
+Changed("LaytimeClock");							
+Retract("OnRoughSeaPeriodCompleted");							
+}							
+							
+rule OnSnowStart "OnSnowStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SNOW_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SNOW");							
+Changed("LaytimeClock");							
+Retract("OnSnowStart");							
+}							
+							
+rule OnSnowEnd "OnSnowEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SNOW_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SNOW");							
+Changed("LaytimeClock");							
+Retract("OnSnowEnd");							
+}							
+							
+rule OnSwellCommenced "OnSwellCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SWELL_COMMENCED", "SWELL_STARTED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SWELL");							
+Changed("LaytimeClock");							
+Retract("OnSwellCommenced");							
+}							
+							
+rule OnSwellCompleted "OnSwellCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SWELL_COMPLETED", "SWELL_ENDED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SWELL");							
+Changed("LaytimeClock");							
+Retract("OnSwellCompleted");							
+}							
+							
+rule OnTornadoWarningStart "OnTornadoWarningStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TORNADO_WARNING_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TORNADO_WARNING");							
+Changed("LaytimeClock");							
+Retract("OnTornadoWarningStart");							
+}							
+							
+rule OnTornadoWarningEnd "OnTornadoWarningEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TORNADO_WARNING_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TORNADO_WARNING");							
+Changed("LaytimeClock");							
+Retract("OnTornadoWarningEnd");							
+}							
+							
+rule OnBallastHoseConnectionCommenced "OnBallastHoseConnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BALLAST_HOSE_CONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BALLAST_HOSE_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnBallastHoseConnectionCommenced");							
+}							
+							
+rule OnBallastHoseConnectionCompleted "OnBallastHoseConnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BALLAST_HOSE_CONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BALLAST_HOSE_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnBallastHoseConnectionCompleted");							
+}							
+							
+rule OnBallastHoseDisconnectionCommenced "OnBallastHoseDisconnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BALLAST_HOSE_DISCONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BALLAST_HOSE_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnBallastHoseDisconnectionCommenced");							
+}							
+							
+rule OnBallastHoseDisconnectionCompleted "OnBallastHoseDisconnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BALLAST_HOSE_DISCONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BALLAST_HOSE_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnBallastHoseDisconnectionCompleted");							
+}							
+							
+rule OnBallastingCommenced "OnBallastingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BALLASTING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BALLASTING");							
+Changed("LaytimeClock");							
+Retract("OnBallastingCommenced");							
+}							
+							
+rule OnBallastingCompleted "OnBallastingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BALLASTING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BALLASTING");							
+Changed("LaytimeClock");							
+Retract("OnBallastingCompleted");							
+}							
+							
+rule OnBilgeWaterDischargeCommenced "OnBilgeWaterDischargeCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BILGE_WATER_DISCHARGE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BILGE_WATER_DISCHARGING");							
+Changed("LaytimeClock");							
+Retract("OnBilgeWaterDischargeCommenced");							
+}							
+							
+rule OnBilgeWaterDischargeCompleted "OnBilgeWaterDischargeCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BILGE_WATER_DISCHARGE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BILGE_WATER_DISCHARGING");							
+Changed("LaytimeClock");							
+Retract("OnBilgeWaterDischargeCompleted");							
+}							
+							
+rule OnBlanketingCommenced "OnBlanketingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BLANKETING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BLANKETING");							
+Changed("LaytimeClock");							
+Retract("OnBlanketingCommenced");							
+}							
+							
+rule OnBlanketingCompleted "OnBlanketingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BLANKETING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BLANKETING");							
+Changed("LaytimeClock");							
+Retract("OnBlanketingCompleted");							
+}							
+							
+rule OnBlowingLinesCommenced "OnBlowingLinesCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BLOWING_LINES_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BLOWING_LINES");							
+Changed("LaytimeClock");							
+Retract("OnBlowingLinesCommenced");							
+}							
+							
+rule OnBlowingLinesCompleted "OnBlowingLinesCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BLOWING_LINES_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BLOWING_LINES");							
+Changed("LaytimeClock");							
+Retract("OnBlowingLinesCompleted");							
+}							
+							
+rule OnBoomingCommenced "OnBoomingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BOOMING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BOOMING");							
+Changed("LaytimeClock");							
+Retract("OnBoomingCommenced");							
+}							
+							
+rule OnBoomingCompleted "OnBoomingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BOOMING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BOOMING");							
+Changed("LaytimeClock");							
+Retract("OnBoomingCompleted");							
+}							
+							
+rule OnBreakStart "OnBreakStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BREAK_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BREAK");							
+Changed("LaytimeClock");							
+Retract("OnBreakStart");							
+}							
+							
+rule OnBreakEnd "OnBreakEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BREAK_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BREAK");							
+Changed("LaytimeClock");							
+Retract("OnBreakEnd");							
+}							
+							
+rule OnBunkerSurveyCommenced "OnBunkerSurveyCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BUNKER_SURVEY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BUNKER_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnBunkerSurveyCommenced");							
+}							
+							
+rule OnBunkerSurveyCompleted "OnBunkerSurveyCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BUNKER_SURVEY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BUNKER_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnBunkerSurveyCompleted");							
+}							
+							
+rule OnBunkeringStopped "OnBunkeringStopped" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BUNKERING_STOPPED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "BUNKERING_SUSPENDED");							
+Changed("LaytimeClock");							
+Retract("OnBunkeringStopped");							
+}							
+							
+rule OnBunkeringResumed "OnBunkeringResumed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("BUNKERING_RESUMED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "BUNKERING_SUSPENDED");							
+Changed("LaytimeClock");							
+Retract("OnBunkeringResumed");							
+}							
+							
+rule OnCargoCalculationsCommenced "OnCargoCalculationsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_CALCULATIONS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CARGO_CALCULATIONS");							
+Changed("LaytimeClock");							
+Retract("OnCargoCalculationsCommenced");							
+}							
+							
+rule OnCargoCalculationsCompleted "OnCargoCalculationsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_CALCULATIONS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CARGO_CALCULATIONS");							
+Changed("LaytimeClock");							
+Retract("OnCargoCalculationsCompleted");							
+}							
+							
+rule OnCargoCirculationCommenced "OnCargoCirculationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_CIRCULATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CARGO_CIRCULATION");							
+Changed("LaytimeClock");							
+Retract("OnCargoCirculationCommenced");							
+}							
+							
+rule OnCargoCirculationCompleted "OnCargoCirculationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_CIRCULATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CARGO_CIRCULATION");							
+Changed("LaytimeClock");							
+Retract("OnCargoCirculationCompleted");							
+}							
+							
+rule OnCargoHeatingCommenced "OnCargoHeatingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_HEATING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CARGO_HEATING");							
+Changed("LaytimeClock");							
+Retract("OnCargoHeatingCommenced");							
+}							
+							
+rule OnCargoHeatingCompleted "OnCargoHeatingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_HEATING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CARGO_HEATING");							
+Changed("LaytimeClock");							
+Retract("OnCargoHeatingCompleted");							
+}							
+							
+rule OnCargoMeetingCommenced "OnCargoMeetingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_MEETING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CARGO_MEETING");							
+Changed("LaytimeClock");							
+Retract("OnCargoMeetingCommenced");							
+}							
+							
+rule OnCargoMeetingCompleted "OnCargoMeetingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_MEETING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CARGO_MEETING");							
+Changed("LaytimeClock");							
+Retract("OnCargoMeetingCompleted");							
+}							
+							
+rule OnCargoParcelCommenced "OnCargoParcelCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_PARCEL_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CARGO_PARCEL");							
+Changed("LaytimeClock");							
+Retract("OnCargoParcelCommenced");							
+}							
+							
+rule OnCargoParcelCompleted "OnCargoParcelCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CARGO_PARCEL_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CARGO_PARCEL");							
+Changed("LaytimeClock");							
+Retract("OnCargoParcelCompleted");							
+}							
+							
+rule OnChannelClosed "OnChannelClosed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CHANNEL_CLOSED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CHANNEL_CLOSURE");							
+Changed("LaytimeClock");							
+Retract("OnChannelClosed");							
+}							
+							
+rule OnChannelReOpened "OnChannelReOpened" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CHANNEL_RE_OPENED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CHANNEL_CLOSURE");							
+Changed("LaytimeClock");							
+Retract("OnChannelReOpened");							
+}							
+							
+rule OnCleaningHoldsCommenced "OnCleaningHoldsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLEANING_HOLDS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CLEANING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnCleaningHoldsCommenced");							
+}							
+							
+rule OnCleaningHoldsCompleted "OnCleaningHoldsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLEANING_HOLDS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CLEANING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnCleaningHoldsCompleted");							
+}							
+							
+rule OnCleaningLineCommenced "OnCleaningLineCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLEANING_LINE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CLEANING_LINE");							
+Changed("LaytimeClock");							
+Retract("OnCleaningLineCommenced");							
+}							
+							
+rule OnCleaningLineCompleted "OnCleaningLineCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLEANING_LINE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CLEANING_LINE");							
+Changed("LaytimeClock");							
+Retract("OnCleaningLineCompleted");							
+}							
+							
+rule OnCleaningTanksCommenced "OnCleaningTanksCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLEANING_TANKS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CLEANING_TANKS");							
+Changed("LaytimeClock");							
+Retract("OnCleaningTanksCommenced");							
+}							
+							
+rule OnCleaningTanksCompleted "OnCleaningTanksCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLEANING_TANKS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CLEANING_TANKS");							
+Changed("LaytimeClock");							
+Retract("OnCleaningTanksCompleted");							
+}							
+							
+rule OnClosingHoldsCommenced "OnClosingHoldsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLOSING_HOLDS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CLOSING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnClosingHoldsCommenced");							
+}							
+							
+rule OnClosingHoldsCompleted "OnClosingHoldsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CLOSING_HOLDS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CLOSING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnClosingHoldsCompleted");							
+}							
+							
+rule OnConveyorBeltBreakdownCommenced "OnConveyorBeltBreakdownCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CONVEYOR_BELT_BREAKDOWN_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CONVEYOR_BELT_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnConveyorBeltBreakdownCommenced");							
+}							
+							
+rule OnConveyorBeltBreakdownCompleted "OnConveyorBeltBreakdownCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CONVEYOR_BELT_BREAKDOWN_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CONVEYOR_BELT_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnConveyorBeltBreakdownCompleted");							
+}							
+							
+rule OnCrudeOilWashingCommenced "OnCrudeOilWashingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CRUDE_OIL_WASHING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CRUDE_OIL_WASHING");							
+Changed("LaytimeClock");							
+Retract("OnCrudeOilWashingCommenced");							
+}							
+							
+rule OnCrudeOilWashingCompleted "OnCrudeOilWashingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CRUDE_OIL_WASHING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CRUDE_OIL_WASHING");							
+Changed("LaytimeClock");							
+Retract("OnCrudeOilWashingCompleted");							
+}							
+							
+rule OnCustomsFormalitiesCommenced "OnCustomsFormalitiesCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CUSTOMS_FORMALITIES_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "CUSTOMS_FORMALITIES");							
+Changed("LaytimeClock");							
+Retract("OnCustomsFormalitiesCommenced");							
+}							
+							
+rule OnCustomsFormalitiesCompleted "OnCustomsFormalitiesCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("CUSTOMS_FORMALITIES_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "CUSTOMS_FORMALITIES");							
+Changed("LaytimeClock");							
+Retract("OnCustomsFormalitiesCompleted");							
+}							
+							
+rule OnDeRiggingCommenced "OnDeRiggingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DE_RIGGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DE_RIGGING");							
+Changed("LaytimeClock");							
+Retract("OnDeRiggingCommenced");							
+}							
+							
+rule OnDeRiggingCompleted "OnDeRiggingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DE_RIGGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DE_RIGGING");							
+Changed("LaytimeClock");							
+Retract("OnDeRiggingCompleted");							
+}							
+							
+rule OnDeballastingCommenced "OnDeballastingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DEBALLASTING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DEBALLASTING");							
+Changed("LaytimeClock");							
+Retract("OnDeballastingCommenced");							
+}							
+							
+rule OnDeballastingCompleted "OnDeballastingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DEBALLASTING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DEBALLASTING");							
+Changed("LaytimeClock");							
+Retract("OnDeballastingCompleted");							
+}							
+							
+rule OnDefenderingCommenced "OnDefenderingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DEFENDERING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DEFENDERING");							
+Changed("LaytimeClock");							
+Retract("OnDefenderingCommenced");							
+}							
+							
+rule OnDefenderingCompleted "OnDefenderingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DEFENDERING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DEFENDERING");							
+Changed("LaytimeClock");							
+Retract("OnDefenderingCompleted");							
+}							
+							
+rule OnDeratizationCommenced "OnDeratizationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DERATIZATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DERATIZATION");							
+Changed("LaytimeClock");							
+Retract("OnDeratizationCommenced");							
+}							
+							
+rule OnDeratizationCompleted "OnDeratizationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DERATIZATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DERATIZATION");							
+Changed("LaytimeClock");							
+Retract("OnDeratizationCompleted");							
+}							
+							
+rule OnDesloppingCommenced "OnDesloppingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DESLOPPING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DESLOPPING");							
+Changed("LaytimeClock");							
+Retract("OnDesloppingCommenced");							
+}							
+							
+rule OnDesloppingCompleted "OnDesloppingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DESLOPPING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DESLOPPING");							
+Changed("LaytimeClock");							
+Retract("OnDesloppingCompleted");							
+}							
+							
+rule OnDischargingCommenced "OnDischargingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISCHARGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISCHARGING");							
+Changed("LaytimeClock");							
+Retract("OnDischargingCommenced");							
+}							
+							
+rule OnDischargingCompleted "OnDischargingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISCHARGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISCHARGING");							
+Changed("LaytimeClock");							
+Retract("OnDischargingCompleted");							
+}							
+							
+rule OnDischargingAnotherCargoCommenced "OnDischargingAnotherCargoCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISCHARGING_ANOTHER_CARGO_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISCHARGING_ANOTHER_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnDischargingAnotherCargoCommenced");							
+}							
+							
+rule OnDischargingAnotherCargoCompleted "OnDischargingAnotherCargoCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISCHARGING_ANOTHER_CARGO_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISCHARGING_ANOTHER_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnDischargingAnotherCargoCompleted");							
+}							
+							
+rule OnDischargingStopped "OnDischargingStopped" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISCHARGING_STOPPED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISCHARGING_STOPPAGE");							
+Changed("LaytimeClock");							
+Retract("OnDischargingStopped");							
+}							
+							
+rule OnDischargingResumed "OnDischargingResumed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISCHARGING_RESUMED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISCHARGING_STOPPAGE");							
+Changed("LaytimeClock");							
+Retract("OnDischargingResumed");							
+}							
+							
+rule OnDisinfectionCommenced "OnDisinfectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISINFECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISINFECTION");							
+Changed("LaytimeClock");							
+Retract("OnDisinfectionCommenced");							
+}							
+							
+rule OnDisinfectionCompleted "OnDisinfectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISINFECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISINFECTION");							
+Changed("LaytimeClock");							
+Retract("OnDisinfectionCompleted");							
+}							
+							
+rule OnDisinsectionCommenced "OnDisinsectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISINSECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISINSECTION");							
+Changed("LaytimeClock");							
+Retract("OnDisinsectionCommenced");							
+}							
+							
+rule OnDisinsectionCompleted "OnDisinsectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISINSECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISINSECTION");							
+Changed("LaytimeClock");							
+Retract("OnDisinsectionCompleted");							
+}							
+							
+rule OnDisposalHoseConnectionCommenced "OnDisposalHoseConnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISPOSAL_HOSE_CONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISPOSAL_HOSE_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnDisposalHoseConnectionCommenced");							
+}							
+							
+rule OnDisposalHoseConnectionCompleted "OnDisposalHoseConnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISPOSAL_HOSE_CONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISPOSAL_HOSE_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnDisposalHoseConnectionCompleted");							
+}							
+							
+rule OnDisposalHoseDisconnectionCommenced "OnDisposalHoseDisconnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISPOSAL_HOSE_DISCONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISPOSAL_HOSE_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnDisposalHoseDisconnectionCommenced");							
+}							
+							
+rule OnDisposalHoseDisconnectionCompleted "OnDisposalHoseDisconnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISPOSAL_HOSE_DISCONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISPOSAL_HOSE_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnDisposalHoseDisconnectionCompleted");							
+}							
+							
+rule OnDisposalCommenced "OnDisposalCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISPOSAL_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DISPOSAL_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnDisposalCommenced");							
+}							
+							
+rule OnDisposalCompleted "OnDisposalCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DISPOSAL_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DISPOSAL_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnDisposalCompleted");							
+}							
+							
+rule OnDopingCommenced "OnDopingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DOPING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DOPING");							
+Changed("LaytimeClock");							
+Retract("OnDopingCommenced");							
+}							
+							
+rule OnDopingCompleted "OnDopingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DOPING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DOPING");							
+Changed("LaytimeClock");							
+Retract("OnDopingCompleted");							
+}							
+							
+rule OnDraftCheckCommenced "OnDraftCheckCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DRAFT_CHECK_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DRAFT_CHECK");							
+Changed("LaytimeClock");							
+Retract("OnDraftCheckCommenced");							
+}							
+							
+rule OnDraftCheckCompleted "OnDraftCheckCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DRAFT_CHECK_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DRAFT_CHECK");							
+Changed("LaytimeClock");							
+Retract("OnDraftCheckCompleted");							
+}							
+							
+rule OnInitialDraftSurveyCommenced "OnInitialDraftSurveyCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("INITIAL_DRAFT_SURVEY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "INITIAL_DRAFT_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnInitialDraftSurveyCommenced");							
+}							
+							
+rule OnInitialDraftSurveyCompleted "OnInitialDraftSurveyCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("INITIAL_DRAFT_SURVEY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "INITIAL_DRAFT_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnInitialDraftSurveyCompleted");							
+}							
+							
+rule OnFinalDraftSurveyCommenced "OnFinalDraftSurveyCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FINAL_DRAFT_SURVEY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FINAL_DRAFT_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnFinalDraftSurveyCommenced");							
+}							
+							
+rule OnFinalDraftSurveyCompleted "OnFinalDraftSurveyCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FINAL_DRAFT_SURVEY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FINAL_DRAFT_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnFinalDraftSurveyCompleted");							
+}							
+							
+rule OnDriftingCommenced "OnDriftingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DRIFTING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "DRIFTING");							
+Changed("LaytimeClock");							
+Retract("OnDriftingCommenced");							
+}							
+							
+rule OnDriftingCompleted "OnDriftingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("DRIFTING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "DRIFTING");							
+Changed("LaytimeClock");							
+Retract("OnDriftingCompleted");							
+}							
+							
+rule OnElectricalDelayCommenced "OnElectricalDelayCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ELECTRICAL_DELAY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ELECTRICAL_DELAY");							
+Changed("LaytimeClock");							
+Retract("OnElectricalDelayCommenced");							
+}							
+							
+rule OnElectricalDelayCompleted "OnElectricalDelayCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ELECTRICAL_DELAY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ELECTRICAL_DELAY");							
+Changed("LaytimeClock");							
+Retract("OnElectricalDelayCompleted");							
+}							
+							
+rule OnFenderingCommenced "OnFenderingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FENDERING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FENDERING");							
+Changed("LaytimeClock");							
+Retract("OnFenderingCommenced");							
+}							
+							
+rule OnFenderingCompleted "OnFenderingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FENDERING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FENDERING");							
+Changed("LaytimeClock");							
+Retract("OnFenderingCompleted");							
+}							
+							
+rule OnFinancialHoldOnCargoImposed "OnFinancialHoldOnCargoImposed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FINANCIAL_HOLD_ON_CARGO_IMPOSED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FINANCIAL_HOLD_ON_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnFinancialHoldOnCargoImposed");							
+}							
+							
+rule OnFinancialHoldOnCargoLifted "OnFinancialHoldOnCargoLifted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FINANCIAL_HOLD_ON_CARGO_LIFTED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FINANCIAL_HOLD_ON_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnFinancialHoldOnCargoLifted");							
+}							
+							
+rule OnForceMajeureCommenced "OnForceMajeureCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FORCE_MAJEURE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FORCE_MAJEURE");							
+Changed("LaytimeClock");							
+Retract("OnForceMajeureCommenced");							
+}							
+							
+rule OnForceMajeureCompleted "OnForceMajeureCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FORCE_MAJEURE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FORCE_MAJEURE");							
+Changed("LaytimeClock");							
+Retract("OnForceMajeureCompleted");							
+}							
+							
+rule OnFreshWaterSupplyingCommenced "OnFreshWaterSupplyingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FRESH_WATER_SUPPLYING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FRESH_WATER_SUPPLYING");							
+Changed("LaytimeClock");							
+Retract("OnFreshWaterSupplyingCommenced");							
+}							
+							
+rule OnFreshWaterSupplyingCompleted "OnFreshWaterSupplyingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FRESH_WATER_SUPPLYING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FRESH_WATER_SUPPLYING");							
+Changed("LaytimeClock");							
+Retract("OnFreshWaterSupplyingCompleted");							
+}							
+							
+rule OnFumigationCommenced "OnFumigationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FUMIGATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FUMIGATION");							
+Changed("LaytimeClock");							
+Retract("OnFumigationCommenced");							
+}							
+							
+rule OnFumigationCompleted "OnFumigationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FUMIGATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FUMIGATION");							
+Changed("LaytimeClock");							
+Retract("OnFumigationCompleted");							
+}							
+							
+rule OnGasFreeInspectionCommenced "OnGasFreeInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("GAS_FREE_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "GAS_FREE_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnGasFreeInspectionCommenced");							
+}							
+							
+rule OnGasFreeInspectionCompleted "OnGasFreeInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("GAS_FREE_INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "GAS_FREE_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnGasFreeInspectionCompleted");							
+}							
+							
+rule OnGaugingCommenced "OnGaugingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("GAUGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "GAUGING");							
+Changed("LaytimeClock");							
+Retract("OnGaugingCommenced");							
+}							
+							
+rule OnGaugingCompleted "OnGaugingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("GAUGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "GAUGING");							
+Changed("LaytimeClock");							
+Retract("OnGaugingCompleted");							
+}							
+							
+rule OnHoldsInspectionCommenced "OnHoldsInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLDS_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HOLDS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnHoldsInspectionCommenced");							
+}							
+							
+rule OnHoldsInspectionCompleted "OnHoldsInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLDS_INSPECTION_COMPLETED", "HOLDS_ACCEPTED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOLDS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnHoldsInspectionCompleted");							
+}							
+							
+rule OnHoldsPreparationCommenced "OnHoldsPreparationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLDS_PREPARATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HOLDS_PREPARATION");							
+Changed("LaytimeClock");							
+Retract("OnHoldsPreparationCommenced");							
+}							
+							
+rule OnHoldsPreparationCompleted "OnHoldsPreparationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLDS_PREPARATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOLDS_PREPARATION");							
+Changed("LaytimeClock");							
+Retract("OnHoldsPreparationCompleted");							
+}							
+							
+rule OnHoldsVentilationCommenced "OnHoldsVentilationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLDS_VENTILATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HOLDS_VENTILATION");							
+Changed("LaytimeClock");							
+Retract("OnHoldsVentilationCommenced");							
+}							
+							
+rule OnHoldsVentilationCompleted "OnHoldsVentilationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLDS_VENTILATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOLDS_VENTILATION");							
+Changed("LaytimeClock");							
+Retract("OnHoldsVentilationCompleted");							
+}							
+							
+rule OnHolidayCommenced "OnHolidayCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLIDAY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HOLIDAY");							
+Changed("LaytimeClock");							
+Retract("OnHolidayCommenced");							
+}							
+							
+rule OnHolidayCompleted "OnHolidayCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOLIDAY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOLIDAY");							
+Changed("LaytimeClock");							
+Retract("OnHolidayCompleted");							
+}							
+							
+rule OnHoseConnectionCommenced "OnHoseConnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOSE_CONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HOSE_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnHoseConnectionCommenced");							
+}							
+							
+rule OnHoseConnectionCompleted "OnHoseConnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOSE_CONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOSE_CONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnHoseConnectionCompleted");							
+}							
+							
+rule OnHoseDisconnectionCommenced "OnHoseDisconnectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOSE_DISCONNECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HOSE_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnHoseDisconnectionCommenced");							
+}							
+							
+rule OnHoseDisconnectionCompleted "OnHoseDisconnectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("HOSE_DISCONNECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOSE_DISCONNECTED");							
+Changed("LaytimeClock");							
+Retract("OnHoseDisconnectionCompleted");							
+}							
+							
+rule OnInwardFormalitiesCommenced "OnInwardFormalitiesCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("INWARD_FORMALITIES_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "INWARD_FORMALITIES");							
+Changed("LaytimeClock");							
+Retract("OnInwardFormalitiesCommenced");							
+}							
+							
+rule OnInwardFormalitiesCompleted "OnInwardFormalitiesCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("INWARD_FORMALITIES_COMPLETED", "INWARD_CLEARANCE_OBTAINED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "INWARD_FORMALITIES");							
+Changed("LaytimeClock");							
+Retract("OnInwardFormalitiesCompleted");							
+}							
+							
+rule OnJointInspectionCommenced "OnJointInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("JOINT_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "JOINT_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnJointInspectionCommenced");							
+}							
+							
+rule OnJointInspectionCompleted "OnJointInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("JOINT_INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "JOINT_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnJointInspectionCompleted");							
+}							
+							
+rule OnKeyMeetingCommenced "OnKeyMeetingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("KEY_MEETING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "KEY_MEETING");							
+Changed("LaytimeClock");							
+Retract("OnKeyMeetingCommenced");							
+}							
+							
+rule OnKeyMeetingCompleted "OnKeyMeetingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("KEY_MEETING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "KEY_MEETING");							
+Changed("LaytimeClock");							
+Retract("OnKeyMeetingCompleted");							
+}							
+							
+rule OnKnockingDownCommenced "OnKnockingDownCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("KNOCKING_DOWN_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "KNOCKING_DOWN");							
+Changed("LaytimeClock");							
+Retract("OnKnockingDownCommenced");							
+}							
+							
+rule OnKnockingDownCompleted "OnKnockingDownCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("KNOCKING_DOWN_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "KNOCKING_DOWN");							
+Changed("LaytimeClock");							
+Retract("OnKnockingDownCompleted");							
+}							
+							
+rule OnLashingCommenced "OnLashingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LASHING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LASHING");							
+Changed("LaytimeClock");							
+Retract("OnLashingCommenced");							
+}							
+							
+rule OnLashingCompleted "OnLashingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LASHING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LASHING");							
+Changed("LaytimeClock");							
+Retract("OnLashingCompleted");							
+}							
+							
+rule OnLighteringCommenced "OnLighteringCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LIGHTERING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LIGHTERING");							
+Changed("LaytimeClock");							
+Retract("OnLighteringCommenced");							
+}							
+							
+rule OnLighteringCompleted "OnLighteringCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LIGHTERING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LIGHTERING");							
+Changed("LaytimeClock");							
+Retract("OnLighteringCompleted");							
+}							
+							
+rule OnLineDisplacementCommenced "OnLineDisplacementCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_DISPLACEMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LINE_DISPLACEMENT");							
+Changed("LaytimeClock");							
+Retract("OnLineDisplacementCommenced");							
+}							
+							
+rule OnLineDisplacementCompleted "OnLineDisplacementCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_DISPLACEMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LINE_DISPLACEMENT");							
+Changed("LaytimeClock");							
+Retract("OnLineDisplacementCompleted");							
+}							
+							
+rule OnLineFlushingCommenced "OnLineFlushingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_FLUSHING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LINE_FLUSHING");							
+Changed("LaytimeClock");							
+Retract("OnLineFlushingCommenced");							
+}							
+							
+rule OnLineFlushingCompleted "OnLineFlushingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_FLUSHING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LINE_FLUSHING");							
+Changed("LaytimeClock");							
+Retract("OnLineFlushingCompleted");							
+}							
+							
+rule OnLineShiftingCommenced "OnLineShiftingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_SHIFTING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LINE_SHIFTING");							
+Changed("LaytimeClock");							
+Retract("OnLineShiftingCommenced");							
+}							
+							
+rule OnLineShiftingCompleted "OnLineShiftingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_SHIFTING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LINE_SHIFTING");							
+Changed("LaytimeClock");							
+Retract("OnLineShiftingCompleted");							
+}							
+							
+rule OnLineUpCommenced "OnLineUpCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_UP_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LINE_UP");							
+Changed("LaytimeClock");							
+Retract("OnLineUpCommenced");							
+}							
+							
+rule OnLineUpCompleted "OnLineUpCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LINE_UP_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LINE_UP");							
+Changed("LaytimeClock");							
+Retract("OnLineUpCompleted");							
+}							
+							
+rule OnLoadingCommenced "OnLoadingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LOADING");							
+Changed("LaytimeClock");							
+Retract("OnLoadingCommenced");							
+}							
+							
+rule OnLoadingCompleted "OnLoadingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LOADING");							
+Changed("LaytimeClock");							
+Retract("OnLoadingCompleted");							
+}							
+							
+rule OnLoadingAnotherCargoCommenced "OnLoadingAnotherCargoCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_ANOTHER_CARGO_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LOADING_ANOTHER_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnLoadingAnotherCargoCommenced");							
+}							
+							
+rule OnLoadingAnotherCargoCompleted "OnLoadingAnotherCargoCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_ANOTHER_CARGO_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LOADING_ANOTHER_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnLoadingAnotherCargoCompleted");							
+}							
+							
+rule OnLoadingFirstFootCommenced "OnLoadingFirstFootCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_FIRST_FOOT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LOADING_FIRST_FOOT");							
+Changed("LaytimeClock");							
+Retract("OnLoadingFirstFootCommenced");							
+}							
+							
+rule OnLoadingFirstFootCompleted "OnLoadingFirstFootCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_FIRST_FOOT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LOADING_FIRST_FOOT");							
+Changed("LaytimeClock");							
+Retract("OnLoadingFirstFootCompleted");							
+}							
+							
+rule OnLoadingStopped "OnLoadingStopped" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_STOPPED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LOADING_STOPPAGE");							
+Changed("LaytimeClock");							
+Retract("OnLoadingStopped");							
+}							
+							
+rule OnLoadingResumed "OnLoadingResumed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOADING_RESUMED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LOADING_STOPPAGE");							
+Changed("LaytimeClock");							
+Retract("OnLoadingResumed");							
+}							
+							
+rule OnLockClosed "OnLockClosed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOCK_CLOSED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "LOCK_CLOSURE");							
+Changed("LaytimeClock");							
+Retract("OnLockClosed");							
+}							
+							
+rule OnLockReOpened "OnLockReOpened" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("LOCK_RE_OPENED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "LOCK_CLOSURE");							
+Changed("LaytimeClock");							
+Retract("OnLockReOpened");							
+}							
+							
+rule OnMechanicalDelayCommenced "OnMechanicalDelayCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("MECHANICAL_DELAY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "MECHANICAL_DELAY");							
+Changed("LaytimeClock");							
+Retract("OnMechanicalDelayCommenced");							
+}							
+							
+rule OnMechanicalDelayCompleted "OnMechanicalDelayCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("MECHANICAL_DELAY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "MECHANICAL_DELAY");							
+Changed("LaytimeClock");							
+Retract("OnMechanicalDelayCompleted");							
+}							
+							
+rule OnMooringCommenced "OnMooringCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("MOORING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "MOORING");							
+Changed("LaytimeClock");							
+Retract("OnMooringCommenced");							
+}							
+							
+rule OnMooringCompleted "OnMooringCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("MOORING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "MOORING");							
+Changed("LaytimeClock");							
+Retract("OnMooringCompleted");							
+}							
+							
+rule OnOnOffHireSurveyCommenced "OnOnOffHireSurveyCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ON_OFF_HIRE_SURVEY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ON_OFF_HIRE_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnOnOffHireSurveyCommenced");							
+}							
+							
+rule OnOnOffHireSurveyCompleted "OnOnOffHireSurveyCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ON_OFF_HIRE_SURVEY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ON_OFF_HIRE_SURVEY");							
+Changed("LaytimeClock");							
+Retract("OnOnOffHireSurveyCompleted");							
+}							
+							
+rule OnOpeningHoldsCommenced "OnOpeningHoldsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OPENING_HOLDS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "OPENING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnOpeningHoldsCommenced");							
+}							
+							
+rule OnOpeningHoldsCompleted "OnOpeningHoldsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OPENING_HOLDS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "OPENING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnOpeningHoldsCompleted");							
+}							
+							
+rule OnOperationalDelayCommenced "OnOperationalDelayCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OPERATIONAL_DELAY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "OPERATIONAL_DELAY");							
+Changed("LaytimeClock");							
+Retract("OnOperationalDelayCommenced");							
+}							
+							
+rule OnOperationalDelayCompleted "OnOperationalDelayCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OPERATIONAL_DELAY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "OPERATIONAL_DELAY");							
+Changed("LaytimeClock");							
+Retract("OnOperationalDelayCompleted");							
+}							
+							
+// NOTE: Operations tracking removed - generic OnOperationsCommenced/Completed events
+// are redundant with specific LOADING/DISCHARGING events tracked elsewhere
+// The comprehensive OnOperationsCompleted rule is in general_rules.grl							
+							
+rule OnOperationsStopped "OnOperationsStopped" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OPERATIONS_STOPPED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "OPERATIONS_STOPPAGE");							
+Changed("LaytimeClock");							
+Retract("OnOperationsStopped");							
+}							
+							
+rule OnOperationsResumed "OnOperationsResumed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OPERATIONS_RESUMED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "OPERATIONS_STOPPAGE");							
+Changed("LaytimeClock");							
+Retract("OnOperationsResumed");							
+}							
+							
+rule OnOutwardFormalitiesCommenced "OnOutwardFormalitiesCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OUTWARD_FORMALITIES_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "OUTWARD_FORMALITIES");							
+Changed("LaytimeClock");							
+Retract("OnOutwardFormalitiesCommenced");							
+}							
+							
+rule OnOutwardFormalitiesCompleted "OnOutwardFormalitiesCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("OUTWARD_FORMALITIES_COMPLETED", "OUTWARD_CLEARANCE_OBTAINED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "OUTWARD_FORMALITIES");							
+Changed("LaytimeClock");							
+Retract("OnOutwardFormalitiesCompleted");							
+}							
+							
+rule OnPiggingCommenced "OnPiggingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PIGGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PIGGING");							
+Changed("LaytimeClock");							
+Retract("OnPiggingCommenced");							
+}							
+							
+rule OnPiggingCompleted "OnPiggingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PIGGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PIGGING");							
+Changed("LaytimeClock");							
+Retract("OnPiggingCompleted");							
+}							
+							
+rule OnPilotageSuspentionCommenced "OnPilotageSuspentionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PILOTAGE_SUSPENTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PILOTAGE_SUSPENDED");							
+Changed("LaytimeClock");							
+Retract("OnPilotageSuspentionCommenced");							
+}							
+							
+rule OnPilotageSuspentionCompleted "OnPilotageSuspentionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PILOTAGE_SUSPENTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PILOTAGE_SUSPENDED");							
+Changed("LaytimeClock");							
+Retract("OnPilotageSuspentionCompleted");							
+}							
+							
+rule OnPlacingCargoEquipmentCommenced "OnPlacingCargoEquipmentCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PLACING_CARGO_EQUIPMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PLACING_CARGO_EQUIPMENT");							
+Changed("LaytimeClock");							
+Retract("OnPlacingCargoEquipmentCommenced");							
+}							
+							
+rule OnPlacingCargoEquipmentCompleted "OnPlacingCargoEquipmentCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PLACING_CARGO_EQUIPMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PLACING_CARGO_EQUIPMENT");							
+Changed("LaytimeClock");							
+Retract("OnPlacingCargoEquipmentCompleted");							
+}							
+							
+rule OnPontoonShiftingCommenced "OnPontoonShiftingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PONTOON_SHIFTING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PONTOON_SHIFTING");							
+Changed("LaytimeClock");							
+Retract("OnPontoonShiftingCommenced");							
+}							
+							
+rule OnPontoonShiftingCompleted "OnPontoonShiftingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PONTOON_SHIFTING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PONTOON_SHIFTING");							
+Changed("LaytimeClock");							
+Retract("OnPontoonShiftingCompleted");							
+}							
+							
+rule OnPortClosed "OnPortClosed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PORT_CLOSED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PORT_CLOSURE");							
+Changed("LaytimeClock");							
+Retract("OnPortClosed");							
+}							
+							
+rule OnPortReOpened "OnPortReOpened" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PORT_RE_OPENED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PORT_CLOSURE");							
+Changed("LaytimeClock");							
+Retract("OnPortReOpened");							
+}							
+							
+rule OnPreparationForCargoOperationsCommenced "OnPreparationForCargoOperationsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PREPARATION_FOR_CARGO_OPERATIONS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PREPARATION_FOR_CARGO_OPERATIONS");							
+Changed("LaytimeClock");							
+Retract("OnPreparationForCargoOperationsCommenced");							
+}							
+							
+rule OnPreparationForCargoOperationsCompleted "OnPreparationForCargoOperationsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PREPARATION_FOR_CARGO_OPERATIONS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PREPARATION_FOR_CARGO_OPERATIONS");							
+Changed("LaytimeClock");							
+Retract("OnPreparationForCargoOperationsCompleted");							
+}							
+							
+rule OnPrewashCommenced "OnPrewashCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PREWASH_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PREWASH");							
+Changed("LaytimeClock");							
+Retract("OnPrewashCommenced");							
+}							
+							
+rule OnPrewashCompleted "OnPrewashCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PREWASH_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PREWASH");							
+Changed("LaytimeClock");							
+Retract("OnPrewashCompleted");							
+}							
+							
+rule OnPurgingCommenced "OnPurgingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PURGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PURGING");							
+Changed("LaytimeClock");							
+Retract("OnPurgingCommenced");							
+}							
+							
+rule OnPurgingCompleted "OnPurgingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("PURGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PURGING");							
+Changed("LaytimeClock");							
+Retract("OnPurgingCompleted");							
+}							
+							
+rule OnQuarantineStarted "OnQuarantineStarted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("QUARANTINE_STARTED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "QUARANTINE");							
+Changed("LaytimeClock");							
+Retract("OnQuarantineStarted");							
+}							
+							
+rule OnQuarantineEnded "OnQuarantineEnded" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("QUARANTINE_ENDED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "QUARANTINE");							
+Changed("LaytimeClock");							
+Retract("OnQuarantineEnded");							
+}							
+							
+rule OnRefuellingShoreCraneCommenced "OnRefuellingShoreCraneCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("REFUELLING_SHORE_CRANE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "REFUELLING_SHORE_CRANE");							
+Changed("LaytimeClock");							
+Retract("OnRefuellingShoreCraneCommenced");							
+}							
+							
+rule OnRefuellingShoreCraneCompleted "OnRefuellingShoreCraneCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("REFUELLING_SHORE_CRANE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "REFUELLING_SHORE_CRANE");							
+Changed("LaytimeClock");							
+Retract("OnRefuellingShoreCraneCompleted");							
+}							
+							
+rule OnRemovingCargoEquipmentCommenced "OnRemovingCargoEquipmentCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("REMOVING_CARGO_EQUIPMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "REMOVING_CARGO_EQUIPMENT");							
+Changed("LaytimeClock");							
+Retract("OnRemovingCargoEquipmentCommenced");							
+}							
+							
+rule OnRemovingCargoEquipmentCompleted "OnRemovingCargoEquipmentCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("REMOVING_CARGO_EQUIPMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "REMOVING_CARGO_EQUIPMENT");							
+Changed("LaytimeClock");							
+Retract("OnRemovingCargoEquipmentCompleted");							
+}							
+							
+rule OnRiggingCommenced "OnRiggingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("RIGGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "RIGGING");							
+Changed("LaytimeClock");							
+Retract("OnRiggingCommenced");							
+}							
+							
+rule OnRiggingCompleted "OnRiggingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("RIGGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "RIGGING");							
+Changed("LaytimeClock");							
+Retract("OnRiggingCompleted");							
+}							
+							
+rule OnSafetyInspectionCommenced "OnSafetyInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SAFETY_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SAFETY_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnSafetyInspectionCommenced");							
+}							
+							
+rule OnSafetyInspectionCompleted "OnSafetyInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SAFETY_INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SAFETY_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnSafetyInspectionCompleted");							
+}							
+							
+rule OnSafetyMeetingCommenced "OnSafetyMeetingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SAFETY_MEETING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SAFETY_MEETING");							
+Changed("LaytimeClock");							
+Retract("OnSafetyMeetingCommenced");							
+}							
+							
+rule OnSafetyMeetingCompleted "OnSafetyMeetingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SAFETY_MEETING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SAFETY_MEETING");							
+Changed("LaytimeClock");							
+Retract("OnSafetyMeetingCompleted");							
+}							
+							
+rule OnSamplingCommenced "OnSamplingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SAMPLING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SAMPLING");							
+Changed("LaytimeClock");							
+Retract("OnSamplingCommenced");							
+}							
+							
+rule OnSamplingCompleted "OnSamplingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SAMPLING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SAMPLING");							
+Changed("LaytimeClock");							
+Retract("OnSamplingCompleted");							
+}							
+							
+rule OnSealingHoldsCommenced "OnSealingHoldsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SEALING_HOLDS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SEALING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnSealingHoldsCommenced");							
+}							
+							
+rule OnSealingHoldsCompleted "OnSealingHoldsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SEALING_HOLDS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SEALING_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnSealingHoldsCompleted");							
+}							
+							
+rule OnSealingTanksCommenced "OnSealingTanksCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SEALING_TANKS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SEALING_TANKS");							
+Changed("LaytimeClock");							
+Retract("OnSealingTanksCommenced");							
+}							
+							
+rule OnSealingTanksCompleted "OnSealingTanksCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SEALING_TANKS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SEALING_TANKS");							
+Changed("LaytimeClock");							
+Retract("OnSealingTanksCompleted");							
+}							
+							
+rule OnShiftChangeCommenced "OnShiftChangeCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFT_CHANGE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIFT_CHANGE");							
+Changed("LaytimeClock");							
+Retract("OnShiftChangeCommenced");							
+}							
+							
+rule OnShiftChangeCompleted "OnShiftChangeCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFT_CHANGE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIFT_CHANGE");							
+Changed("LaytimeClock");							
+Retract("OnShiftChangeCompleted");							
+}							
+							
+rule OnShiftingBetweenHoldsCommenced "OnShiftingBetweenHoldsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_BETWEEN_HOLDS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIFTING_BETWEEN_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnShiftingBetweenHoldsCommenced");							
+}							
+							
+rule OnShiftingBetweenHoldsCompleted "OnShiftingBetweenHoldsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_BETWEEN_HOLDS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIFTING_BETWEEN_HOLDS");							
+Changed("LaytimeClock");							
+Retract("OnShiftingBetweenHoldsCompleted");							
+}							
+							
+rule OnShiftingCargoCommenced "OnShiftingCargoCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_CARGO_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIFTING_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnShiftingCargoCommenced");							
+}							
+							
+rule OnShiftingCargoCompleted "OnShiftingCargoCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_CARGO_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIFTING_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnShiftingCargoCompleted");							
+}							
+							
+rule OnShiftingCargoEquipmentCommenced "OnShiftingCargoEquipmentCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_CARGO_EQUIPMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIFTING_CARGO_EQUIPMENT");							
+Changed("LaytimeClock");							
+Retract("OnShiftingCargoEquipmentCommenced");							
+}							
+							
+rule OnShiftingCargoEquipmentCompleted "OnShiftingCargoEquipmentCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIFTING_CARGO_EQUIPMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIFTING_CARGO_EQUIPMENT");							
+Changed("LaytimeClock");							
+Retract("OnShiftingCargoEquipmentCompleted");							
+}							
+							
+rule OnShipCraneBreakdownCommenced "OnShipCraneBreakdownCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_CRANE_BREAKDOWN_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIP_CRANE_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShipCraneBreakdownCommenced");							
+}							
+							
+rule OnShipCraneBreakdownCompleted "OnShipCraneBreakdownCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_CRANE_BREAKDOWN_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_CRANE_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShipCraneBreakdownCompleted");							
+}							
+							
+rule OnShipPreparationCommenced "OnShipPreparationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_PREPARATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIP_PREPARATION");							
+Changed("LaytimeClock");							
+Retract("OnShipPreparationCommenced");							
+}							
+							
+rule OnShipPreparationCompleted "OnShipPreparationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_PREPARATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_PREPARATION");							
+Changed("LaytimeClock");							
+Retract("OnShipPreparationCompleted");							
+}							
+							
+rule OnShipToShipAlignmentCommenced "OnShipToShipAlignmentCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_TO_SHIP_ALIGNMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIP_TO_SHIP_ALIGNMENT");							
+Changed("LaytimeClock");							
+Retract("OnShipToShipAlignmentCommenced");							
+}							
+							
+rule OnShipToShipAlignmentCompleted "OnShipToShipAlignmentCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_TO_SHIP_ALIGNMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_TO_SHIP_ALIGNMENT");							
+Changed("LaytimeClock");							
+Retract("OnShipToShipAlignmentCompleted");							
+}							
+							
+rule OnShipShoreLineUpCommenced "OnShipShoreLineUpCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_SHORE_LINE_UP_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIP_SHORE_LINE_UP_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnShipShoreLineUpCommenced");							
+}							
+							
+rule OnShipShoreLineUpCompleted "OnShipShoreLineUpCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHIP_SHORE_LINE_UP_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_SHORE_LINE_UP_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnShipShoreLineUpCompleted");							
+}							
+							
+rule OnShoreCraneBreakdownCommenced "OnShoreCraneBreakdownCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHORE_CRANE_BREAKDOWN_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHORE_CRANE_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShoreCraneBreakdownCommenced");							
+}							
+							
+rule OnShoreCraneBreakdownCompleted "OnShoreCraneBreakdownCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHORE_CRANE_BREAKDOWN_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_CRANE_BREAKDOWN");							
+Changed("LaytimeClock");							
+Retract("OnShoreCraneBreakdownCompleted");							
+}							
+							
+rule OnShorePreparationCommenced "OnShorePreparationCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHORE_PREPARATION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHORE_PREPARATION");							
+Changed("LaytimeClock");							
+Retract("OnShorePreparationCommenced");							
+}							
+							
+rule OnShorePreparationCompleted "OnShorePreparationCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SHORE_PREPARATION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_PREPARATION");							
+Changed("LaytimeClock");							
+Retract("OnShorePreparationCompleted");							
+}							
+							
+rule OnSludgeDischargeCommenced "OnSludgeDischargeCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SLUDGE_DISCHARGE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SLUDGE_DISCHARGE");							
+Changed("LaytimeClock");							
+Retract("OnSludgeDischargeCommenced");							
+}							
+							
+rule OnSludgeDischargeCompleted "OnSludgeDischargeCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SLUDGE_DISCHARGE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SLUDGE_DISCHARGE");							
+Changed("LaytimeClock");							
+Retract("OnSludgeDischargeCompleted");							
+}							
+							
+rule OnSoundingCommenced "OnSoundingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SOUNDING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SOUNDING");							
+Changed("LaytimeClock");							
+Retract("OnSoundingCommenced");							
+}							
+							
+rule OnSoundingCompleted "OnSoundingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SOUNDING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SOUNDING");							
+Changed("LaytimeClock");							
+Retract("OnSoundingCompleted");							
+}							
+							
+rule OnSqueegingCommenced "OnSqueegingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SQUEEGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SQUEEGING");							
+Changed("LaytimeClock");							
+Retract("OnSqueegingCommenced");							
+}							
+							
+rule OnSqueegingCompleted "OnSqueegingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SQUEEGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SQUEEGING");							
+Changed("LaytimeClock");							
+Retract("OnSqueegingCompleted");							
+}
+
+rule OnStrippingCommenced "OnStrippingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("STRIPPING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "STRIPPING");							
+Changed("LaytimeClock");							
+Retract("OnStrippingCommenced");							
+}							
+							
+rule OnStrippingCompleted "OnStrippingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("STRIPPING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "STRIPPING");							
+Changed("LaytimeClock");							
+Retract("OnStrippingCompleted");							
+}							
+							
+rule OnSupplyingCommenced "OnSupplyingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SUPPLYING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SUPPLYING_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnSupplyingCommenced");							
+}							
+							
+rule OnSupplyingCompleted "OnSupplyingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SUPPLYING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SUPPLYING_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnSupplyingCompleted");							
+}							
+							
+rule OnSweepingCommenced "OnSweepingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SWEEPING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SWEEPING");							
+Changed("LaytimeClock");							
+Retract("OnSweepingCommenced");							
+}							
+							
+rule OnSweepingCompleted "OnSweepingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("SWEEPING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SWEEPING");							
+Changed("LaytimeClock");							
+Retract("OnSweepingCompleted");							
+}							
+							
+rule OnTanksInspectionCommenced "OnTanksInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TANKS_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TANKS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnTanksInspectionCommenced");							
+}							
+							
+rule OnTanksInspectionCompleted "OnTanksInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TANKS_INSPECTION_COMPLETED", "TANKS_ACCEPTED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TANKS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnTanksInspectionCompleted");							
+}							
+							
+rule OnTanksMeasurementCommenced "OnTanksMeasurementCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TANKS_MEASUREMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TANKS_MEASUREMENT");							
+Changed("LaytimeClock");							
+Retract("OnTanksMeasurementCommenced");							
+}							
+							
+rule OnTanksMeasurementCompleted "OnTanksMeasurementCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TANKS_MEASUREMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TANKS_MEASUREMENT");							
+Changed("LaytimeClock");							
+Retract("OnTanksMeasurementCompleted");							
+}							
+							
+rule OnTanksTreatmentCommenced "OnTanksTreatmentCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TANKS_TREATMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TANKS_TREATMENT");							
+Changed("LaytimeClock");							
+Retract("OnTanksTreatmentCommenced");							
+}							
+							
+rule OnTanksTreatmentCompleted "OnTanksTreatmentCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TANKS_TREATMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TANKS_TREATMENT");							
+Changed("LaytimeClock");							
+Retract("OnTanksTreatmentCompleted");							
+}							
+							
+rule OnTransitPassageStopped "OnTransitPassageStopped" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TRANSIT_PASSAGE_STOPPED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TRANSIT_PASSAGE_INTERRUPTION");							
+Changed("LaytimeClock");							
+Retract("OnTransitPassageStopped");							
+}							
+							
+rule OnTransitPassageResumed "OnTransitPassageResumed" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TRANSIT_PASSAGE_RESUMED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TRANSIT_PASSAGE_INTERRUPTION");							
+Changed("LaytimeClock");							
+Retract("OnTransitPassageResumed");							
+}							
+							
+rule OnTransshipmentCommenced "OnTransshipmentCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TRANSSHIPMENT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TRANSSHIPMENT_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnTransshipmentCommenced");							
+}							
+							
+rule OnTransshipmentCompleted "OnTransshipmentCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TRANSSHIPMENT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TRANSSHIPMENT_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnTransshipmentCompleted");							
+}							
+							
+rule OnTrimmingCommenced "OnTrimmingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TRIMMING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TRIMMING");							
+Changed("LaytimeClock");							
+Retract("OnTrimmingCommenced");							
+}							
+							
+rule OnTrimmingCompleted "OnTrimmingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("TRIMMING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TRIMMING");							
+Changed("LaytimeClock");							
+Retract("OnTrimmingCompleted");							
+}							
+							
+rule OnUllagingCommenced "OnUllagingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ULLAGING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "ULLAGING");							
+Changed("LaytimeClock");							
+Retract("OnUllagingCommenced");							
+}							
+							
+rule OnUllagingCompleted "OnUllagingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ULLAGING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "ULLAGING");							
+Changed("LaytimeClock");							
+Retract("OnUllagingCompleted");							
+}							
+							
+rule OnUnlashingCommenced "OnUnlashingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("UNLASHING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "UNLASHING");							
+Changed("LaytimeClock");							
+Retract("OnUnlashingCommenced");							
+}							
+							
+rule OnUnlashingCompleted "OnUnlashingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("UNLASHING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "UNLASHING");							
+Changed("LaytimeClock");							
+Retract("OnUnlashingCompleted");							
+}							
+							
+rule OnUnmooringCommenced "OnUnmooringCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("UNMOORING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "UNMOORING");							
+Changed("LaytimeClock");							
+Retract("OnUnmooringCommenced");							
+}							
+							
+rule OnUnmooringCompleted "OnUnmooringCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("UNMOORING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "UNMOORING");							
+Changed("LaytimeClock");							
+Retract("OnUnmooringCompleted");							
+}							
+							
+rule OnUSCGInspectionCommenced "OnUSCGInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("USCG_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "USCG_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnUSCGInspectionCommenced");							
+}							
+							
+rule OnUSCGInspectionCompleted "OnUSCGInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("USCG_INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "USCG_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnUSCGInspectionCompleted");							
+}							
+							
+rule OnAnchorDropped "OnAnchorDropped" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ANCHOR_DROPPED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "VESSEL_ANCHORED");							
+Changed("LaytimeClock");							
+Retract("OnAnchorDropped");							
+}							
+							
+rule OnAnchorAweigh "OnAnchorAweigh" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("ANCHOR_AWEIGH")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "VESSEL_ANCHORED");							
+Changed("LaytimeClock");							
+Retract("OnAnchorAweigh");							
+}							
+							
+rule OnVesselAground "OnVesselAground" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_AGROUND")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "VESSEL_BEING_AGROUND");							
+Changed("LaytimeClock");							
+Retract("OnVesselAground");							
+}							
+							
+rule OnVesselRefloated "OnVesselRefloated" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_REFLOATED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "VESSEL_BEING_AGROUND");							
+Changed("LaytimeClock");							
+Retract("OnVesselRefloated");							
+}							
+							
+rule OnVesselDetained "OnVesselDetained" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_DETAINED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "VESSEL_IN_DETENTION");							
+Changed("LaytimeClock");							
+Retract("OnVesselDetained");							
+}							
+							
+rule OnVesselReleased "OnVesselReleased" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_RELEASED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "VESSEL_IN_DETENTION");							
+Changed("LaytimeClock");							
+Retract("OnVesselReleased");							
+}							
+							
+rule OnVesselStandbyIdleCommenced "OnVesselStandbyIdleCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_STANDBY_IDLE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "VESSEL_STANDBY_IDLE");							
+Changed("LaytimeClock");							
+Retract("OnVesselStandbyIdleCommenced");							
+}							
+							
+rule OnVesselStandbyIdleCompleted "OnVesselStandbyIdleCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_STANDBY_IDLE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "VESSEL_STANDBY_IDLE");							
+Changed("LaytimeClock");							
+Retract("OnVesselStandbyIdleCompleted");							
+}							
+							
+rule OnWaitingAtAnchorageCommenced "OnWaitingAtAnchorageCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_AT_ANCHORAGE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_AT_ANCHORAGE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingAtAnchorageCommenced");							
+}							
+							
+rule OnWaitingAtAnchorageCompleted "OnWaitingAtAnchorageCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_AT_ANCHORAGE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_AT_ANCHORAGE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingAtAnchorageCompleted");							
+}							
+							
+rule OnWaitingAtRoadsCommenced "OnWaitingAtRoadsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_AT_ROADS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_AT_ROADS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingAtRoadsCommenced");							
+}							
+							
+rule OnWaitingAtRoadsCompleted "OnWaitingAtRoadsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_AT_ROADS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_AT_ROADS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingAtRoadsCompleted");							
+}							
+							
+rule OnWaitingForBerthCommenced "OnWaitingForBerthCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_BERTH_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_BERTH_AVAILABILITY");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForBerthCommenced");							
+}							
+							
+rule OnWaitingForBerthCompleted "OnWaitingForBerthCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_BERTH_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_BERTH_AVAILABILITY");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForBerthCompleted");							
+}							
+							
+rule OnWaitingForAnalysisResultsCommenced "OnWaitingForAnalysisResultsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_ANALYSIS_RESULTS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_ANALYSIS_RESULTS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForAnalysisResultsCommenced");							
+}							
+							
+rule OnWaitingForAnalysisResultsCompleted "OnWaitingForAnalysisResultsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_ANALYSIS_RESULTS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_ANALYSIS_RESULTS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForAnalysisResultsCompleted");							
+}							
+							
+rule OnWaitingForBargeCommenced "OnWaitingForBargeCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_BARGE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_BARGE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForBargeCommenced");							
+}							
+							
+rule OnWaitingForBargeCompleted "OnWaitingForBargeCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_BARGE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_BARGE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForBargeCompleted");							
+}							
+							
+rule OnWaitingForCargoCommenced "OnWaitingForCargoCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_CARGO_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCargoCommenced");							
+}							
+							
+rule OnWaitingForCargoCompleted "OnWaitingForCargoCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_CARGO_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_CARGO");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCargoCompleted");							
+}							
+							
+rule OnWaitingForCargoOperationsCommenced "OnWaitingForCargoOperationsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_CARGO_OPERATIONS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_CARGO_OPERATIONS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCargoOperationsCommenced");							
+}							
+							
+rule OnWaitingForCargoOperationsCompleted "OnWaitingForCargoOperationsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_CARGO_OPERATIONS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_CARGO_OPERATIONS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCargoOperationsCompleted");							
+}							
+							
+rule OnWaitingForCertificateCommenced "OnWaitingForCertificateCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_CERTIFICATE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_CERTIFICATE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCertificateCommenced");							
+}							
+							
+rule OnWaitingForCertificateCompleted "OnWaitingForCertificateCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_CERTIFICATE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_CERTIFICATE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCertificateCompleted");							
+}							
+							
+rule OnWaitingForCommencementOfLaycanCommenced "OnWaitingForCommencementOfLaycanCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_COMMENCEMENT_OF_LAYCAN_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_COMMENCEMENT_OF_LAYCAN");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCommencementOfLaycanCommenced");							
+}							
+							
+rule OnWaitingForCommencementOfLaycanCompleted "OnWaitingForCommencementOfLaycanCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_COMMENCEMENT_OF_LAYCAN_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_COMMENCEMENT_OF_LAYCAN");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForCommencementOfLaycanCompleted");							
+}							
+							
+rule OnWaitingForDaylightStart "OnWaitingForDaylightStart" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_DAYLIGHT_START")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_DAYLIGHT");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForDaylightStart");							
+}							
+							
+rule OnWaitingForDaylightEnd "OnWaitingForDaylightEnd" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_DAYLIGHT_END")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_DAYLIGHT");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForDaylightEnd");							
+}							
+							
+rule OnWaitingForDocumentsCommenced "OnWaitingForDocumentsCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_DOCUMENTS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_DOCUMENTS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForDocumentsCommenced");							
+}							
+							
+rule OnWaitingForDocumentsCompleted "OnWaitingForDocumentsCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_DOCUMENTS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_DOCUMENTS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForDocumentsCompleted");							
+}							
+							
+rule OnWaitingForGangwayCommenced "OnWaitingForGangwayCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_GANGWAY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_GANGWAY");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForGangwayCommenced");							
+}							
+							
+rule OnWaitingForGangwayCompleted "OnWaitingForGangwayCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_GANGWAY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_GANGWAY");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForGangwayCompleted");							
+}							
+							
+rule OnWaitingForHoldsCleaningCommenced "OnWaitingForHoldsCleaningCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_HOLDS_CLEANING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_HOLDS_CLEANING");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForHoldsCleaningCommenced");							
+}							
+							
+rule OnWaitingForHoldsCleaningCompleted "OnWaitingForHoldsCleaningCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_HOLDS_CLEANING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_HOLDS_CLEANING");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForHoldsCleaningCompleted");							
+}							
+							
+rule OnWaitingForHoldsInspectionCommenced "OnWaitingForHoldsInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_HOLDS_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_HOLDS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForHoldsInspectionCommenced");							
+}							
+							
+rule OnWaitingForHoldsInspectionCompleted "OnWaitingForHoldsInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_HOLDS_INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_HOLDS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForHoldsInspectionCompleted");							
+}							
+							
+rule OnWaitingForInspectionCommenced "OnWaitingForInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForInspectionCommenced");							
+}							
+							
+rule OnWaitingForInspectionCompleted "OnWaitingForInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForInspectionCompleted");							
+}							
+							
+rule OnWaitingForPilotCommenced "OnWaitingForPilotCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_PILOT_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_PILOT");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForPilotCommenced");							
+}							
+							
+rule OnWaitingForPilotCompleted "OnWaitingForPilotCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_PILOT_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_PILOT");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForPilotCompleted");							
+}							
+							
+rule OnWaitingForRepresentativeCommenced "OnWaitingForRepresentativeCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_REPRESENTATIVE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_REPRESENTATIVE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForRepresentativeCommenced");							
+}							
+							
+rule OnWaitingForRepresentativeCompleted "OnWaitingForRepresentativeCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_REPRESENTATIVE_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_REPRESENTATIVE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForRepresentativeCompleted");							
+}							
+							
+rule OnWaitingForShipShoreLineUpCommenced "OnWaitingForShipShoreLineUpCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SHIP_SHORE_LINE_UP_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_SHIP_SHORE_LINE_UP");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForShipShoreLineUpCommenced");							
+}							
+							
+rule OnWaitingForShipShoreLineUpCompleted "OnWaitingForShipShoreLineUpCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SHIP_SHORE_LINE_UP_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_SHIP_SHORE_LINE_UP");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForShipShoreLineUpCompleted");							
+}							
+							
+rule OnWaitingForShoreFacilitiesCommenced "OnWaitingForShoreFacilitiesCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SHORE_FACILITIES_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_SHORE_FACILITIES");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForShoreFacilitiesCommenced");							
+}							
+							
+rule OnWaitingForShoreFacilitiesCompleted "OnWaitingForShoreFacilitiesCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SHORE_FACILITIES_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_SHORE_FACILITIES");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForShoreFacilitiesCompleted");							
+}							
+							
+rule OnWaitingForShoreLaborCommenced "OnWaitingForShoreLaborCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SHORE_LABOR_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_SHORE_LABOR");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForShoreLaborCommenced");							
+}							
+							
+rule OnWaitingForShoreLaborCompleted "OnWaitingForShoreLaborCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SHORE_LABOR_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_SHORE_LABOR");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForShoreLaborCompleted");							
+}							
+							
+rule OnWaitingForStevedoresCommenced "OnWaitingForStevedoresCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_STEVEDORES_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_STEVEDORES");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForStevedoresCommenced");							
+}							
+							
+rule OnWaitingForStevedoresCompleted "OnWaitingForStevedoresCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_STEVEDORES_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_STEVEDORES");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForStevedoresCompleted");							
+}							
+							
+rule OnWaitingForSurveyorCommenced "OnWaitingForSurveyorCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SURVEYOR_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_SURVEYOR");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForSurveyorCommenced");							
+}							
+							
+rule OnWaitingForSurveyorCompleted "OnWaitingForSurveyorCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_SURVEYOR_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_SURVEYOR");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForSurveyorCompleted");							
+}							
+							
+rule OnWaitingForTanksCleaningCommenced "OnWaitingForTanksCleaningCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_TANKS_CLEANING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_TANKS_CLEANING");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForTanksCleaningCommenced");							
+}							
+							
+rule OnWaitingForTanksCleaningCompleted "OnWaitingForTanksCleaningCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_TANKS_CLEANING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_TANKS_CLEANING");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForTanksCleaningCompleted");							
+}							
+							
+rule OnWaitingForTanksInspectionCommenced "OnWaitingForTanksInspectionCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_TANKS_INSPECTION_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_TANKS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForTanksInspectionCommenced");							
+}							
+							
+rule OnWaitingForTanksInspectionCompleted "OnWaitingForTanksInspectionCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_TANKS_INSPECTION_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_TANKS_INSPECTION");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForTanksInspectionCompleted");							
+}							
+							
+rule OnWaitingForTideCommenced "OnWaitingForTideCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_TIDE_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_TIDE");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForTideCommenced");							
+}							
+							
+rule OnFirstAvailableTide "OnFirstAvailableTide" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("FIRST_AVAILABLE_TIDE")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_TIDE");							
+Changed("LaytimeClock");							
+Retract("OnFirstAvailableTide");							
+}							
+							
+rule OnWaitingForTrucksCommenced "OnWaitingForTrucksCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_TRUCKS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_TRUCKS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForTrucksCommenced");							
+}							
+							
+rule OnWaitingForTrucksCompleted "OnWaitingForTrucksCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_TRUCKS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_TRUCKS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForTrucksCompleted");							
+}							
+							
+rule OnWaitingForVesselReadinessCommenced "OnWaitingForVesselReadinessCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_VESSEL_READINESS_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WAITING_FOR_VESSEL_READINESS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForVesselReadinessCommenced");							
+}							
+							
+rule OnWaitingForVesselReadinessCompleted "OnWaitingForVesselReadinessCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WAITING_FOR_VESSEL_READINESS_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WAITING_FOR_VESSEL_READINESS");							
+Changed("LaytimeClock");							
+Retract("OnWaitingForVesselReadinessCompleted");							
+}							
+							
+rule OnWarpingCommenced "OnWarpingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WARPING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WARPING");							
+Changed("LaytimeClock");							
+Retract("OnWarpingCommenced");							
+}							
+							
+rule OnWarpingCompleted "OnWarpingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WARPING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WARPING");							
+Changed("LaytimeClock");							
+Retract("OnWarpingCompleted");							
+}							
+							
+rule OnWeekendCommenced "OnWeekendCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WEEKEND_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WEEKEND");							
+Changed("LaytimeClock");							
+Retract("OnWeekendCommenced");							
+}							
+							
+rule OnWeekendCompleted "OnWeekendCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WEEKEND_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WEEKEND");							
+Changed("LaytimeClock");							
+Retract("OnWeekendCompleted");							
+}							
+							
+rule OnWeldingCommenced "OnWeldingCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WELDING_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WELDING");							
+Changed("LaytimeClock");							
+Retract("OnWeldingCommenced");							
+}							
+							
+rule OnWeldingCompleted "OnWeldingCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WELDING_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WELDING");							
+Changed("LaytimeClock");							
+Retract("OnWeldingCompleted");							
+}							
+							
+rule OnWireDeliveryRedeliveryCommenced "OnWireDeliveryRedeliveryCommenced" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WIRE_DELIVERY_REDELIVERY_COMMENCED")							
+then							
+LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "WIRE_DELIVERY_REDELIVERY_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnWireDeliveryRedeliveryCommenced");							
+}							
+							
+rule OnWireDeliveryRedeliveryCompleted "OnWireDeliveryRedeliveryCompleted" salience 10 {							
+when							
+Event.Type() == "SOFEvent" && Event.IsOneOf("WIRE_DELIVERY_REDELIVERY_COMPLETED")							
+then							
+LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "WIRE_DELIVERY_REDELIVERY_IN_PROGRESS");							
+Changed("LaytimeClock");							
+Retract("OnWireDeliveryRedeliveryCompleted");							
+}
+// ArcelorMittal-specific: Free pratique granting process (as distinct stoppage)
+rule OnFreePratiqueGrantingStart "OnFreePratiqueGrantingStart: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "FREE_PRATIQUE_GRANTING_COMMENCED"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FREE_PRATIQUE_GRANTING");
+
+        Changed("LaytimeClock");
+        Retract("OnFreePratiqueGrantingStart");
+}
+
+rule OnFreePratiqueGrantingEnd "OnFreePratiqueGrantingEnd: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "FREE_PRATIQUE_GRANTING_COMPLETED"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FREE_PRATIQUE_GRANTING");
+        
+        Changed("LaytimeClock");
+        Retract("OnFreePratiqueGrantingEnd");
+}
+
+// ArcelorMittal-specific: Tide restrictions (awaiting tide / draft windows)
+rule OnTideRestrictionStart "OnTideRestrictionStart: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "TIDE_RESTRICTION_STARTED"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "TIDE_RESTRICTION");
+        Changed("LaytimeClock");
+        Retract("OnTideRestrictionStart");
+}
+
+rule OnTideRestrictionEnd "OnTideRestrictionEnd: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "TIDE_RESTRICTION_ENDED"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "TIDE_RESTRICTION");
+        Changed("LaytimeClock");
+        Retract("OnTideRestrictionEnd");
+}
+
+// ArcelorMittal-specific: Ship reasons (lighting, gangway safety per port regulations)
+rule OnShipReasonsStart "OnShipReasonsStart: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "SHIP_REASONS_STARTED"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHIP_REASONS");
+        Changed("LaytimeClock");
+        Retract("OnShipReasonsStart");
+}
+
+rule OnShipReasonsEnd "OnShipReasonsEnd: {'GENCON_ARCELORMITTAL'}" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "SHIP_REASONS_ENDED"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHIP_REASONS");
+        Changed("LaytimeClock");
+        Retract("OnShipReasonsEnd");
+}
+// --- STRIKES ---
+rule OnStrikeCommencedLoading "OnStrikeCommencedLoading" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "STRIKE_COMMENCED" &&
+        CargoOperation.OperationsType() == "LOADING"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "STRIKE_LOADING");
+        Changed("LaytimeClock");
+        Retract("OnStrikeCommencedLoading");
+}
+
+rule OnStrikeCompletedLoading "OnStrikeCompletedLoading" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "STRIKE_COMPLETED" &&
+        CargoOperation.OperationsType() == "LOADING"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "STRIKE_LOADING");
+        Changed("LaytimeClock");
+        Retract("OnStrikeCompletedLoading");
+}
+
+rule OnStrikeCommencedDischarging "OnStrikeCommencedDischarging" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "STRIKE_COMMENCED" &&
+        CargoOperation.OperationsType() == "DISCHARGING"
+    then
+        LaytimeClock.ScheduleStoppageWithTransitionAfterDelay(Event.PointInTime(), 48*60, "STRIKE_DISCHARGING", "STRIKE_DISCHARGING_TRANSITIONED");
+        Changed("LaytimeClock");
+        Retract("OnStrikeCommencedDischarging");
+}
+
+rule OnStrikeCompletedDischarging "OnStrikeCompletedDischarging" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "STRIKE_COMPLETED" &&
+        CargoOperation.OperationsType() == "DISCHARGING"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "STRIKE_DISCHARGING");
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "STRIKE_DISCHARGING_TRANSITIONED");
+        Changed("LaytimeClock");
+        Retract("OnStrikeCompletedDischarging");
+}
+
+// --- PORT_CLOSED ---
+rule OnPortClosedStart "OnPortClosedStart" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "PORT_CLOSED_START"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "PORT_CLOSED");
+        Changed("LaytimeClock");
+        Retract("OnPortClosedStart");
+}
+
+rule OnPortClosedEnd "OnPortClosedEnd" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "PORT_CLOSED_END"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "PORT_CLOSED");
+        Changed("LaytimeClock");
+        Retract("OnPortClosedEnd");
+}
+
+// --- SHORE_REASONS ---
+rule OnShoreReasonsStart "OnShoreReasonsStart" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "SHORE_REASONS_START"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "SHORE_REASONS");
+        Changed("LaytimeClock");
+        Retract("OnShoreReasonsStart");
+}
+
+rule OnShoreReasonsEnd "OnShoreReasonsEnd" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "SHORE_REASONS_END"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "SHORE_REASONS");
+        Changed("LaytimeClock");
+        Retract("OnShoreReasonsEnd");
+}
+
+// --- FORCE_MAJEURE ---
+rule OnForceMajeureStart "OnForceMajeureStart" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "FORCE_MAJEURE_START"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "FORCE_MAJEURE");
+        Changed("LaytimeClock");
+        Retract("OnForceMajeureStart");
+}
+
+rule OnForceMajeureEnd "OnForceMajeureEnd" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "FORCE_MAJEURE_END"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "FORCE_MAJEURE");
+        Changed("LaytimeClock");
+        Retract("OnForceMajeureEnd");
+}
+
+// --- GANGWAY_UNSAFE ---
+rule OnGangwayUnsafeStart "OnGangwayUnsafeStart" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "GANGWAY_UNSAFE_START"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "GANGWAY_UNSAFE");
+        Changed("LaytimeClock");
+        Retract("OnGangwayUnsafeStart");
+}
+
+rule OnGangwayUnsafeEnd "OnGangwayUnsafeEnd" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "GANGWAY_UNSAFE_END"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "GANGWAY_UNSAFE");
+        Changed("LaytimeClock");
+        Retract("OnGangwayUnsafeEnd");
+}
+
+rule OnHoldInspectionFailed "Hold inspection rejection stops laytime" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "HOLD_INSPECTION_FAILED"
+    then
+        LaytimeClock.ScheduleStoppageStart(Event.PointInTime(), "HOLD_INSPECTION_REJECTION");
+        Changed("LaytimeClock");
+        Retract("OnHoldInspectionFailed");
+}
+
+rule OnHoldInspectionPassed "Hold inspection passed resumes laytime" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.Name == "HOLD_INSPECTION_PASSED"
+    then
+        LaytimeClock.ScheduleStoppageEnd(Event.PointInTime(), "HOLD_INSPECTION_REJECTION");
+        Changed("LaytimeClock");
+        Retract("OnHoldInspectionPassed");
+}
+
+/******************************************************************************
+ * STOPPAGE CATEGORIZATION INDEX
+ * 
+ * This index organizes all stoppages by functional category for reference.
+ * Each stoppage is listed under its primary category with a brief description.
+ ******************************************************************************/
+
+// =============================================================================
+// CATEGORY 1: VESSEL MOVEMENTS & POSITIONING
+// Stoppages related to vessel shifting, maneuvering, and repositioning
+// =============================================================================
+// MANOEUVRING - Vessel maneuvering operations (turning, positioning at berth)
+// SHIFTING - Generic vessel shifting between locations
+// SHIFTING_FROM_WAITING_PLACE - Moving from anchorage/waiting area to berth
+// SHIFTING_TO_WAITING_PLACE - Moving from berth to anchorage/waiting area
+// SHIFTING_BETWEEN_HOLDS - Repositioning within vessel between cargo holds
+// SHIFTING_CARGO - Moving cargo within or between vessels
+// SHIFTING_CARGO_EQUIPMENT - Repositioning cargo handling equipment
+// PONTOON_SHIFTING - Moving pontoon equipment
+// WARPING - Vessel movement using warps/lines
+
+// =============================================================================
+// CATEGORY 2: WEATHER CONDITIONS
+// Weather-related delays and natural phenomena
+// =============================================================================
+// BAD_WEATHER - Master stoppage clears all specific weather types below
+// FOG - Operations stopped due to fog/poor visibility
+// HAIL - Hail conditions preventing operations
+// HIGH_HUMIDITY - High humidity affecting cargo operations
+// HIGH_WINDS - High winds preventing safe operations
+// HURRICANE - Hurricane or severe storm
+// RAIN - Rain preventing cargo operations
+// ROUGH_SEA - Rough seas preventing operations
+// SNOW - Snow conditions
+// SWELL - Sea swell affecting operations
+// TORNADO_WARNING - Tornado warning period
+// EXTREME_TEMPERATURE - Extreme hot or cold temperatures
+// WAITING_FOR_FAVORABLE_CONDITIONS - Master, clears WAITING_FOR_TIDE and WAITING_FOR_DAYLIGHT
+// WAITING_FOR_TIDE - Waiting for suitable tide level
+// WAITING_FOR_DAYLIGHT - Operations only permitted in daylight
+
+// =============================================================================
+// CATEGORY 3: EQUIPMENT & BREAKDOWNS
+// Mechanical failures and equipment issues
+// =============================================================================
+// SHIP_BREAKDOWN - Master, consolidates all ship-side equipment failures
+// SHIP_CRANE_BREAKDOWN - Ship's cargo crane failure
+// SHORE_BREAKDOWN - Master, consolidates shore-side equipment failures
+// SHORE_CRANE_BREAKDOWN - Shore crane breakdown
+// CONVEYOR_BELT_BREAKDOWN - Conveyor system failure
+// REPAIRS - Master, clears SHIP_BREAKDOWN and SHIP_CRANE_BREAKDOWN
+// MECHANICAL_DELAY - Generic mechanical issues
+// ELECTRICAL_DELAY - Electrical system problems
+
+// =============================================================================
+// CATEGORY 4: CARGO OPERATIONS
+// Loading, discharging, and cargo handling activities
+// =============================================================================
+// LOADING - Main cargo loading operations
+// LOADING_ANOTHER_CARGO - Loading cargo for another charterer/voyage
+// LOADING_FIRST_FOOT - Initial cargo loading stage
+// LOADING_STOPPAGE - Pause during loading operations
+// DISCHARGING - Main cargo discharging operations
+// DISCHARGING_ANOTHER_CARGO - Discharging cargo for another voyage
+// DISCHARGING_STOPPAGE - Pause during discharging operations
+// OPERATIONS_STOPPAGE - Generic cargo operations pause
+// CARGO_PARCEL - Separating/handling cargo parcels
+// CARGO_CALCULATIONS - Cargo quantity calculations
+// CARGO_CIRCULATION - Circulating liquid cargo
+// CARGO_HEATING - Heating cargo to maintain viscosity
+// CARGO_MEETING - Meeting to discuss cargo operations
+// LIGHTERING - Transferring cargo to/from lighter vessel
+// TRANSSHIPMENT_IN_PROGRESS - Transferring cargo between vessels
+// BACKLOADING - Loading cargo back onboard
+// TRIMMING - Leveling/distributing cargo in holds
+
+// =============================================================================
+// CATEGORY 5: CONNECTION OPERATIONS
+// Hoses, arms, and equipment connections
+// =============================================================================
+// HOSE_CONNECTION - Generic cargo hose connection/disconnection
+// ARMS_CONNECTION - Loading arms connection/disconnection
+// ARMS_DISCONNECTION - Loading arms disconnection operations
+// BALLAST_HOSE_CONNECTION - Ballast hose connection/disconnection
+// DISPOSAL_HOSE_CONNECTION - Disposal hose connection/disconnection
+
+// =============================================================================
+// CATEGORY 6: HOLDS OPERATIONS
+// Cargo holds management and preparation
+// =============================================================================
+// OPENING_HOLDS - Opening cargo hold hatches
+// CLOSING_HOLDS - Closing cargo hold hatches
+// HOLDS_INSPECTION - Inspecting holds for cleanliness/suitability
+// HOLDS_PREPARATION - Preparing holds for cargo
+// HOLDS_VENTILATION - Ventilating cargo holds
+// SEALING_HOLDS - Sealing holds after loading
+// WAITING_FOR_HOLDS_CLEANING - Waiting for holds to be cleaned
+// WAITING_FOR_HOLDS_INSPECTION - Waiting for holds inspection
+
+// =============================================================================
+// CATEGORY 7: TANKS OPERATIONS
+// Cargo tanks management (for liquid cargoes)
+// =============================================================================
+// TANKS_INSPECTION - Inspecting tanks for cleanliness/suitability
+// TANKS_MEASUREMENT - Measuring tank contents/capacity
+// TANKS_TREATMENT - Treating tanks (coating, inerting, etc.)
+// SEALING_TANKS - Sealing tanks after loading
+// WAITING_FOR_TANKS_CLEANING - Waiting for tanks to be cleaned
+// WAITING_FOR_TANKS_INSPECTION - Waiting for tanks inspection
+
+// =============================================================================
+// CATEGORY 8: CLEANING & WASHING
+// Cleaning operations for holds, tanks, lines, and equipment
+// =============================================================================
+// CLEANING_HOLDS - Cleaning cargo holds
+// CLEANING_TANKS - Cleaning cargo tanks
+// CLEANING_LINE - Cleaning cargo lines/pipes
+// CRUDE_OIL_WASHING - COW operations for tank cleaning
+// PREWASH - Pre-loading wash operations
+// SWEEPING - Sweeping holds clean
+// SQUEEGING - Squeeging/scraping holds
+// DESLOPPINGPURGING - Removing slops/residues
+
+// =============================================================================
+// CATEGORY 9: SURVEYS & INSPECTIONS
+// Draft surveys, inspections, and measurements
+// =============================================================================
+// DRAFT_SURVEY - Master, clears INITIAL_DRAFT_SURVEY and FINAL_DRAFT_SURVEY
+// INITIAL_DRAFT_SURVEY - Draft survey before loading/discharging
+// FINAL_DRAFT_SURVEY - Draft survey after loading/discharging
+// SURVEY_IN_PROGRESS - Master, clears BUNKER_SURVEY and ON_OFF_HIRE_SURVEY
+// BUNKER_SURVEY - Survey of bunker quantities
+// ON_OFF_HIRE_SURVEY - On-hire or off-hire survey
+// INSPECTION_IN_PROGRESS - Master, clears 6 inspection types below
+// GAS_FREE_INSPECTION - Gas-free certificate inspection
+// JOINT_INSPECTION - Joint inspection by multiple parties
+// SAFETY_INSPECTION - Safety inspection
+// USCG_INSPECTION - US Coast Guard inspection
+// DRAFT_CHECK - Quick draft reading
+// SOUNDING - Sounding tanks/holds
+// ULLAGING - Measuring tank ullage
+// GAUGING - Gauging cargo quantities
+// SAMPLING - Taking cargo samples
+
+// =============================================================================
+// CATEGORY 10: FORMALITIES & DOCUMENTATION
+// Customs, immigration, and administrative procedures
+// =============================================================================
+// CUSTOMS_FORMALITIES - Customs clearance procedures
+// INWARD_FORMALITIES - Port entry formalities
+// OUTWARD_FORMALITIES - Port departure formalities
+// DERATIZATION - Deratization certificate procedures
+// DISINFECTION - Disinfection procedures
+// DISINSECTION - Disinsection procedures
+// WAITING_FOR_DOCUMENTS - Waiting for cargo/vessel documents
+// WAITING_FOR_CERTIFICATE - Waiting for certificates
+
+// =============================================================================
+// CATEGORY 11: LABOR & PERSONNEL
+// Shore labor, stevedores, surveyors, and personnel issues
+// =============================================================================
+// WAITING_FOR_SHORE_LABOR - Waiting for shore labor availability
+// WAITING_FOR_STEVEDORES - Waiting for stevedores
+// WAITING_FOR_SURVEYOR - Waiting for surveyor attendance
+// WAITING_FOR_REPRESENTATIVE - Waiting for company/cargo representative
+// SHIFT_CHANGE - Labor shift changeover period
+// BREAK - Labor break period
+// SAFETY_MEETING - Safety meeting/briefing
+// CARGO_MEETING - Cargo operations meeting
+// KEY_MEETING - Key handover/exchange meeting
+
+// =============================================================================
+// CATEGORY 12: MOORING & FENDERING
+// Mooring operations and fender management
+// =============================================================================
+// MOORING - Securing vessel to berth with mooring lines
+// UNMOORING - Releasing mooring lines
+// FENDERING - Placing fenders between vessel and berth
+// DEFENDERING - Removing fenders
+// BOOMING - Deploying oil boom
+// LASHING - Securing cargo with lashings
+// UNLASHING - Removing cargo lashings
+// RIGGING - Rigging cargo equipment
+// DE_RIGGING - Removing/dismantling cargo equipment
+
+// =============================================================================
+// CATEGORY 13: VESSEL STATES
+// Vessel condition and status changes
+// =============================================================================
+// VESSEL_ANCHORED - Vessel at anchor
+// VESSEL_BEING_AGROUND - Vessel aground
+// VESSEL_IN_DETENTION - Vessel detained by authorities
+// VESSEL_STANDBY_IDLE - Vessel standing by idle
+// WAITING_AT_ANCHORAGE - Waiting at anchorage
+// WAITING_AT_ROADS - Waiting at roads
+// WAITING_BERTH_AVAILABILITY - Waiting for berth to become available
+// WAITING_FOR_VESSEL_READINESS - Vessel not ready for operations
+
+// =============================================================================
+// CATEGORY 14: PORT OPERATIONS
+// Port-related procedures and restrictions
+// =============================================================================
+// PORT_CLOSURE - Port closed to operations
+// PORT_CLOSED - Alternative port closure stoppage
+// LOCK_CLOSURE - Canal/lock closure
+// PILOTAGE_SUSPENDED - Pilotage services suspended
+// WAITING_FOR_PILOT - Waiting for pilot availability
+// TRANSIT_PASSAGE_INTERRUPTION - Canal/waterway transit interrupted
+
+// =============================================================================
+// CATEGORY 15: BUNKERING & SUPPLIES
+// Vessel refueling and supplies
+// =============================================================================
+// BUNKERING - Consolidated, includes BUNKER_BARGE_ALONGSIDE/AWAY
+// SUPPLYING_IN_PROGRESS - Taking on vessel supplies
+// FRESH_WATER_SUPPLYING - Taking fresh water
+// SLUDGE_DISCHARGE - Discharging sludge
+// BILGE_WATER_DISCHARGE - Discharging bilge water
+// DISPOSAL - Disposing waste
+// REFUELLING_SHORE_CRANE - Refueling shore crane
+
+// =============================================================================
+// CATEGORY 16: BALLAST OPERATIONS
+// Ballasting and deballasting
+// =============================================================================
+// BALLASTING - Taking ballast water
+// DEBALLASTING - Discharging ballast water
+// DRIFTING - Vessel drifting
+
+// =============================================================================
+// CATEGORY 17: LINE & PIPELINE OPERATIONS
+// Cargo line and pipeline management
+// =============================================================================
+// CLEANING_LINE - Cleaning cargo lines
+// BLOWING_LINES - Blowing lines clear with air/gas
+// LINE_DISPLACEMENT - Displacing line contents
+// LINE_FLUSHING - Flushing cargo lines
+// LINE_SHIFTING - Repositioning cargo lines
+// LINE_UP - Lining up cargo systems
+// SHIP_SHORE_LINE_UP_IN_PROGRESS - Ship-shore connection alignment
+// WAITING_FOR_SHIP_SHORE_LINE_UP - Waiting for line-up completion
+// PIGGING - Pipeline pigging operations
+// STRIPPING - Stripping residual cargo from lines/tanks
+// PURGING - Purging lines/tanks with inert gas
+
+// =============================================================================
+// CATEGORY 18: PREPARATION ACTIVITIES
+// Pre-operation preparation
+// =============================================================================
+// SHIP_PREPARATION - Ship-side preparation for operations
+// SHORE_PREPARATION - Shore-side preparation for operations
+// PREPARATION_FOR_CARGO_OPERATIONS - General cargo operations preparation
+// HOLDS_PREPARATION - Preparing holds for cargo
+// PLACING_CARGO_EQUIPMENT - Placing cargo handling equipment
+// REMOVING_CARGO_EQUIPMENT - Removing cargo handling equipment
+// SHIFTING_CARGO_EQUIPMENT - Repositioning cargo equipment
+
+// =============================================================================
+// CATEGORY 19: WAITING STATES (RESOURCES)
+// Waiting for various resources or conditions
+// =============================================================================
+// WAITING_FOR_CARGO - Waiting for cargo availability
+// WAITING_FOR_CARGO_OPERATIONS - Waiting for operations to be ready
+// WAITING_FOR_BARGE - Waiting for barge availability
+// WAITING_FOR_TRUCKS - Waiting for trucks
+// WAITING_FOR_GANGWAY - Waiting for gangway access
+// WAITING_FOR_SHORE_FACILITIES - Waiting for shore facilities readiness
+// WAITING_FOR_ANALYSIS_RESULTS - Waiting for cargo analysis results
+// WAITING_FOR_COMMENCEMENT_OF_LAYCAN - Waiting for laycan period to start
+
+// =============================================================================
+// CATEGORY 20: STRIKES & FORCE MAJEURE
+// Industrial action and exceptional events
+// =============================================================================
+// STRIKE - Generic strike stoppage
+// STRIKE_LOADING - Strike during loading operations
+// STRIKE_DISCHARGING - Strike during discharging (48h transition)
+// FORCE_MAJEURE - Force majeure events
+// SHORE_REASONS - Delays due to shore-side issues
+// SHIP_REASONS - Delays due to ship-side issues (ArcelorMittal)
+
+// =============================================================================
+// CATEGORY 21: SPECIAL OPERATIONS
+// Miscellaneous specialized operations
+// =============================================================================
+// ADDITIVATION - Adding additives to cargo
+// BLANKETING - Inerting/blanketing cargo spaces
+// DOPING - Cargo doping operations
+// FUMIGATION - Fumigating holds/cargo
+// WELDING - Hot work/welding operations
+// KNOCKING_DOWN - Breaking down cargo securing
+// SHIP_TO_SHIP_ALIGNMENT - Aligning for STS operations
+// WIRE_DELIVERY_REDELIVERY_IN_PROGRESS - Delivery/redelivery procedures
+
+// =============================================================================
+// CATEGORY 22: CONSOLIDATED STOPPAGES
+// Master stoppages that consolidate multiple related events
+// =============================================================================
+// ICE - Consolidates ICE_CONDITIONS and VESSEL_STUCK_IN_ICE
+// CONGESTION - Consolidates port congestion and traffic waiting
+// TERMINAL_DOWN_TIME - Grand master, clears 10 shore-related stoppages
+
+// =============================================================================
+// CATEGORY 23: TIME-BASED STOPPAGES
+// Time-related non-working periods
+// =============================================================================
+// HOLIDAY - Public holidays
+// WEEKEND - Weekend non-working periods
+
+// =============================================================================
+// CATEGORY 24: HEALTH & QUARANTINE
+// Health-related delays
+// =============================================================================
+// QUARANTINE - Quarantine period
+// FREE_PRATIQUE_GRANTING - Free pratique granting process (ArcelorMittal)
+
+// =============================================================================
+// CATEGORY 25: CHARTER-SPECIFIC STOPPAGES
+// Special stoppages for specific charter parties
+// =============================================================================
+// FREE_PRATIQUE_GRANTING - ArcelorMittal: Free pratique granting process
+// TIDE_RESTRICTION - ArcelorMittal: Tide/draft restrictions
+// SHIP_REASONS - ArcelorMittal: Ship-related reasons
+// GANGWAY_UNSAFE - Gangway safety issues per port regulations
+
+/******************************************************************************
+ * END OF STOPPAGE CATEGORIZATION INDEX
+ ******************************************************************************/

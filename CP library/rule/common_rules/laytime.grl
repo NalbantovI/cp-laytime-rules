@@ -1,0 +1,69 @@
+// Common Laytime Rules
+// These rules handle cargo operations and laytime clock management
+
+rule OnOperationStarted "OnOperationStarted" salience 10 {
+    when
+        Event.Type() == "SOFEvent" &&
+        Event.IsOneOf("LOADING_COMMENCED", "DISCHARGING_COMMENCED", "OPERATIONS_COMMENCED")
+    then
+        LaytimeClock.ScheduleCargoOperationsResumption(Event.PointInTime());
+        Changed("LaytimeClock");
+        Retract("OnOperationStarted");
+}
+
+rule OnOperationsCompletedNotLast "OnOperationsCompletedNotLast" salience 10 {
+    when
+        Event.Type() == "SOFEvent" &&
+        Event.IsOneOf("LOADING_COMPLETED", "DISCHARGING_COMPLETED", "OPERATIONS_COMPLETED") &&
+        !PortCall.IsLastCompletionEvent("LOADING_COMPLETED", "DISCHARGING_COMPLETED", "OPERATIONS_COMPLETED", "ALL_OPERATIONS_COMPLETED", "ALL_LOADING_COMPLETED", "ALL_DISCHARGING_COMPLETED")
+    then
+        LaytimeClock.ScheduleCargoOperationsPause(Event.PointInTime());
+        Changed("LaytimeClock");
+        Retract("OnOperationsCompletedNotLast");
+}
+
+rule OnOperationsCompletedLast "OnOperationsCompletedLast" salience 10 {
+    when
+        Event.Type() == "SOFEvent" &&
+        Event.IsOneOf("LOADING_COMPLETED", "DISCHARGING_COMPLETED", "OPERATIONS_COMPLETED") &&
+        PortCall.IsLastCompletionEvent("LOADING_COMPLETED", "DISCHARGING_COMPLETED", "OPERATIONS_COMPLETED", "ALL_OPERATIONS_COMPLETED", "ALL_LOADING_COMPLETED", "ALL_DISCHARGING_COMPLETED")
+    then
+        LaytimeClock.ScheduleCargoOperationsPause(Event.PointInTime());
+        LaytimeClock.ScheduleLaytimeCompleted(Event.PointInTime());
+        Changed("LaytimeClock");
+        Retract("OnOperationsCompletedLast");
+}
+
+rule OnAllOperationsCompleted "OnAllOperationsCompleted" salience 10 {
+    when
+        Event.Type() == "SOFEvent" &&
+        Event.IsOneOf("ALL_OPERATIONS_COMPLETED", "ALL_LOADING_COMPLETED", "ALL_DISCHARGING_COMPLETED")
+    then
+        LaytimeClock.ScheduleCargoOperationsPause(Event.PointInTime());
+        LaytimeClock.ScheduleLaytimeCompleted(Event.PointInTime());
+        Changed("LaytimeClock");
+        Retract("OnAllOperationsCompleted");
+}
+
+rule OnLaytimePerMorningNOR "if notice of readiness is given up to and including the noon hour then Laytime for loading and discharging shall commence at AfternoonStart hours" salience 10 {
+    when 
+        !IsZero(NOR.AcceptedPerCPAt) &&
+        GetTimeHour(NOR.AcceptedPerCPAt) <= LaytimeClock.GetNoonHour() &&
+        !LaytimeClock.IsCommencementScheduled()
+    then
+        // TODO: Edge case - the afternoon might be a holiday.
+        LaytimeClock.ScheduleCommencementAtHour(NOR.AcceptedPerCPAt, LaytimeClock.GetAfternoonCommenceHour());
+        Changed("LaytimeClock");
+        Retract("OnLaytimePerMorningNOR");
+}
+
+rule OnLaytimePerAfternoonNOR "if notice given during office hours after NoonTime hours then Laytime for loading and discharging shall commence at MorningStart hours next working day" salience 10 {
+    when 
+        !IsZero(NOR.AcceptedPerCPAt) &&
+        GetTimeHour(NOR.AcceptedPerCPAt) > LaytimeClock.GetNoonHour &&
+        !LaytimeClock.IsCommencementScheduled()
+    then
+        LaytimeClock.ScheduleCommencementAtHour(BusinessCalendars["NOR"].NextWorkdayStart(NOR.AcceptedPerCPAt), LaytimeClock.GetMorningCommenceHour());
+        Changed("LaytimeClock");
+        Retract("OnLaytimePerAfternoonNOR");
+}

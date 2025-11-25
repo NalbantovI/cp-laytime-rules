@@ -1,0 +1,57 @@
+// Common Vessel State Rules
+// These rules track vessel state changes based on SOF events
+
+rule OnVesselInPort "OnVesselInPort" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_ARRIVED", "END_OF_SEA_PASSAGE", "VESSEL_ANCHORED", "ALL_FAST")
+    then
+        Vessel.EnteredPortLimits = true;
+        Changed("Vessel");
+        Retract("OnVesselInPort");
+}
+
+rule OnVesselAnchored "OnVesselAnchored" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_ANCHORED", "ALL_FAST")
+    then
+        Vessel.Anchored = true;
+        Changed("Vessel");
+        Retract("OnVesselAnchored");
+}
+
+rule OnVesselSailed "OnVesselSailed" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("VESSEL_SAILED")
+    then
+        Vessel.Anchored = false;
+        Vessel.SecuredAtBerth = false;
+        Changed("Vessel");
+        Retract("OnVesselSailed");
+}
+
+rule OnVesselFreePratiqueGranted "OnVesselFreePratiqueGranted" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("FREE_PRATIQUE_GRANTED")
+    then
+        Vessel.FreePratiqueGranted = true;
+        Changed("Vessel");
+        Retract("OnVesselFreePratiqueGranted");
+}
+
+rule OnVesselCustomsCleared "OnVesselCustomsCleared" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("CUSTOMS_CLEARANCE_GRANTED")
+    then
+        Vessel.CustomsCleared = true;
+        Changed("Vessel");
+        Retract("OnVesselCustomsCleared");
+}
+
+rule OnVesselSecuredAtBerth "OnVesselSecuredAtBerth" salience 10 {
+    when
+        Event.Type() == "SOFEvent" && Event.IsOneOf("ALL_FAST")
+    then
+        Vessel.SecuredAtBerth = true;
+        Changed("Vessel");
+        Retract("OnVesselSecuredAtBerth");
+}
