@@ -2,7 +2,7 @@
 
 **Generated:** /Users/ivelinnalbantov/Work/cp-laytime/cp-laytime-rules
 **Total Charter Parties Processed:** 75
-**Total Rules Extracted:** 12
+**Total Rules Extracted:** 5
 
 ---
 
@@ -11,135 +11,20 @@
 > **📌 NOTE:** This file contains **only rules NOT yet covered** by GRULE implementation.
 > 
 > - ✅ **86.9% of rules already implemented** in GRULE (1,282 rules)
-> - 📋 **This file shows the remaining rules** (12 rules requiring implementation)
+> - 📋 **This file shows the remaining rules** (5 rules requiring implementation)
 > - 📁 **Complete original set** preserved in `CP_RULES_CONSOLIDATED_ORIGINAL.md`
 > - 🗑️ **TEMPORAL rules removed** (general contract settings, not laytime calculation)
 > - 🗑️ **LEGAL/PROCEDURAL rules removed** (22 rules with legal obligations, not laytime calculation)
 
 **Rules by Category:**
 
-- [Conditional](#rule-type-conditional) (6 rules)
 - [Exception](#rule-type-exception) (2 rules)
-- [Operational](#rule-type-operational) (4 rules)
+- [Operational](#rule-type-operational) (3 rules)
 
-**Total:** 12 unique rules
-
----
-
-================================================================================
-
-
-
-## RULE TYPE: CONDITIONAL
-
-**Total Rules:** 320
-
-#### CSN - Rule 8: Extract 6
-
-**Rule Types:** Temporal, Conditional, Exception
-
-**Rule Text:**
-```
-29.4 The Vessel shall be deemed to have arrived at Load Port upon entering the Port limits, when it reaches the place named
-"Itaguaí Pilot Position" and at Discharge Port upon the Vessel being brought up at anchor at the inner, outer, or usual
-anchorage or, if the Vessel does not anchor, the Vessel shall be deemed to have arrived when the local pilot boards the
-Vessel and the Vessel has tendered a valid NOR in accordance with the terms of this Charterparty.
-CLAUSE 30 ­ LAYTIME
-30.1 Laytime w...
-```
+**Total:** 5 unique rules
 
 ---
 
-
-
-#### NYPE - Rule 3: Extract 1
-
-**Rule Types:** Temporal, Operational, Conditional
-
-**Rule Text:**
-```
-A1. All cargoes of Coal are to be discharged by Charterers at the port of Jorf Lasfar, Pier No. 3 (arrival
-draft not to exceed 12.5 meters salt water) at the average rate of 22,000 Tonnes per Weather Working
-Day of twenty­four (24) consecutive hours seven (7) days over seven (7) days.
-A2. Laytime (in days or fractions thereof) shall be calculated by dividing Net Cargo Weight by the average
-rate of discharge set forth in paragraph A1 above.
-A3. Laytime shall commence twelve (12) hours after N...
-```
-
----
-
-
-
-#### SAFANCHART - Rule 3: Extract 1
-
-**Rule Types:** Temporal, Operational, Conditional
-
-**Rule Text:**
-```
-proportionately to the diminution of output, despatch or delivery occassioned by such partial stoppage. 60
-In the event of any such stoppage or stoppages continuing for the period of six running days after the vessel is certified as being ready 61
-to load, as provided in Clause 3 of this Charter Party, or commencing after the vessel is so certified, and continuing for six running 62
-days, then the Charter Party shall, at the expiration of such period, provided that no cargo shall have been s...
-```
-
----
-
-
-
-#### SYNACOMEX - Rule 10: Extract 6
-
-**Rule Types:** Conditional, Temporal, Modifier
-
-**Rule Text:**
-```
-Additional Clauses 29 to 45 inclusive.
-It is mutually agreed that this Charter Party shall be performed subject to the conditions contained herein consisting of PART I and PART II including additional
-clauses if any agreed and stated in Box 22. In the event of a conflict of conditions, the provisions of Part I shall prevail over those of Part II to the extent of
-such conflict but no further.
-For the Owners For The Charterers
-This Charter Party is a computer generated SYNACOMEX 2000 form prin...
-```
-
----
-
-
-
-#### SYNACOMEX - Rule 15: Extract 11
-
-**Rule Types:** Conditional, Temporal
-
-**Rule Text:**
-```
-due to the party(ies) designated in Box 20 and is deductible 200 and after discharge from the Vessel. 264
-from same unless "non-deductible" has been specifically
-This document is a computer generated SYNACOMEX 2000 form printed by authority of SYNDICAT NATIONAL DU COMMERCE EXTÉRIEUR DES CEREALES (SYNACOMEX). Any insertion or
-deletion to the form must be clearly visible. In the event of any modification made to the pre-printed text of this document which is not clearly visible, the text of th...
-```
-
----
-
-
-
-#### YARA CP - Rule 7: Extract 5
-
-**Rule Types:** Temporal, Modifier, Conditional
-
-**Rule Text:**
-```
-Half / Free despatch at load port(s).
-Half / Free despatch at discharge port(s).
-Owners shall present any claim for demurrage to Charterers latest within 25 days after completion of
-discharge. If such claim is not received by Charterers within this period, Owners are considered
-having waived their right to claim demurrage.
-Demurrage, if any, to be paid on right and true delivery of the cargo and latest 25 days after
-Statements of Facts / Owners’ calculation has been received and approved by ...
-```
-
----
-
-
-
-================================================================================
 
 
 
@@ -163,7 +48,6 @@ possession of such valid and up to date certificates of efficiency and safety, t
 ---
 
 
-
 #### FPG - Rule 4: Extract 2
 
 **Rule Types:** Operational, Exception
@@ -184,7 +68,6 @@ sh...
 ================================================================================
 
 
-
 ## RULE TYPE: OPERATIONAL
 
 **Total Rules:** 416
@@ -203,7 +86,6 @@ result of the diversion or lighterage will be for the Owner's account.
 ```
 
 ---
-
 
 
 #### SYNACOMEX - Rule 16: Extract 12
@@ -227,7 +109,6 @@ Page 5
 ---
 
 
-
 #### TA1 - Rule 5: Extract 3
 
 **Rule Types:** Operational
@@ -245,16 +126,3 @@ laytime or time on demurrage, and all expe...
 ---
 
 
-#### YANCOAL - Rule 5: Extract 3
-
-**Rule Types:** Operational, Weather Interruption, Temporal
-
-**Rule Text:**
-```
-(b) Owner shall pay to Charterer despatch money at the rates specified in the Fixture Note; per day of
-twenty four (24) consecutive hours and pro rata for part thereof for all laytime saved.
-(c) Demurrage and/or Despatch, if any, shall be settled within 30 days of completion of discharge.
-18 COVERING AND UNCOVERING OF HATCHES
-18.1All time and expenditure relating to the covering and uncovering of hatches shall be for Owner's account.
-18.2The Master shall cover the hatch(es) of each hold as s...
-```
