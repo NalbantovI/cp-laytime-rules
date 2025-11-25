@@ -241,9 +241,170 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 4: VESSEL-RELATED SUSPENSIONS
+## CATEGORY 4: ALLOWED LAYTIME / TIME CREDITING
 
-### 4.1 Vessel Not Ready
+*NEW CATEGORY - Identified from YARA Excel analysis*
+
+**Definition:** Time that counts towards laytime even though cargo operations may not be taking place, OR time that benefits the party (despatch, early completion). This is the opposite of exclusions - these are INCLUSIONS.
+
+### 4.1 Waiting for Berth Time
+**Definition:** Time spent waiting for berth to become available counts as laytime
+
+**Characteristics:**
+- Port congestion - berth occupied
+- Vessel ready to berth but cannot
+- Time from NOR acceptance or arrival
+- "Time to count" provisions
+
+**Examples:**
+- "Time lost waiting for berth to count as laytime"
+- "Time from NOR accepted to berthing shall count as laytime"
+- "Waiting time for berth shall be counted as used laytime"
+- "If berth not available, time from NOR to all fast shall count"
+
+**Keywords to identify:** "waiting for berth", "time to count", "berth not available", "waiting time counts"
+
+**Rule Type:** Operational  
+**Timeline Context:** Pre-Operations, Laytime Active
+
+---
+
+### 4.2 Charterers' Delays Counting
+**Definition:** Time lost due to charterers'/receivers' causes counts as laytime
+
+**Characteristics:**
+- Cargo not ready
+- Documentation missing
+- Receivers not ready
+- Charterers' instructions delays
+- Shore equipment unavailable
+
+**Examples:**
+- "Any delay whatsoever for which Charterers responsible shall count as laytime"
+- "Time lost due to cargo not being ready shall be for Charterers' account"
+- "Delays in providing cargo documents to count against laytime"
+- "If receivers fail to take delivery, time shall continue to count"
+
+**Keywords to identify:** "charterers' account", "for charterers' time", "receivers' delay", "charterers responsible"
+
+**Rule Type:** Legal/Procedural  
+**Timeline Context:** Laytime Active, Operations
+
+---
+
+### 4.3 Concurrent Operations Time
+**Definition:** Time during simultaneous operations counts (e.g., loading while ballasting)
+
+**Characteristics:**
+- Multiple operations happening simultaneously
+- Ballast/deballast during cargo ops
+- Shifting while loading
+- Vessel movements during operations
+
+**Examples:**
+- "Time used for simultaneous ballasting and loading to count"
+- "Vessel shall be capable of loading and deballasting simultaneously"
+- "If Vessel can discharge whilst shifting, time shall count"
+- "Concurrent operations time to count as working time"
+
+**Keywords to identify:** "simultaneous", "concurrent", "whilst", "during", "at same time"
+
+**Rule Type:** Operational  
+**Timeline Context:** Laytime Active, Operations
+
+---
+
+### 4.4 Despatch Money / Early Completion
+**Definition:** Time saved resulting in despatch payment to owners
+
+**Characteristics:**
+- Completion before laytime expires
+- Time saved calculation
+- Despatch rate
+- Bonus for early completion
+
+**Examples:**
+- "Despatch to be paid at half demurrage rate for time saved"
+- "If completed before expiry of laytime, Charterers to pay despatch"
+- "Time saved to be calculated on working time basis"
+- "Despatch on all laytime saved, half demurrage rate"
+
+**Keywords to identify:** "despatch", "time saved", "early completion", "bonus"
+
+**Rule Type:** Financial  
+**Timeline Context:** Post-Operations, Calculation
+
+---
+
+### 4.5 Exceptions with "Unless Used" / "Even If Used"
+**Definition:** Clarification of whether excepted time counts if actually used
+
+**Characteristics:**
+- SHEX unless used (UU)
+- SHEX even if used (EIU)
+- Weekend work counting or not
+- Holiday work counting or not
+
+**Examples:**
+- "Sundays and Holidays excepted unless used (SSHEX UU)"
+- "Saturdays 12:00 to Monday 08:00 not to count, even if used (EIU)"
+- "Holidays to count if Vessel works during such period (UU)"
+- "If Vessel works on Sunday, such time shall count (unless used)"
+
+**Keywords to identify:** "unless used", "even if used", "UU", "EIU", "actually used"
+
+**Rule Type:** Temporal  
+**Timeline Context:** Laytime Active
+
+---
+
+### 4.6 Working During Excepted Periods
+**Definition:** When work performed during normally excepted time counts
+
+**Characteristics:**
+- Voluntary work during holidays
+- Overtime arrangements
+- Night work during restricted periods
+- Weekend work with notice
+
+**Examples:**
+- "If Charterer requests work on Sunday, time used shall count"
+- "Night work 18:00-06:00 to count at rate of time and half"
+- "Work performed on holidays at Charterers' request to count"
+- "If Receivers work cargo on Saturday, such time shall count as working time"
+
+**Keywords to identify:** "work on", "during", "overtime", "night work", "holiday work"
+
+**Rule Type:** Operational/Financial  
+**Timeline Context:** Laytime Active, Operations
+
+---
+
+### 4.7 Interruption Exceptions (Time That Doesn't Stop)
+**Definition:** Situations where normally-excluded time continues to count
+
+**Characteristics:**
+- Weather but operations continue
+- Strike but Vessel working
+- Holiday but operations ongoing
+- "Notwithstanding" provisions
+
+**Examples:**
+- "Notwithstanding weather, if Vessel working, time shall count"
+- "Even during strike, if operations proceed, laytime continues"
+- "Weather not preventing work, time to count"
+- "If work not actually interrupted, time shall count despite weather"
+
+**Keywords to identify:** "notwithstanding", "continues to count", "despite", "even during"
+
+**Rule Type:** Conditional  
+**Timeline Context:** Laytime Active, Operations
+
+---
+
+## CATEGORY 5: VESSEL-RELATED SUSPENSIONS
+
+### 5.1 Vessel Not Ready
 **Definition:** Time lost due to vessel's unready condition
 
 **Characteristics:**
@@ -263,7 +424,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 4.2 Vessel Equipment/Gear Failures
+### 5.2 Vessel Equipment/Gear Failures
 **Definition:** Time lost due to vessel's equipment breakdown
 
 **Characteristics:**
@@ -283,7 +444,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 4.3 Vessel Construction/Suitability
+### 5.3 Vessel Construction/Suitability
 **Definition:** Time lost due to vessel's design limitations
 
 **Characteristics:**
@@ -302,7 +463,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 4.4 Vessel Compliance/Certification
+### 5.4 Vessel Compliance/Certification
 **Definition:** Time lost due to non-compliance with regulations
 
 **Characteristics:**
@@ -321,9 +482,9 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 5: SHIFTING/VESSEL MOVEMENTS
+## CATEGORY 6: SHIFTING/VESSEL MOVEMENTS
 
-### 5.1 Shifting Between Berths
+### 6.1 Shifting Between Berths
 **Definition:** Time used moving between locations
 
 **Characteristics:**
@@ -361,7 +522,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 6: CARGO OPERATIONS PROCEDURES
+## CATEGORY 7: CARGO OPERATIONS PROCEDURES
 
 ### 6.1 Hatch Operations
 **Definition:** Time for opening/closing hatches
@@ -439,9 +600,9 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 7: THIRD-PARTY ISSUES
+## CATEGORY 8: THIRD-PARTY ISSUES
 
-### 7.1 Arrest/Detention
+### 13.1 Arrest/Detention
 **Definition:** Time lost due to vessel arrest or detention
 
 **Characteristics:**
@@ -459,7 +620,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 7.2 Authorities/Regulations
+### 13.2 Authorities/Regulations
 **Definition:** Time lost due to regulatory authorities
 
 **Characteristics:**
@@ -479,7 +640,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 7.3 Charterer/Shipper/Receiver Issues
+### 13.3 Charterer/Shipper/Receiver Issues
 **Definition:** Time lost attributable to cargo interests
 
 **Characteristics:**
@@ -497,9 +658,9 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 8: FORCE MAJEURE/EXCEPTIONS
+## CATEGORY 9: FORCE MAJEURE/EXCEPTIONS
 
-### 8.1 Act of God
+### 13.1 Act of God
 **Definition:** Natural disasters and uncontrollable events
 
 **Characteristics:**
@@ -517,7 +678,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 8.2 Exceptions Clause
+### 13.2 Exceptions Clause
 **Definition:** General exception provisions
 
 **Characteristics:**
@@ -535,9 +696,9 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 9: SPECIAL TIME COUNTING RULES
+## CATEGORY 10: SPECIAL TIME COUNTING RULES
 
-### 9.1 Half-Time Counting
+### 13.1 Half-Time Counting
 **Definition:** Time counted at 50% rate
 
 **Characteristics:**
@@ -554,7 +715,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 9.2 Turn Time
+### 13.2 Turn Time
 **Definition:** Fixed time before laytime commences
 
 **Characteristics:**
@@ -571,7 +732,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 9.3 Reversible/Non-Reversible Laytime
+### 13.3 Reversible/Non-Reversible Laytime
 **Definition:** Whether time at load and discharge ports is combined
 
 **Characteristics:**
@@ -588,9 +749,9 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 10: LEGAL/ADMINISTRATIVE
+## CATEGORY 11: LEGAL/ADMINISTRATIVE
 
-### 10.1 Boycott Clauses
+### 13.1 Boycott Clauses
 **Definition:** Time lost due to boycotts
 
 **Characteristics:**
@@ -608,7 +769,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 10.2 Smuggling
+### 13.2 Smuggling
 **Definition:** Time lost due to smuggling by vessel personnel
 
 **Characteristics:**
@@ -624,7 +785,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 10.3 Customs/AMS Compliance
+### 13.3 Customs/AMS Compliance
 **Definition:** Regulatory compliance for customs
 
 **Characteristics:**
@@ -642,7 +803,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 10.4 Safety/Security Compliance
+### 13.4 Safety/Security Compliance
 **Definition:** ISPS, security-related time
 
 **Characteristics:**
@@ -660,9 +821,9 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 11: OWNER'S OBLIGATIONS
+## CATEGORY 12: OWNER'S OBLIGATIONS
 
-### 11.1 Vessel Speed/Performance
+### 13.1 Vessel Speed/Performance
 **Definition:** Vessel performance obligations affecting time
 
 **Characteristics:**
@@ -680,7 +841,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 11.2 Losing Turn/Priority
+### 13.2 Losing Turn/Priority
 **Definition:** Time lost due to vessel losing berth priority
 
 **Characteristics:**
@@ -698,7 +859,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 11.3 Vacating Berth
+### 13.3 Vacating Berth
 **Definition:** Time lost due to vessel not vacating berth promptly
 
 **Characteristics:**
@@ -715,9 +876,9 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-## CATEGORY 12: LAYTIME CALCULATION MODIFIERS
+## CATEGORY 13: LAYTIME CALCULATION MODIFIERS
 
-### 12.1 "Even if on Demurrage" Clauses
+### 13.1 "Even if on Demurrage" Clauses
 **Definition:** Exceptions that apply even when vessel already on demurrage
 
 **Characteristics:**
@@ -734,7 +895,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 12.2 "Unless Used" Provisions
+### 13.2 "Unless Used" Provisions
 **Definition:** Excepted time that counts if actually used
 
 **Characteristics:**
@@ -751,7 +912,7 @@ This document defines the taxonomy for categorizing all laytime-related rules fo
 
 ---
 
-### 12.3 Pro Rata Calculations
+### 13.3 Pro Rata Calculations
 **Definition:** Proportional time counting
 
 **Characteristics:**
